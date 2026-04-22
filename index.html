@@ -20,11 +20,11 @@ body{background:var(--bg);font-family:'Nunito',sans-serif;color:var(--text);
 .header-title{font-size:22px;font-weight:900;}
 .header-date{font-size:11px;color:var(--muted);font-weight:700;text-align:right;line-height:1.6;}
  
-.tabs{display:flex;gap:6px;margin-bottom:18px;background:var(--card);padding:5px;
-  border-radius:14px;box-shadow:var(--shadow);}
-.tab{flex:1;padding:9px 4px;border:none;border-radius:10px;background:transparent;
-  font-family:'Nunito',sans-serif;font-size:12px;font-weight:700;color:var(--muted);
-  cursor:pointer;transition:all 0.2s;}
+.tabs{display:flex;gap:4px;margin-bottom:18px;background:var(--card);padding:5px;
+  border-radius:14px;box-shadow:var(--shadow);overflow-x:auto;}
+.tab{flex:1;padding:9px 2px;border:none;border-radius:10px;background:transparent;
+  font-family:'Nunito',sans-serif;font-size:11px;font-weight:700;color:var(--muted);
+  cursor:pointer;transition:all 0.2s;white-space:nowrap;}
 .tab.active{background:var(--indigo);color:#fff;box-shadow:0 2px 8px rgba(79,70,229,0.3);}
  
 .section{display:none;animation:fadeUp 0.2s ease;}
@@ -115,17 +115,22 @@ input[type=range]:active::-webkit-slider-thumb{transform:scale(1.15);}
   color:#fff;font-family:'Nunito',sans-serif;font-size:16px;font-weight:800;cursor:pointer;
   box-shadow:0 4px 14px rgba(79,70,229,0.35);transition:opacity 0.15s,transform 0.1s;margin-top:4px;}
 .btn-main:active{transform:scale(0.98);opacity:0.9;}
+.btn-danger{background:#ef4444;box-shadow:0 4px 14px rgba(239,68,68,0.3);}
+.btn-secondary{background:var(--bg);color:var(--indigo);border:2px solid var(--indigo);
+  box-shadow:none;}
  
 .cal-grid-wrap{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;}
 .cal-dow{text-align:center;font-size:10px;font-weight:700;color:var(--muted);padding:4px 0;}
 .cal-cell{aspect-ratio:1;border-radius:10px;display:flex;flex-direction:column;
   align-items:center;justify-content:center;font-size:11px;font-weight:700;
-  border:2px solid transparent;position:relative;}
+  border:2px solid transparent;position:relative;cursor:pointer;transition:transform 0.1s;}
+.cal-cell:active{transform:scale(0.92);}
 .cal-cell.has{background:#f0fdf4;border-color:#bbf7d0;color:var(--green);}
 .cal-cell.miss{background:#fef2f2;border-color:#fecaca;color:var(--red);}
 .cal-cell.today{border-color:var(--indigo);background:rgba(79,70,229,0.06);color:var(--indigo);}
-.cal-cell.future{opacity:0.3;background:var(--bg);}
+.cal-cell.future{opacity:0.3;background:var(--bg);cursor:default;}
 .cal-cell.goal{background:#fffbeb;border-color:#fcd34d;color:var(--amber);}
+.cal-cell.sel-edit{border-color:var(--indigo)!important;box-shadow:0 0 0 3px rgba(79,70,229,0.25);transform:scale(1.05);}
 .cal-dot{font-size:8px;}
  
 .hist-item{display:flex;align-items:center;gap:10px;padding:11px 0;border-bottom:1px solid var(--border);}
@@ -134,12 +139,61 @@ input[type=range]:active::-webkit-slider-thumb{transform:scale(1.15);}
 .hist-tags{display:flex;gap:6px;flex-wrap:wrap;}
 .tag{font-size:11px;font-weight:700;padding:3px 8px;border-radius:8px;}
  
+/* Day Editor */
+.edit-overlay{position:fixed;inset:0;background:rgba(26,29,46,0.6);z-index:200;
+  display:flex;align-items:flex-end;justify-content:center;
+  animation:fadeIn 0.2s ease;backdrop-filter:blur(4px);}
+.edit-overlay.hidden{display:none;}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.edit-sheet{background:var(--card);border-radius:24px 24px 0 0;padding:20px 20px 40px;
+  width:100%;max-width:480px;max-height:90vh;overflow-y:auto;
+  animation:slideUp 0.3s cubic-bezier(0.4,0,0.2,1);}
+@keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.edit-drag{width:40px;height:4px;background:var(--border);border-radius:99px;margin:0 auto 18px;}
+.edit-title{font-size:18px;font-weight:900;margin-bottom:16px;text-align:center;}
+ 
+/* Settings */
+.setting-row{display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--border);}
+.setting-row:last-child{border:none;}
+.setting-lbl{font-size:14px;font-weight:700;}
+.setting-sub{font-size:11px;color:var(--muted);font-weight:600;}
+.setting-val{font-size:20px;font-weight:900;color:var(--indigo);}
+.stepper{display:flex;align-items:center;gap:12px;}
+.step-btn{width:36px;height:36px;border-radius:50%;border:2px solid var(--border);
+  background:var(--bg);font-size:18px;font-weight:700;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;}
+.step-btn:active{background:var(--border);}
+ 
+.num-input-big{width:100%;font-family:'Nunito',sans-serif;font-size:28px;font-weight:900;
+  text-align:center;border:2px solid var(--border);border-radius:14px;padding:12px;
+  outline:none;background:var(--bg);color:var(--text);-moz-appearance:textfield;}
+.num-input-big:focus{border-color:var(--indigo);}
+.num-input-big::-webkit-outer-spin-button,.num-input-big::-webkit-inner-spin-button{-webkit-appearance:none;}
+ 
+.date-input{width:100%;font-family:'Nunito',sans-serif;font-size:18px;font-weight:800;
+  text-align:center;border:2px solid var(--border);border-radius:14px;padding:12px;
+  outline:none;background:var(--bg);color:var(--text);}
+.date-input:focus{border-color:var(--indigo);}
+ 
+/* Month picker */
+.month-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:8px;}
+.month-btn{padding:10px 4px;border:2px solid var(--border);border-radius:12px;
+  background:var(--bg);font-family:'Nunito',sans-serif;font-size:13px;font-weight:800;
+  color:var(--muted);cursor:pointer;text-align:center;}
+.month-btn.sel{background:var(--indigo);border-color:var(--indigo);color:#fff;}
+ 
 .toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%) translateY(10px);
   background:var(--text);color:#fff;padding:12px 22px;border-radius:99px;
   font-size:13px;font-weight:700;opacity:0;pointer-events:none;transition:all 0.25s;
   z-index:999;white-space:nowrap;box-shadow:0 4px 16px rgba(0,0,0,0.2);}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
 .toast.ok{background:var(--green);}
+ 
+.edit-month-nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
+.edit-month-title{font-size:14px;font-weight:800;color:var(--indigo);}
+.edit-month-btn{width:34px;height:34px;border-radius:10px;border:2px solid var(--border);
+  background:var(--bg);font-size:16px;font-weight:700;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;}
 </style>
 </head>
 <body>
@@ -150,10 +204,11 @@ input[type=range]:active::-webkit-slider-thumb{transform:scale(1.15);}
 </div>
  
 <div class="tabs">
-  <button class="tab active" onclick="setTab('home',this)">🏠 Главная</button>
+  <button class="tab active" onclick="setTab('home',this)">🏠</button>
   <button class="tab" onclick="setTab('checkin',this)">✅ Чек-ин</button>
   <button class="tab" onclick="setTab('sleep',this)">🌙 Сон</button>
   <button class="tab" onclick="setTab('cal',this)">📅 Дни</button>
+  <button class="tab" onclick="setTab('settings',this)">⚙️</button>
 </div>
  
 <!-- HOME -->
@@ -235,8 +290,19 @@ input[type=range]:active::-webkit-slider-thumb{transform:scale(1.15);}
   </div>
  
   <div class="card">
-    <div class="card-label">Оценка дня</div>
+    <div class="card-label">Оценка дня (1–10)</div>
     <div class="rating-row" id="rating-row"></div>
+  </div>
+ 
+  <div class="card">
+    <div class="card-label">Шаги (чек-ин)</div>
+    <div class="slider-header">
+      <div><div class="slider-val" id="ci-steps-disp">0</div><div class="slider-unit">шагов</div></div>
+      <div class="slider-goal-txt" id="ci-steps-goal"></div>
+    </div>
+    <div class="pbar-wrap"><div class="pbar-fill" id="ci-steps-pbar" style="width:0%;background:var(--blue)"></div></div>
+    <input type="range" id="ci-steps-sl" min="0" max="30000" step="100" value="0" oninput="onCiSteps(this.value)">
+    <div class="range-labels"><span>0</span><span>10к</span><span>20к</span><span>30к</span></div>
   </div>
  
   <button class="btn-main" onclick="saveCheckin()">✅ Сохранить чек-ин</button>
@@ -274,10 +340,15 @@ input[type=range]:active::-webkit-slider-thumb{transform:scale(1.15);}
   </div>
 </div>
  
-<!-- CALENDAR -->
+<!-- CALENDAR / HISTORY -->
 <div class="section" id="sec-cal">
   <div class="card">
-    <div class="card-label">Апрель — Май 2026</div>
+    <div class="edit-month-nav">
+      <button class="edit-month-btn" onclick="calPrevMonth()">‹</button>
+      <div class="edit-month-title" id="cal-month-title">—</div>
+      <button class="edit-month-btn" onclick="calNextMonth()">›</button>
+    </div>
+    <div class="card-label" style="margin-bottom:6px;">Нажми на день чтобы редактировать</div>
     <div class="cal-grid-wrap" id="cal-dows"></div>
     <div style="height:5px;"></div>
     <div class="cal-grid-wrap" id="cal-cells"></div>
@@ -290,6 +361,156 @@ input[type=range]:active::-webkit-slider-thumb{transform:scale(1.15);}
   <div class="card">
     <div class="card-label">Последние 7 дней</div>
     <div id="hist-list"></div>
+  </div>
+</div>
+ 
+<!-- SETTINGS -->
+<div class="section" id="sec-settings">
+  <div class="card">
+    <div class="card-label">Параметры тела</div>
+ 
+    <div style="margin-bottom:14px;">
+      <div class="card-label" style="margin-bottom:8px;">Начальный вес (кг)</div>
+      <div class="weight-row">
+        <div class="adj-col">
+          <button class="adj-btn" onclick="adjSetting('sw',-1)">−</button>
+          <button class="adj-btn" onclick="adjSetting('sw',-0.1)" style="font-size:11px;">−.1</button>
+        </div>
+        <input type="number" id="cfg-sw" class="w-input" step="0.1" min="30" max="300" placeholder="85.0" oninput="saveCfgField('sw',this.value)">
+        <div class="adj-col">
+          <button class="adj-btn" onclick="adjSetting('sw',1)">+</button>
+          <button class="adj-btn" onclick="adjSetting('sw',0.1)" style="font-size:11px;">+.1</button>
+        </div>
+      </div>
+    </div>
+ 
+    <div style="margin-bottom:14px;">
+      <div class="card-label" style="margin-bottom:8px;">Целевой вес (кг)</div>
+      <div class="weight-row">
+        <div class="adj-col">
+          <button class="adj-btn" onclick="adjSetting('tw',-1)">−</button>
+          <button class="adj-btn" onclick="adjSetting('tw',-0.1)" style="font-size:11px;">−.1</button>
+        </div>
+        <input type="number" id="cfg-tw" class="w-input" step="0.1" min="30" max="300" placeholder="73.0" oninput="saveCfgField('tw',this.value)">
+        <div class="adj-col">
+          <button class="adj-btn" onclick="adjSetting('tw',1)">+</button>
+          <button class="adj-btn" onclick="adjSetting('tw',0.1)" style="font-size:11px;">+.1</button>
+        </div>
+      </div>
+    </div>
+  </div>
+ 
+  <div class="card">
+    <div class="card-label">Дата начала</div>
+    <input type="date" id="cfg-setup-date" class="date-input" oninput="saveCfgDate('setupDate',this.value)" style="margin-bottom:6px;">
+    <div style="font-size:11px;color:var(--muted);font-weight:600;">День когда ты начал трекить прогресс</div>
+  </div>
+ 
+  <div class="card">
+    <div class="card-label">Срок достижения цели</div>
+    <div style="font-size:12px;color:var(--muted);font-weight:700;margin-bottom:12px;">Выбери через сколько месяцев хочешь достичь цели:</div>
+    <div class="month-grid" id="month-btns"></div>
+    <div style="margin-top:12px;padding:12px;background:var(--bg);border-radius:12px;text-align:center;">
+      <div style="font-size:11px;color:var(--muted);font-weight:700;">Дата цели</div>
+      <div id="goal-date-display" style="font-size:20px;font-weight:900;color:var(--indigo);margin-top:4px;">—</div>
+    </div>
+  </div>
+ 
+  <div class="card">
+    <div class="card-label">Цель по шагам</div>
+    <div class="slider-header">
+      <div><div class="slider-val" id="cfg-steps-disp">10 000</div><div class="slider-unit">шагов/день</div></div>
+    </div>
+    <div class="pbar-wrap"><div class="pbar-fill" id="cfg-steps-pbar" style="width:33%;background:var(--blue)"></div></div>
+    <input type="range" id="cfg-steps-sl" min="2000" max="30000" step="500" value="10000" oninput="onCfgSteps(this.value)">
+    <div class="range-labels"><span>2к</span><span>10к</span><span>20к</span><span>30к</span></div>
+    <button class="btn-main" style="margin-top:10px;" onclick="saveCfgSteps()">💾 Сохранить цель шагов</button>
+  </div>
+ 
+  <div class="card">
+    <div class="card-label" style="color:var(--red);">⚠️ Опасная зона</div>
+    <button class="btn-main btn-danger" onclick="confirmReset()">🗑️ Сбросить все данные</button>
+  </div>
+</div>
+ 
+<!-- Day Edit Sheet -->
+<div class="edit-overlay hidden" id="edit-overlay" onclick="closeEdit(event)">
+  <div class="edit-sheet" id="edit-sheet">
+    <div class="edit-drag"></div>
+    <div class="edit-title" id="edit-title">Редактировать день</div>
+ 
+    <div class="card" style="margin-bottom:10px;">
+      <div class="card-label">Вес (кг)</div>
+      <div class="weight-row">
+        <div class="adj-col">
+          <button class="adj-btn" onclick="adjEW(-1)">−</button>
+          <button class="adj-btn" onclick="adjEW(-0.1)" style="font-size:11px;">−.1</button>
+        </div>
+        <input type="number" id="e-w" class="w-input" step="0.1" min="30" max="300" placeholder="—">
+        <div class="adj-col">
+          <button class="adj-btn" onclick="adjEW(1)">+</button>
+          <button class="adj-btn" onclick="adjEW(0.1)" style="font-size:11px;">+.1</button>
+        </div>
+      </div>
+    </div>
+ 
+    <div class="card" style="margin-bottom:10px;">
+      <div class="card-label">Шаги</div>
+      <div class="slider-header">
+        <div><div class="slider-val" id="e-steps-disp">0</div><div class="slider-unit">шагов</div></div>
+      </div>
+      <div class="pbar-wrap"><div class="pbar-fill" id="e-steps-pbar" style="width:0%;background:var(--blue)"></div></div>
+      <input type="range" id="e-steps-sl" min="0" max="30000" step="100" value="0" oninput="onESteps(this.value)">
+      <div class="range-labels"><span>0</span><span>10к</span><span>20к</span><span>30к</span></div>
+    </div>
+ 
+    <div class="card" style="margin-bottom:10px;">
+      <div class="card-label">Тренировка</div>
+      <div class="toggle-row">
+        <button class="toggle-btn" id="e-wo-y" onclick="setEWO(true)">💪 Да</button>
+        <button class="toggle-btn" id="e-wo-n" onclick="setEWO(false)">😴 Нет</button>
+        <button class="toggle-btn" id="e-wo-none" onclick="setEWO(null)">— Нет данных</button>
+      </div>
+    </div>
+ 
+    <div class="card" style="margin-bottom:10px;">
+      <div class="card-label">Оценка дня (1–10)</div>
+      <div class="rating-row" id="e-rating-row"></div>
+    </div>
+ 
+    <div class="card" style="margin-bottom:10px;">
+      <div class="card-label">Сон</div>
+      <div class="time-grid">
+        <div class="time-block"><label>Лёг спать</label>
+          <input type="time" id="e-sl-start" class="time-input" value="23:00" oninput="onESleep()"></div>
+        <div class="time-block"><label>Проснулся</label>
+          <input type="time" id="e-sl-end" class="time-input" value="07:00" oninput="onESleep()"></div>
+      </div>
+      <div class="pbar-wrap"><div class="pbar-fill" id="e-sl-pbar" style="width:0%;background:var(--indigo)"></div></div>
+      <div style="display:flex;justify-content:space-between;font-size:11px;font-weight:700;color:var(--muted);margin-top:2px;">
+        <span id="e-sl-hrs">—</span><span>Норма: 7–9 ч</span>
+      </div>
+      <div class="wakeup-row">
+        <div class="wakeup-lbl">Просыпался:</div>
+        <div class="wakeup-ctr">
+          <button class="wakeup-btn" onclick="adjEWU(-1)">−</button>
+          <div class="wakeup-num" id="e-wu-num">0</div>
+          <button class="wakeup-btn" onclick="adjEWU(1)">+</button>
+        </div>
+      </div>
+      <label style="display:flex;align-items:center;gap:10px;margin-top:8px;cursor:pointer;">
+        <input type="checkbox" id="e-sl-save" style="width:18px;height:18px;cursor:pointer;">
+        <span style="font-size:13px;font-weight:700;">Сохранить данные сна для этого дня</span>
+      </label>
+    </div>
+ 
+    <div style="display:flex;gap:8px;margin-top:8px;">
+      <button class="btn-main btn-secondary" style="flex:1" onclick="closeEdit()">Отмена</button>
+      <button class="btn-main" style="flex:2" onclick="saveEdit()">💾 Сохранить</button>
+    </div>
+    <div style="margin-top:8px;">
+      <button class="btn-main btn-danger" onclick="deleteDay()">🗑️ Удалить данные дня</button>
+    </div>
   </div>
 </div>
  
@@ -308,7 +529,7 @@ const S = {
 // ── Defaults ─────────────────────────────────────────────────────
 if(!S.get('cfg')){
   S.set('cfg',{sw:85,tw:73,stepsGoal:10000,goal:'lose',
-    setupDate:'2026-04-21',goalDate:'2026-05-27'});
+    setupDate:'2026-04-21',goalMonths:1,goalDate:'2026-05-21'});
 }
  
 // ── Time (Istanbul) ───────────────────────────────────────────────
@@ -318,7 +539,8 @@ function todayStr(){
   return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
 }
 function fmtDate(ds){
-  const d=new Date(ds); const ms=['янв','фев','мар','апр','май','июн','июл','авг','сен','окт','ноя','дек'];
+  const d=new Date(ds+'T12:00:00');
+  const ms=['янв','фев','мар','апр','май','июн','июл','авг','сен','окт','ноя','дек'];
   return `${d.getDate()} ${ms[d.getMonth()]}`;
 }
 function dLabel(ds){
@@ -327,13 +549,24 @@ function dLabel(ds){
   const ys=`${y.getFullYear()}-${String(y.getMonth()+1).padStart(2,'0')}-${String(y.getDate()).padStart(2,'0')}`;
   return ds===t?'Сегодня':ds===ys?'Вчера':fmtDate(ds);
 }
+function addMonths(dateStr, months){
+  const d = new Date(dateStr+'T12:00:00');
+  d.setMonth(d.getMonth()+months);
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+}
+ 
+// ── Calendar state ────────────────────────────────────────────────
+let calYear = nowIST().getFullYear();
+let calMonth = nowIST().getMonth();
  
 // ── State ─────────────────────────────────────────────────────────
 let wakeups=0,workout=null,rating=5;
+let editDate=null,eWakeups=0,eWorkout=null,eRating=5;
  
 // ── Boot ──────────────────────────────────────────────────────────
 window.addEventListener('load',()=>{
-  updateHdr(); buildRating(); renderHome(); prefillCheckin(); onSleep(); renderSlHist(); renderCal(); renderHist();
+  updateHdr(); buildRating(); buildERating(); loadSettings();
+  renderHome(); prefillCheckin(); onSleep(); renderSlHist(); renderCal(); renderHist();
   setInterval(updateHdr,30000);
 });
  
@@ -354,14 +587,15 @@ function setTab(name,btn){
   if(name==='home') renderHome();
   if(name==='cal'){renderCal();renderHist();}
   if(name==='sleep') renderSlHist();
+  if(name==='settings') loadSettings();
 }
  
 // ── HOME ──────────────────────────────────────────────────────────
 function renderHome(){
   const cfg=S.get('cfg',{}); const days=S.get('days',{}); const td=todayStr();
   const now=nowIST();
-  const SETUP=new Date(cfg.setupDate||'2026-04-21');
-  const GOAL=new Date(cfg.goalDate||'2026-05-27');
+  const SETUP=new Date((cfg.setupDate||'2026-04-21')+'T12:00:00');
+  const GOAL=new Date((cfg.goalDate||'2026-05-21')+'T12:00:00');
  
   const ws=Object.entries(days).filter(([k,v])=>v?.weight).sort((a,b)=>b[0].localeCompare(a[0]));
   const curW=ws.length?ws[0][1].weight:(cfg.sw||'—');
@@ -384,7 +618,7 @@ function renderHome(){
   const done=cfg.sw?Math.abs(cfg.sw-curW):0;
   const gPct=total>0?Math.min(100,Math.round(done/total*100)):0;
   document.getElementById('ring-pct').textContent=gPct+'%';
-  const C=2*Math.PI*52; // 327
+  const C=2*Math.PI*52;
   document.getElementById('ring-arc').style.strokeDashoffset=C*(1-gPct/100);
  
   // Time bar
@@ -469,6 +703,16 @@ function onWInp(){
     el.style.color=d<0?'var(--green)':d>0?'var(--red)':'var(--muted)';
   }else el.textContent='';
 }
+function onCiSteps(v){
+  v=parseInt(v);
+  document.getElementById('ci-steps-disp').textContent=Number(v).toLocaleString('ru');
+  const cfg=S.get('cfg',{}); const goal=cfg.stepsGoal||10000;
+  const pct=Math.min(100,(v/goal)*100);
+  const bar=document.getElementById('ci-steps-pbar');
+  bar.style.width=pct+'%';
+  bar.style.background=v>=goal?'var(--green)':v>=goal*.7?'var(--amber)':'var(--blue)';
+  document.getElementById('ci-steps-goal').textContent='цель: '+Number(goal).toLocaleString('ru');
+}
 function prefillCheckin(){
   const inp=document.getElementById('w-inp');
   if(!inp.value){
@@ -477,13 +721,22 @@ function prefillCheckin(){
     if(prev.length) inp.value=prev[0][1].weight;
     else{ const cfg=S.get('cfg',{}); if(cfg.sw) inp.value=cfg.sw; }
   }
+  const cfg=S.get('cfg',{});
+  const goal=cfg.stepsGoal||10000;
+  document.getElementById('ci-steps-goal').textContent='цель: '+Number(goal).toLocaleString('ru');
+  const days=S.get('days',{});
+  const td=todayStr();
+  const sv=days[td]?.steps||0;
+  document.getElementById('ci-steps-sl').value=sv;
+  onCiSteps(sv);
 }
 function saveCheckin(){
   const w=parseFloat(document.getElementById('w-inp').value);
   if(!w||w<30||w>300){toast('Введи корректный вес!');return;}
+  const steps=parseInt(document.getElementById('ci-steps-sl').value)||0;
   const days=S.get('days',{}); const td=todayStr();
   if(!days[td])days[td]={};
-  days[td].weight=w; days[td].workout=workout; days[td].rating=rating;
+  days[td].weight=w; days[td].workout=workout; days[td].rating=rating; days[td].steps=steps;
   S.set('days',days);
   const cfg=S.get('cfg',{}); cfg.currentWeight=w; S.set('cfg',cfg);
   toast('✅ Чек-ин сохранён!','ok'); renderHome();
@@ -567,32 +820,42 @@ function renderSlHist(){
 }
  
 // ── CALENDAR ──────────────────────────────────────────────────────
+function calPrevMonth(){ calMonth--; if(calMonth<0){calMonth=11;calYear--;} renderCal(); }
+function calNextMonth(){ calMonth++; if(calMonth>11){calMonth=0;calYear++;} renderCal(); }
+ 
 function renderCal(){
   const dows=['Пн','Вт','Ср','Чт','Пт','Сб','Вс'];
+  const ms=['Январь','Февраль','Март','Апрель','Май','Июнь','Июль','Август','Сентябрь','Октябрь','Ноябрь','Декабрь'];
+  document.getElementById('cal-month-title').textContent=ms[calMonth]+' '+calYear;
   document.getElementById('cal-dows').innerHTML=dows.map(d=>`<div class="cal-dow">${d}</div>`).join('');
   const days=S.get('days',{}); const now=nowIST(); const td=todayStr();
+  const cfg=S.get('cfg',{});
+  const goalDate=cfg.goalDate||'2026-05-21';
   const grid=document.getElementById('cal-cells'); grid.innerHTML='';
-  [{y:2026,m:3},{y:2026,m:4}].forEach(({y,m})=>{
-    const first=new Date(y,m,1); let dow=first.getDay(); dow=dow===0?6:dow-1;
-    for(let i=0;i<dow;i++){const d=document.createElement('div');grid.appendChild(d);}
-    const dim=new Date(y,m+1,0).getDate();
-    for(let d=1;d<=dim;d++){
-      const dt=new Date(y,m,d);
-      const ds=`${y}-${String(m+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
-      const isGoal=y===2026&&m===4&&d===27;
-      const isFuture=dt>now; const isToday=ds===td;
-      const entry=days[ds];
-      const cell=document.createElement('div');
-      cell.className='cal-cell';
-      if(isGoal){cell.classList.add('goal');cell.innerHTML=d+'<div class="cal-dot">🎯</div>';}
-      else if(isFuture){cell.classList.add('future');cell.textContent=d;}
-      else if(entry?.weight){cell.classList.add('has');cell.innerHTML=d+'<div class="cal-dot">✓</div>';}
-      else{cell.classList.add('miss');cell.textContent=d;}
-      if(isToday)cell.classList.add('today');
-      grid.appendChild(cell);
+ 
+  const first=new Date(calYear,calMonth,1); let dow=first.getDay(); dow=dow===0?6:dow-1;
+  for(let i=0;i<dow;i++){const d=document.createElement('div');grid.appendChild(d);}
+  const dim=new Date(calYear,calMonth+1,0).getDate();
+  for(let d=1;d<=dim;d++){
+    const dt=new Date(calYear,calMonth,d);
+    const ds=`${calYear}-${String(calMonth+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    const isGoal=ds===goalDate;
+    const isFuture=dt>now; const isToday=ds===td;
+    const entry=days[ds];
+    const cell=document.createElement('div');
+    cell.className='cal-cell';
+    if(isGoal){cell.classList.add('goal');cell.innerHTML=d+'<div class="cal-dot">🎯</div>';}
+    else if(isFuture){cell.classList.add('future');cell.textContent=d;}
+    else if(entry?.weight){cell.classList.add('has');cell.innerHTML=d+'<div class="cal-dot">✓</div>';}
+    else{cell.classList.add('miss');cell.textContent=d;}
+    if(isToday)cell.classList.add('today');
+    if(!isFuture){
+      cell.addEventListener('click',()=>openEdit(ds));
     }
-  });
+    grid.appendChild(cell);
+  }
 }
+ 
 function renderHist(){
   const days=S.get('days',{}); const sleep=S.get('sleep',{});
   const cfg=S.get('cfg',{}); const goal=cfg.stepsGoal||10000;
@@ -601,18 +864,216 @@ function renderHist(){
     const d=new Date(now-i*86400000);
     const ds=`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
     const day=days[ds]||{}; const sl=sleep[ds]||{};
-    html+=`<div class="hist-item">
+    html+=`<div class="hist-item" onclick="openEdit('${ds}')" style="cursor:pointer;">
       <div class="hist-date">${dLabel(ds)}</div>
       <div class="hist-tags">
         ${day.weight?`<span class="tag" style="background:#f0fdf4;color:var(--green);">⚖️${day.weight}кг</span>`:''}
         ${day.steps!=null?`<span class="tag" style="background:#eff6ff;color:var(--blue);">👟${Number(day.steps).toLocaleString('ru')}${day.steps>=goal?' ✅':''}</span>`:''}
         ${'workout'in day?`<span class="tag" style="background:${day.workout?'#f0fdf4':'#fef2f2'};color:${day.workout?'var(--green)':'var(--red)'};">💪${day.workout?'Да':'Нет'}</span>`:''}
         ${sl.saved?`<span class="tag" style="background:#f5f3ff;color:#7c3aed;">🌙${Math.floor(sl.hrs)}ч</span>`:''}
-        ${!day.weight&&!('workout'in day)&&day.steps==null&&!sl.saved?'<span style="font-size:12px;color:var(--muted);">нет данных</span>':''}
+        ${!day.weight&&!('workout'in day)&&day.steps==null&&!sl.saved?'<span style="font-size:12px;color:var(--muted);">нет данных — нажми ✏️</span>':''}
       </div>
+      <div style="font-size:16px;color:var(--muted);">✏️</div>
     </div>`;
   }
   document.getElementById('hist-list').innerHTML=html;
+}
+ 
+// ── DAY EDITOR ────────────────────────────────────────────────────
+function buildERating(){
+  const row=document.getElementById('e-rating-row');
+  for(let i=1;i<=10;i++){
+    const b=document.createElement('button');
+    b.className='rating-btn'+(i===5?' sel':'');
+    b.textContent=i; b.id='erb'+i;
+    b.onclick=()=>setERating(i); row.appendChild(b);
+  }
+}
+function setERating(v){
+  eRating=v;
+  for(let i=1;i<=10;i++){const b=document.getElementById('erb'+i);if(b)b.className='rating-btn'+(i===v?' sel':'');}
+}
+function setEWO(v){
+  eWorkout=v;
+  document.getElementById('e-wo-y').className='toggle-btn'+(v===true?' yes':'');
+  document.getElementById('e-wo-n').className='toggle-btn'+(v===false?' no':'');
+  document.getElementById('e-wo-none').className='toggle-btn'+(v===null?' sel':'');
+}
+function adjEW(d){
+  const inp=document.getElementById('e-w');
+  const cur=parseFloat(inp.value)||(S.get('cfg',{}).sw||75);
+  inp.value=Math.round((cur+d)*10)/10;
+}
+function onESteps(v){
+  v=parseInt(v);
+  document.getElementById('e-steps-disp').textContent=Number(v).toLocaleString('ru');
+  const cfg=S.get('cfg',{}); const goal=cfg.stepsGoal||10000;
+  const pct=Math.min(100,(v/goal)*100);
+  const bar=document.getElementById('e-steps-pbar');
+  bar.style.width=pct+'%';
+  bar.style.background=v>=goal?'var(--green)':v>=goal*.7?'var(--amber)':'var(--blue)';
+}
+function adjEWU(d){ eWakeups=Math.max(0,Math.min(10,eWakeups+d)); document.getElementById('e-wu-num').textContent=eWakeups; onESleep(); }
+function onESleep(){
+  const s=document.getElementById('e-sl-start').value, e=document.getElementById('e-sl-end').value;
+  if(!s||!e)return;
+  const mins=sleepMins(s,e); const hrs=mins/60;
+  const hh=Math.floor(hrs), mm=Math.round((hrs%1)*60);
+  document.getElementById('e-sl-hrs').textContent=`${hh} ч ${mm} мин`;
+  const pct=Math.min(100,(hrs/10)*100);
+  document.getElementById('e-sl-pbar').style.width=pct+'%';
+}
+ 
+function openEdit(ds){
+  editDate=ds;
+  const days=S.get('days',{}); const sleep=S.get('sleep',{});
+  const day=days[ds]||{}; const sl=sleep[ds]||{};
+  document.getElementById('edit-title').textContent='✏️ '+dLabel(ds)+' ('+fmtDate(ds)+')';
+  // Weight
+  document.getElementById('e-w').value=day.weight||'';
+  // Steps
+  const sv=day.steps||0;
+  document.getElementById('e-steps-sl').value=sv; onESteps(sv);
+  // Workout
+  eWorkout=('workout'in day)?day.workout:null; setEWO(eWorkout);
+  // Rating
+  eRating=day.rating||5; setERating(eRating);
+  // Sleep
+  document.getElementById('e-sl-start').value=sl.start||'23:00';
+  document.getElementById('e-sl-end').value=sl.end||'07:00';
+  eWakeups=sl.wakeups||0; document.getElementById('e-wu-num').textContent=eWakeups;
+  document.getElementById('e-sl-save').checked=!!sl.saved;
+  onESleep();
+  // Highlight cal cell
+  document.querySelectorAll('.cal-cell').forEach(c=>c.classList.remove('sel-edit'));
+  document.getElementById('edit-overlay').classList.remove('hidden');
+}
+function closeEdit(e){
+  if(e&&e.target!==document.getElementById('edit-overlay'))return;
+  document.getElementById('edit-overlay').classList.add('hidden');
+  editDate=null;
+}
+function saveEdit(){
+  if(!editDate)return;
+  const w=parseFloat(document.getElementById('e-w').value);
+  const steps=parseInt(document.getElementById('e-steps-sl').value)||0;
+  const days=S.get('days',{}); const sleep=S.get('sleep',{});
+  if(!days[editDate])days[editDate]={};
+  if(w&&w>=30&&w<=300) days[editDate].weight=w;
+  else delete days[editDate].weight;
+  days[editDate].steps=steps;
+  if(eWorkout!==null) days[editDate].workout=eWorkout;
+  else delete days[editDate].workout;
+  days[editDate].rating=eRating;
+  S.set('days',days);
+  // Sleep
+  if(document.getElementById('e-sl-save').checked){
+    const s=document.getElementById('e-sl-start').value;
+    const e=document.getElementById('e-sl-end').value;
+    const mins=sleepMins(s,e); const hrs=mins/60;
+    const sc=sleepScore(hrs,eWakeups);
+    if(!sleep[editDate])sleep[editDate]={};
+    sleep[editDate]={start:s,end:e,wakeups:eWakeups,score:sc.t,hrs,saved:true,ts:Date.now()};
+    S.set('sleep',sleep);
+  }
+  document.getElementById('edit-overlay').classList.add('hidden');
+  editDate=null;
+  toast('✅ День сохранён!','ok');
+  renderHome(); renderCal(); renderHist(); renderSlHist();
+}
+function deleteDay(){
+  if(!editDate)return;
+  if(!confirm('Удалить все данные за '+fmtDate(editDate)+'?'))return;
+  const days=S.get('days',{}); const sleep=S.get('sleep',{});
+  delete days[editDate]; delete sleep[editDate];
+  S.set('days',days); S.set('sleep',sleep);
+  document.getElementById('edit-overlay').classList.add('hidden');
+  editDate=null;
+  toast('🗑️ Данные удалены','');
+  renderHome(); renderCal(); renderHist(); renderSlHist();
+}
+ 
+// ── SETTINGS ─────────────────────────────────────────────────────
+function loadSettings(){
+  const cfg=S.get('cfg',{});
+  document.getElementById('cfg-sw').value=cfg.sw||85;
+  document.getElementById('cfg-tw').value=cfg.tw||73;
+  document.getElementById('cfg-setup-date').value=cfg.setupDate||'2026-04-21';
+  // Steps
+  const sg=cfg.stepsGoal||10000;
+  document.getElementById('cfg-steps-sl').value=sg;
+  onCfgSteps(sg);
+  // Month buttons
+  buildMonthBtns(cfg.goalMonths||1, cfg.setupDate||'2026-04-21');
+}
+function buildMonthBtns(sel, setupDate){
+  const grid=document.getElementById('month-btns');
+  grid.innerHTML='';
+  for(let m=1;m<=12;m++){
+    const b=document.createElement('button');
+    b.className='month-btn'+(m===sel?' sel':'');
+    b.textContent=m+' мес';
+    b.onclick=()=>selectGoalMonths(m, setupDate);
+    grid.appendChild(b);
+  }
+  updateGoalDisplay(sel, setupDate);
+}
+function selectGoalMonths(m, setupDate){
+  const cfg=S.get('cfg',{});
+  cfg.goalMonths=m;
+  const sd=document.getElementById('cfg-setup-date').value||setupDate||cfg.setupDate||'2026-04-21';
+  cfg.goalDate=addMonths(sd, m);
+  S.set('cfg',cfg);
+  buildMonthBtns(m, sd);
+  toast('🎯 Цель обновлена!','ok');
+  renderHome();
+}
+function updateGoalDisplay(months, setupDate){
+  const cfg=S.get('cfg',{});
+  const sd=document.getElementById('cfg-setup-date')?.value||setupDate||cfg.setupDate||'2026-04-21';
+  const gd=addMonths(sd, months);
+  document.getElementById('goal-date-display').textContent=fmtDate(gd)+' '+gd.split('-')[0];
+}
+function saveCfgField(field, val){
+  const cfg=S.get('cfg',{}); const n=parseFloat(val);
+  if(!isNaN(n)&&n>0){ cfg[field]=n; S.set('cfg',cfg); renderHome(); }
+}
+function adjSetting(field, d){
+  const inp=document.getElementById('cfg-'+field);
+  const cfg=S.get('cfg',{});
+  const cur=parseFloat(inp.value)||cfg[field]||75;
+  const nv=Math.round((cur+d)*10)/10;
+  inp.value=nv; cfg[field]=nv; S.set('cfg',cfg); renderHome();
+}
+function saveCfgDate(field, val){
+  if(!val)return;
+  const cfg=S.get('cfg',{});
+  cfg[field]=val;
+  // Recalculate goal date
+  cfg.goalDate=addMonths(val, cfg.goalMonths||1);
+  S.set('cfg',cfg);
+  buildMonthBtns(cfg.goalMonths||1, val);
+  renderHome();
+  toast('📅 Дата начала обновлена!','ok');
+}
+function onCfgSteps(v){
+  v=parseInt(v);
+  document.getElementById('cfg-steps-disp').textContent=Number(v).toLocaleString('ru');
+  const pct=Math.min(100,(v/30000)*100);
+  document.getElementById('cfg-steps-pbar').style.width=pct+'%';
+}
+function saveCfgSteps(){
+  const v=parseInt(document.getElementById('cfg-steps-sl').value);
+  const cfg=S.get('cfg',{}); cfg.stepsGoal=v; S.set('cfg',cfg);
+  toast('👟 Цель шагов сохранена!','ok'); renderHome();
+}
+function confirmReset(){
+  if(!confirm('Удалить ВСЕ данные? Это нельзя отменить!'))return;
+  localStorage.clear();
+  S.set('cfg',{sw:85,tw:73,stepsGoal:10000,goal:'lose',
+    setupDate:'2026-04-21',goalMonths:1,goalDate:'2026-05-21'});
+  toast('🗑️ Все данные удалены','');
+  loadSettings(); renderHome();
 }
  
 // ── TOAST ─────────────────────────────────────────────────────────
@@ -625,4 +1086,3 @@ function toast(msg,type=''){
 </script>
 </body>
 </html>
- 
