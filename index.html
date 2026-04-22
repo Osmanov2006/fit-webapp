@@ -15,41 +15,41 @@
 }
 body{background:var(--bg);font-family:'Nunito',sans-serif;color:var(--text);
   min-height:100vh;padding:16px 16px 100px;max-width:480px;margin:0 auto;}
-
+ 
 .header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;padding-top:4px;}
 .header-title{font-size:22px;font-weight:900;}
 .header-date{font-size:11px;color:var(--muted);font-weight:700;text-align:right;line-height:1.6;}
-
+ 
 .tabs{display:flex;gap:6px;margin-bottom:18px;background:var(--card);padding:5px;
   border-radius:14px;box-shadow:var(--shadow);}
 .tab{flex:1;padding:9px 4px;border:none;border-radius:10px;background:transparent;
   font-family:'Nunito',sans-serif;font-size:12px;font-weight:700;color:var(--muted);
   cursor:pointer;transition:all 0.2s;}
 .tab.active{background:var(--indigo);color:#fff;box-shadow:0 2px 8px rgba(79,70,229,0.3);}
-
+ 
 .section{display:none;animation:fadeUp 0.2s ease;}
 .section.active{display:block;}
 @keyframes fadeUp{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
-
+ 
 .card{background:var(--card);border-radius:18px;padding:18px;margin-bottom:12px;box-shadow:var(--shadow);}
 .card-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;
   color:var(--muted);margin-bottom:10px;}
-
+ 
 .stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;}
 .stat-card{background:var(--card);border-radius:16px;padding:14px;box-shadow:var(--shadow);text-align:center;}
 .stat-val{font-size:26px;font-weight:900;line-height:1;margin-bottom:3px;}
 .stat-lbl{font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;}
-
+ 
 .ring-wrap{display:flex;justify-content:center;margin:4px 0 14px;position:relative;}
 .ring-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;}
 .ring-pct{font-size:28px;font-weight:900;}
 .ring-sub{font-size:10px;color:var(--muted);font-weight:700;}
-
+ 
 .slider-header{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px;}
 .slider-val{font-size:32px;font-weight:900;line-height:1;}
 .slider-unit{font-size:13px;color:var(--muted);font-weight:600;}
 .slider-goal-txt{font-size:11px;color:var(--indigo);font-weight:700;}
-
+ 
 input[type=range]{width:100%;height:6px;border-radius:99px;outline:none;
   -webkit-appearance:none;cursor:pointer;background:var(--border);margin-bottom:6px;}
 input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:24px;height:24px;
@@ -57,10 +57,10 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:24px;heigh
   cursor:pointer;transition:transform 0.1s;}
 input[type=range]:active::-webkit-slider-thumb{transform:scale(1.15);}
 .range-labels{display:flex;justify-content:space-between;font-size:10px;color:var(--muted);font-weight:600;}
-
+ 
 .pbar-wrap{background:var(--border);border-radius:99px;height:7px;overflow:hidden;margin:8px 0;}
 .pbar-fill{height:100%;border-radius:99px;transition:width 0.4s cubic-bezier(0.4,0,0.2,1);}
-
+ 
 .weight-row{display:flex;align-items:center;gap:10px;margin-bottom:14px;}
 .w-input{flex:1;font-family:'Nunito',sans-serif;font-size:36px;font-weight:900;
   text-align:center;border:2px solid var(--border);border-radius:14px;padding:10px 4px;
@@ -73,20 +73,20 @@ input[type=range]:active::-webkit-slider-thumb{transform:scale(1.15);}
   background:var(--bg);font-size:16px;font-weight:800;color:var(--text);cursor:pointer;
   display:flex;align-items:center;justify-content:center;transition:background 0.1s;}
 .adj-btn:active{background:var(--border);}
-
+ 
 .toggle-row{display:flex;gap:8px;}
 .toggle-btn{flex:1;padding:13px;border:2px solid var(--border);border-radius:14px;
   background:var(--bg);font-family:'Nunito',sans-serif;font-size:14px;font-weight:700;
   color:var(--muted);cursor:pointer;transition:all 0.15s;}
 .toggle-btn.yes{border-color:var(--green);background:rgba(34,197,94,0.08);color:var(--green);}
 .toggle-btn.no{border-color:var(--red);background:rgba(239,68,68,0.08);color:var(--red);}
-
+ 
 .rating-row{display:flex;gap:4px;}
 .rating-btn{flex:1;padding:10px 2px;border:2px solid var(--border);border-radius:10px;
   background:var(--bg);font-family:'Nunito',sans-serif;font-size:13px;font-weight:800;
   color:var(--muted);cursor:pointer;text-align:center;transition:all 0.15s;}
 .rating-btn.sel{background:var(--indigo);border-color:var(--indigo);color:#fff;}
-
+ 
 .time-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;}
 .time-block label{display:block;font-size:11px;font-weight:700;color:var(--muted);
   text-transform:uppercase;margin-bottom:6px;}
@@ -94,7 +94,7 @@ input[type=range]:active::-webkit-slider-thumb{transform:scale(1.15);}
   font-family:'Nunito',sans-serif;font-size:22px;font-weight:900;text-align:center;
   background:var(--bg);color:var(--text);outline:none;transition:border-color 0.2s;}
 .time-input:focus{border-color:var(--indigo);}
-
+ 
 .wakeup-row{display:flex;align-items:center;justify-content:space-between;padding:8px 0;}
 .wakeup-lbl{font-size:13px;font-weight:700;color:var(--muted);}
 .wakeup-ctr{display:flex;align-items:center;gap:14px;}
@@ -103,19 +103,19 @@ input[type=range]:active::-webkit-slider-thumb{transform:scale(1.15);}
   display:flex;align-items:center;justify-content:center;transition:all 0.1s;}
 .wakeup-btn:active{background:var(--border);}
 .wakeup-num{font-size:24px;font-weight:900;min-width:28px;text-align:center;}
-
+ 
 .sleep-score{border-radius:14px;padding:14px 16px;margin-top:10px;
   display:flex;align-items:center;gap:12px;animation:fadeUp 0.2s ease;}
 .score-emoji{font-size:26px;}
 .score-val{font-size:22px;font-weight:900;line-height:1;}
 .score-lbl{font-size:11px;font-weight:700;margin-top:2px;}
 .score-desc{font-size:11px;color:var(--muted);margin-top:4px;line-height:1.4;}
-
+ 
 .btn-main{width:100%;padding:16px;border:none;border-radius:16px;background:var(--indigo);
   color:#fff;font-family:'Nunito',sans-serif;font-size:16px;font-weight:800;cursor:pointer;
   box-shadow:0 4px 14px rgba(79,70,229,0.35);transition:opacity 0.15s,transform 0.1s;margin-top:4px;}
 .btn-main:active{transform:scale(0.98);opacity:0.9;}
-
+ 
 .cal-grid-wrap{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;}
 .cal-dow{text-align:center;font-size:10px;font-weight:700;color:var(--muted);padding:4px 0;}
 .cal-cell{aspect-ratio:1;border-radius:10px;display:flex;flex-direction:column;
@@ -127,13 +127,13 @@ input[type=range]:active::-webkit-slider-thumb{transform:scale(1.15);}
 .cal-cell.future{opacity:0.3;background:var(--bg);}
 .cal-cell.goal{background:#fffbeb;border-color:#fcd34d;color:var(--amber);}
 .cal-dot{font-size:8px;}
-
+ 
 .hist-item{display:flex;align-items:center;gap:10px;padding:11px 0;border-bottom:1px solid var(--border);}
 .hist-item:last-child{border:none;}
 .hist-date{font-size:12px;color:var(--muted);font-weight:700;min-width:38px;}
 .hist-tags{display:flex;gap:6px;flex-wrap:wrap;}
 .tag{font-size:11px;font-weight:700;padding:3px 8px;border-radius:8px;}
-
+ 
 .toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%) translateY(10px);
   background:var(--text);color:#fff;padding:12px 22px;border-radius:99px;
   font-size:13px;font-weight:700;opacity:0;pointer-events:none;transition:all 0.25s;
@@ -143,19 +143,19 @@ input[type=range]:active::-webkit-slider-thumb{transform:scale(1.15);}
 </style>
 </head>
 <body>
-
+ 
 <div class="header">
   <div class="header-title">🔥 FIT</div>
   <div class="header-date" id="hdr-date">—</div>
 </div>
-
+ 
 <div class="tabs">
   <button class="tab active" onclick="setTab('home',this)">🏠 Главная</button>
   <button class="tab" onclick="setTab('checkin',this)">✅ Чек-ин</button>
   <button class="tab" onclick="setTab('sleep',this)">🌙 Сон</button>
   <button class="tab" onclick="setTab('cal',this)">📅 Дни</button>
 </div>
-
+ 
 <!-- HOME -->
 <div class="section active" id="sec-home">
   <div class="stat-grid">
@@ -166,7 +166,7 @@ input[type=range]:active::-webkit-slider-thumb{transform:scale(1.15);}
     <div class="stat-card"><div class="stat-val" id="h-lost" style="color:var(--green)">—</div><div class="stat-lbl">Сброшено кг</div></div>
     <div class="stat-card"><div class="stat-val" id="h-strk" style="color:var(--red)">—</div><div class="stat-lbl">Стрик 🔥</div></div>
   </div>
-
+ 
   <div class="card">
     <div class="card-label">Прогресс к цели</div>
     <div class="ring-wrap">
@@ -189,12 +189,12 @@ input[type=range]:active::-webkit-slider-thumb{transform:scale(1.15);}
     </div>
     <div class="pbar-wrap"><div class="pbar-fill" id="time-bar" style="width:0%;background:linear-gradient(90deg,#4f46e5,#8b5cf6)"></div></div>
   </div>
-
+ 
   <div class="card">
     <div class="card-label">Сегодня</div>
     <div id="today-pills" style="display:grid;grid-template-columns:1fr 1fr;gap:8px;"></div>
   </div>
-
+ 
   <div class="card">
     <div class="card-label">Шаги сегодня</div>
     <div class="slider-header">
@@ -207,7 +207,7 @@ input[type=range]:active::-webkit-slider-thumb{transform:scale(1.15);}
     <button class="btn-main" style="margin-top:10px;" onclick="saveSteps()">💾 Сохранить шаги</button>
   </div>
 </div>
-
+ 
 <!-- CHECKIN -->
 <div class="section" id="sec-checkin">
   <div class="card">
@@ -225,7 +225,7 @@ input[type=range]:active::-webkit-slider-thumb{transform:scale(1.15);}
     </div>
     <div id="w-diff" style="text-align:center;font-size:13px;font-weight:700;color:var(--muted);min-height:18px;"></div>
   </div>
-
+ 
   <div class="card">
     <div class="card-label">Тренировка</div>
     <div class="toggle-row">
@@ -233,15 +233,15 @@ input[type=range]:active::-webkit-slider-thumb{transform:scale(1.15);}
       <button class="toggle-btn" id="wo-n" onclick="setWO(false)">😴 Нет</button>
     </div>
   </div>
-
+ 
   <div class="card">
     <div class="card-label">Оценка дня</div>
     <div class="rating-row" id="rating-row"></div>
   </div>
-
+ 
   <button class="btn-main" onclick="saveCheckin()">✅ Сохранить чек-ин</button>
 </div>
-
+ 
 <!-- SLEEP -->
 <div class="section" id="sec-sleep">
   <div class="card">
@@ -267,13 +267,13 @@ input[type=range]:active::-webkit-slider-thumb{transform:scale(1.15);}
     <div id="sl-score"></div>
   </div>
   <button class="btn-main" onclick="saveSleep()">🌙 Сохранить сон</button>
-
+ 
   <div class="card" style="margin-top:12px;">
     <div class="card-label">История сна</div>
     <div id="sl-hist"></div>
   </div>
 </div>
-
+ 
 <!-- CALENDAR -->
 <div class="section" id="sec-cal">
   <div class="card">
@@ -292,25 +292,25 @@ input[type=range]:active::-webkit-slider-thumb{transform:scale(1.15);}
     <div id="hist-list"></div>
   </div>
 </div>
-
+ 
 <div class="toast" id="toast"></div>
-
+ 
 <script>
 const tg = window.Telegram?.WebApp;
 if(tg){ tg.ready(); tg.expand(); }
-
+ 
 // ── Storage ──────────────────────────────────────────────────────
 const S = {
   get:(k,d=null)=>{ try{const v=localStorage.getItem('ft_'+k);return v!=null?JSON.parse(v):d;}catch{return d;} },
   set:(k,v)=>{ try{localStorage.setItem('ft_'+k,JSON.stringify(v));}catch{} }
 };
-
+ 
 // ── Defaults ─────────────────────────────────────────────────────
 if(!S.get('cfg')){
   S.set('cfg',{sw:85,tw:73,stepsGoal:10000,goal:'lose',
     setupDate:'2026-04-21',goalDate:'2026-05-27'});
 }
-
+ 
 // ── Time (Istanbul) ───────────────────────────────────────────────
 function nowIST(){ return new Date(new Date().toLocaleString('en-US',{timeZone:'Europe/Istanbul'})); }
 function todayStr(){
@@ -327,16 +327,16 @@ function dLabel(ds){
   const ys=`${y.getFullYear()}-${String(y.getMonth()+1).padStart(2,'0')}-${String(y.getDate()).padStart(2,'0')}`;
   return ds===t?'Сегодня':ds===ys?'Вчера':fmtDate(ds);
 }
-
+ 
 // ── State ─────────────────────────────────────────────────────────
 let wakeups=0,workout=null,rating=5;
-
+ 
 // ── Boot ──────────────────────────────────────────────────────────
 window.addEventListener('load',()=>{
   updateHdr(); buildRating(); renderHome(); prefillCheckin(); onSleep(); renderSlHist(); renderCal(); renderHist();
   setInterval(updateHdr,30000);
 });
-
+ 
 function updateHdr(){
   const d=nowIST();
   const days=['Вс','Пн','Вт','Ср','Чт','Пт','Сб'];
@@ -344,7 +344,7 @@ function updateHdr(){
   const hh=String(d.getHours()).padStart(2,'0'), mm=String(d.getMinutes()).padStart(2,'0');
   document.getElementById('hdr-date').innerHTML=`${days[d.getDay()]} ${d.getDate()} ${ms[d.getMonth()]}<br>${hh}:${mm}`;
 }
-
+ 
 // ── TABS ──────────────────────────────────────────────────────────
 function setTab(name,btn){
   document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
@@ -355,30 +355,30 @@ function setTab(name,btn){
   if(name==='cal'){renderCal();renderHist();}
   if(name==='sleep') renderSlHist();
 }
-
+ 
 // ── HOME ──────────────────────────────────────────────────────────
 function renderHome(){
   const cfg=S.get('cfg',{}); const days=S.get('days',{}); const td=todayStr();
   const now=nowIST();
   const SETUP=new Date(cfg.setupDate||'2026-04-21');
   const GOAL=new Date(cfg.goalDate||'2026-05-27');
-
+ 
   const ws=Object.entries(days).filter(([k,v])=>v?.weight).sort((a,b)=>b[0].localeCompare(a[0]));
   const curW=ws.length?ws[0][1].weight:(cfg.sw||'—');
   const lost=cfg.sw?Math.max(0,+(cfg.sw-curW).toFixed(1)):0;
   const dl=Math.max(0,Math.round((GOAL-now)/86400000));
-
+ 
   // Streak
   let strk=0,d=new Date(now);
   const ds0=()=>`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
   if(!days[td]?.weight) d=new Date(d-86400000);
   for(let i=0;i<200;i++){if(days[ds0()]?.weight){strk++;d=new Date(d-86400000);}else break;}
-
+ 
   document.getElementById('h-w').textContent=typeof curW==='number'?curW+' кг':'—';
   document.getElementById('h-dl').textContent=dl;
   document.getElementById('h-lost').textContent=lost?'-'+lost+' кг':'—';
   document.getElementById('h-strk').textContent=strk;
-
+ 
   // Ring
   const total=Math.abs((cfg.sw||0)-(cfg.tw||0));
   const done=cfg.sw?Math.abs(cfg.sw-curW):0;
@@ -386,14 +386,14 @@ function renderHome(){
   document.getElementById('ring-pct').textContent=gPct+'%';
   const C=2*Math.PI*52; // 327
   document.getElementById('ring-arc').style.strokeDashoffset=C*(1-gPct/100);
-
+ 
   // Time bar
   const tTotal=Math.round((GOAL-SETUP)/86400000);
   const tDone=Math.round((now-SETUP)/86400000);
   const tPct=Math.min(100,Math.max(0,Math.round(tDone/tTotal*100)));
   document.getElementById('time-pct').textContent=tPct+'%';
   document.getElementById('time-bar').style.width=tPct+'%';
-
+ 
   // Today pills
   const day=days[td]||{}; const sl=S.get('sleep',{})[td]||{};
   const pills=[
@@ -408,7 +408,7 @@ function renderHome(){
       <div style="font-size:13px;font-weight:800;color:${p.ok?'var(--green)':'var(--muted)'};">${p.val}</div>
       <div style="font-size:9px;font-weight:700;color:var(--muted);text-transform:uppercase;">${p.lbl}</div>
     </div>`).join('');
-
+ 
   // Steps slider
   const goal=cfg.stepsGoal||10000;
   const todaySteps=day.steps||0;
@@ -416,7 +416,7 @@ function renderHome(){
   document.getElementById('steps-goal-lbl').textContent='цель: '+Number(goal).toLocaleString('ru');
   onSteps(todaySteps);
 }
-
+ 
 function onSteps(v){
   v=parseInt(v);
   document.getElementById('steps-disp').textContent=Number(v).toLocaleString('ru');
@@ -433,7 +433,7 @@ function saveSteps(){
   days[td].steps=v; S.set('days',days);
   toast('👟 Шаги сохранены!','ok'); renderHome();
 }
-
+ 
 // ── CHECKIN ───────────────────────────────────────────────────────
 function buildRating(){
   const row=document.getElementById('rating-row');
@@ -488,7 +488,7 @@ function saveCheckin(){
   const cfg=S.get('cfg',{}); cfg.currentWeight=w; S.set('cfg',cfg);
   toast('✅ Чек-ин сохранён!','ok'); renderHome();
 }
-
+ 
 // ── SLEEP ─────────────────────────────────────────────────────────
 function sleepMins(s,e){
   const[sh,sm]=s.split(':').map(Number),[eh,em]=e.split(':').map(Number);
@@ -565,7 +565,7 @@ function renderSlHist(){
   }
   document.getElementById('sl-hist').innerHTML=html||'<div style="color:var(--muted);font-size:13px;">Ещё нет записей</div>';
 }
-
+ 
 // ── CALENDAR ──────────────────────────────────────────────────────
 function renderCal(){
   const dows=['Пн','Вт','Ср','Чт','Пт','Сб','Вс'];
@@ -614,7 +614,7 @@ function renderHist(){
   }
   document.getElementById('hist-list').innerHTML=html;
 }
-
+ 
 // ── TOAST ─────────────────────────────────────────────────────────
 let _tt;
 function toast(msg,type=''){
@@ -625,3 +625,4 @@ function toast(msg,type=''){
 </script>
 </body>
 </html>
+ 
