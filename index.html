@@ -5,96 +5,105 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <title>FIT</title>
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
-/* ═══════════════════════════════════════════════
-   SF PRO + APPLE SYSTEM FONT STACK
-═══════════════════════════════════════════════ */
-@supports (font: -apple-system-body) {
-  body { font: -apple-system-body; }
-}
- 
 * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
  
 :root {
-  /* Light — iOS 18 / 26 palette */
   --bg0: #f2f2f7;
-  --bg1: rgba(255,255,255,0.72);
-  --bg2: rgba(255,255,255,0.55);
-  --bg3: rgba(255,255,255,0.35);
+  --bg1: rgba(255,255,255,0.80);
+  --bg2: rgba(255,255,255,0.60);
+  --bg3: rgba(255,255,255,0.40);
   --fill1: rgba(120,120,128,0.12);
   --fill2: rgba(120,120,128,0.08);
   --sep: rgba(60,60,67,0.18);
-  --text: #000000;
+  --text: #1c1c1e;
   --text2: rgba(60,60,67,0.6);
-  --text3: rgba(60,60,67,0.3);
-  --blur: saturate(180%) blur(24px);
-  --blur-heavy: saturate(200%) blur(40px);
-  /* iOS accent */
+  --text3: rgba(60,60,67,0.28);
+  --blur: saturate(180%) blur(28px);
+  --blur-heavy: saturate(220%) blur(48px);
   --blue: #007AFF;
   --green: #34C759;
   --red: #FF3B30;
   --orange: #FF9500;
   --teal: #30D158;
   --indigo: #5856D6;
-  --sh: 0 2px 16px rgba(0,0,0,0.06), 0 0.5px 0 rgba(0,0,0,0.08);
-  --sh-card: 0 4px 24px rgba(0,0,0,0.08), 0 1px 0 rgba(255,255,255,0.6) inset;
+  --purple: #AF52DE;
+  --sh: 0 2px 20px rgba(0,0,0,0.07), 0 0.5px 0 rgba(0,0,0,0.06);
+  --sh-card: 0 8px 32px rgba(0,0,0,0.08), 0 1px 0 rgba(255,255,255,0.7) inset, 0 -0.5px 0 rgba(0,0,0,0.04) inset;
+  --radius: 22px;
+  --radius-sm: 14px;
 }
  
 [data-dark] {
   --bg0: #000000;
-  --bg1: rgba(28,28,30,0.78);
-  --bg2: rgba(44,44,46,0.65);
-  --bg3: rgba(58,58,60,0.45);
-  --fill1: rgba(120,120,128,0.24);
-  --fill2: rgba(120,120,128,0.18);
-  --sep: rgba(84,84,88,0.55);
+  --bg1: rgba(28,28,30,0.85);
+  --bg2: rgba(44,44,46,0.72);
+  --bg3: rgba(58,58,60,0.50);
+  --fill1: rgba(120,120,128,0.22);
+  --fill2: rgba(120,120,128,0.16);
+  --sep: rgba(84,84,88,0.50);
   --text: #ffffff;
   --text2: rgba(235,235,245,0.6);
-  --text3: rgba(235,235,245,0.3);
-  --sh: 0 2px 16px rgba(0,0,0,0.4), 0 0.5px 0 rgba(255,255,255,0.06);
-  --sh-card: 0 4px 24px rgba(0,0,0,0.4), 0 1px 0 rgba(255,255,255,0.06) inset;
+  --text3: rgba(235,235,245,0.25);
+  --sh: 0 2px 20px rgba(0,0,0,0.5);
+  --sh-card: 0 8px 32px rgba(0,0,0,0.5), 0 1px 0 rgba(255,255,255,0.07) inset;
 }
  
 body {
-  font-family: -apple-system, 'SF Pro Text', 'SF Pro Display', system-ui, sans-serif;
+  font-family: -apple-system, 'SF Pro Text', 'SF Pro Display', 'Helvetica Neue', system-ui, sans-serif;
   background: var(--bg0);
   color: var(--text);
   min-height: 100vh;
-  padding-bottom: calc(80px + env(safe-area-inset-bottom));
+  padding-bottom: calc(88px + env(safe-area-inset-bottom));
   max-width: 430px;
   margin: 0 auto;
-  transition: background 0.35s, color 0.35s;
+  transition: background 0.4s, color 0.4s;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
  
-/* ── ANIMATED GRADIENT BG ── */
+/* ── ANIMATED MESH BG ── */
 .bg-mesh {
   position: fixed; inset: 0; z-index: -1;
   background: var(--bg0);
-  transition: background 0.35s;
+  overflow: hidden;
+  transition: background 0.4s;
 }
 .bg-mesh::before {
   content: '';
   position: absolute;
-  width: 320px; height: 320px;
+  width: 380px; height: 380px;
   border-radius: 50%;
-  top: -60px; right: -80px;
-  background: radial-gradient(circle, rgba(0,122,255,0.18) 0%, transparent 70%);
-  animation: drift1 8s ease-in-out infinite alternate;
+  top: -100px; right: -100px;
+  background: radial-gradient(circle, rgba(0,122,255,0.16) 0%, transparent 70%);
+  animation: drift1 9s ease-in-out infinite alternate;
+  transition: background 0.4s;
 }
 .bg-mesh::after {
   content: '';
   position: absolute;
-  width: 280px; height: 280px;
+  width: 320px; height: 320px;
   border-radius: 50%;
-  bottom: 120px; left: -60px;
-  background: radial-gradient(circle, rgba(52,199,89,0.14) 0%, transparent 70%);
-  animation: drift2 10s ease-in-out infinite alternate;
+  bottom: 140px; left: -80px;
+  background: radial-gradient(circle, rgba(52,199,89,0.13) 0%, transparent 70%);
+  animation: drift2 11s ease-in-out infinite alternate;
+  transition: background 0.4s;
 }
-[data-dark] .bg-mesh::before { background: radial-gradient(circle, rgba(0,122,255,0.12) 0%, transparent 70%); }
-[data-dark] .bg-mesh::after  { background: radial-gradient(circle, rgba(48,209,88,0.10) 0%, transparent 70%); }
-@keyframes drift1 { from { transform: translate(0,0) scale(1); } to { transform: translate(20px,30px) scale(1.1); } }
-@keyframes drift2 { from { transform: translate(0,0) scale(1); } to { transform: translate(-15px,-25px) scale(1.08); } }
+[data-dark] .bg-mesh::before { background: radial-gradient(circle, rgba(0,122,255,0.10) 0%, transparent 70%); }
+[data-dark] .bg-mesh::after  { background: radial-gradient(circle, rgba(48,209,88,0.08) 0%, transparent 70%); }
+.bg-mesh-3 {
+  position: fixed;
+  width: 260px; height: 260px; border-radius: 50%;
+  bottom: 200px; right: -60px;
+  background: radial-gradient(circle, rgba(175,82,222,0.09) 0%, transparent 70%);
+  animation: drift3 13s ease-in-out infinite alternate;
+  pointer-events: none; z-index: -1;
+}
+@keyframes drift1 { from { transform: translate(0,0) scale(1); } to { transform: translate(25px,35px) scale(1.12); } }
+@keyframes drift2 { from { transform: translate(0,0) scale(1); } to { transform: translate(-18px,-28px) scale(1.09); } }
+@keyframes drift3 { from { transform: translate(0,0) scale(1); } to { transform: translate(15px,20px) scale(1.06); } }
  
 /* ── NAV ── */
 .nav {
@@ -105,403 +114,513 @@ body {
   backdrop-filter: var(--blur-heavy);
   border-top: 0.5px solid var(--sep);
   display: flex; z-index: 100;
-  padding: 8px 0 calc(8px + env(safe-area-inset-bottom));
+  padding: 10px 0 calc(10px + env(safe-area-inset-bottom));
+  transition: background 0.4s;
 }
 .nb {
   flex: 1; display: flex; flex-direction: column; align-items: center;
-  padding: 4px 4px 0; border: none; background: none; cursor: pointer;
-  color: var(--text3); gap: 2px; transition: color 0.2s, transform 0.12s;
+  padding: 4px 2px 0; border: none; background: none; cursor: pointer;
+  color: var(--text3); gap: 3px; transition: color 0.2s, transform 0.12s;
   -webkit-appearance: none;
 }
 .nb.on { color: var(--blue); }
-.nb:active { transform: scale(0.88); }
-.nb-ic { font-size: 24px; line-height: 1.1; }
+.nb:active { transform: scale(0.86); }
+.nb-ic { font-size: 22px; line-height: 1.1; }
 .nb-lb { font-size: 10px; font-weight: 500; letter-spacing: -0.1px; }
  
 /* ── PAGES ── */
-.page { display: none; padding: 0 16px; animation: pgIn 0.28s cubic-bezier(0.4,0,0.2,1); }
+.page { display: none; padding: 0 16px; animation: pgIn 0.32s cubic-bezier(0.34,1.2,0.64,1); }
 .page.on { display: block; }
-@keyframes pgIn { from { opacity:0; transform:translateY(8px) scale(0.98); } to { opacity:1; transform:none; } }
+@keyframes pgIn { from { opacity:0; transform:translateY(10px) scale(0.97); } to { opacity:1; transform:none; } }
  
 /* ── GLASS CARD ── */
 .card {
   background: var(--bg1);
   -webkit-backdrop-filter: var(--blur);
   backdrop-filter: var(--blur);
-  border-radius: 20px;
-  padding: 16px;
+  border-radius: var(--radius);
+  padding: 18px;
   margin-bottom: 12px;
   box-shadow: var(--sh-card);
-  border: 0.5px solid rgba(255,255,255,0.5);
-  transition: background 0.35s;
+  border: 0.5px solid rgba(255,255,255,0.55);
+  transition: background 0.4s, box-shadow 0.3s;
   overflow: hidden;
   position: relative;
 }
-[data-dark] .card { border-color: rgba(255,255,255,0.08); }
+[data-dark] .card { border-color: rgba(255,255,255,0.09); }
 .card::before {
   content: '';
   position: absolute;
-  top: 0; left: 0; right: 0; height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.8), transparent);
+  top: 0; left: 16px; right: 16px; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.9), transparent);
+  border-radius: 1px;
 }
-[data-dark] .card::before { background: linear-gradient(90deg, transparent, rgba(255,255,255,0.12), transparent); }
+[data-dark] .card::before { background: linear-gradient(90deg, transparent, rgba(255,255,255,0.14), transparent); }
+.card::after {
+  content: '';
+  position: absolute;
+  inset: 0; border-radius: var(--radius);
+  background: linear-gradient(135deg, rgba(255,255,255,0.12) 0%, transparent 50%);
+  pointer-events: none;
+}
+[data-dark] .card::after { background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, transparent 50%); }
  
 .c-title {
   font-size: 11px; font-weight: 600; text-transform: uppercase;
-  letter-spacing: 0.5px; color: var(--text2); margin-bottom: 12px;
+  letter-spacing: 0.6px; color: var(--text2); margin-bottom: 14px;
 }
  
 /* ── STAT GRID ── */
 .sg2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
 .sg4 { display: grid; grid-template-columns: repeat(4,1fr); gap: 8px; margin-bottom: 10px; }
 .scard {
-  background: var(--bg2);
+  background: var(--bg1);
   -webkit-backdrop-filter: var(--blur);
   backdrop-filter: var(--blur);
-  border-radius: 16px; padding: 14px 10px; text-align: center;
+  border-radius: 18px; padding: 16px 12px; text-align: center;
   box-shadow: var(--sh);
-  border: 0.5px solid rgba(255,255,255,0.45);
-  transition: all 0.18s; cursor: default;
+  border: 0.5px solid rgba(255,255,255,0.5);
+  transition: all 0.2s;
+  position: relative; overflow: hidden;
 }
-[data-dark] .scard { border-color: rgba(255,255,255,0.06); }
-.scard:active { transform: scale(0.96); }
-.sv { font-size: 22px; font-weight: 700; line-height: 1; margin-bottom: 2px; letter-spacing: -0.5px; }
-.sl { font-size: 9px; font-weight: 500; color: var(--text2); text-transform: uppercase; letter-spacing: 0.3px; }
+.scard::after { content:''; position:absolute; inset:0; border-radius:18px; background:linear-gradient(135deg,rgba(255,255,255,0.1) 0%,transparent 60%); pointer-events:none; }
+[data-dark] .scard { border-color: rgba(255,255,255,0.07); }
+.scard:active { transform: scale(0.95); }
+.sv { font-size: 24px; font-weight: 700; line-height: 1; margin-bottom: 3px; letter-spacing: -0.6px; }
+.sl { font-size: 9px; font-weight: 600; color: var(--text2); text-transform: uppercase; letter-spacing: 0.4px; }
  
 /* ── RING ── */
-.ring-wrap { display: flex; justify-content: center; position: relative; margin: 8px 0 14px; }
+.ring-wrap { display: flex; justify-content: center; position: relative; margin: 8px 0 16px; }
 .ring-center { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); text-align: center; }
-.ring-n { font-size: 32px; font-weight: 700; letter-spacing: -1px; }
+.ring-n { font-size: 34px; font-weight: 700; letter-spacing: -1.5px; }
 .ring-s { font-size: 11px; color: var(--text2); font-weight: 500; }
  
 /* ── PROGRESS ── */
 .bar { background: var(--fill1); border-radius: 99px; height: 5px; overflow: hidden; margin: 6px 0; }
-.bar-f { height: 100%; border-radius: 99px; transition: width 0.6s cubic-bezier(0.4,0,0.2,1); }
+.bar-f { height: 100%; border-radius: 99px; transition: width 0.7s cubic-bezier(0.4,0,0.2,1); }
  
 /* ── SLIDER ── */
 .sh { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 8px; }
-.sval { font-size: 30px; font-weight: 700; letter-spacing: -1px; }
-.sunit { font-size: 12px; color: var(--text2); }
-.sglbl { font-size: 11px; color: var(--text2); }
+.sval { font-size: 32px; font-weight: 700; letter-spacing: -1.2px; }
+.sunit { font-size: 12px; color: var(--text2); font-weight: 500; }
+.sglbl { font-size: 11px; color: var(--text2); font-weight: 500; }
  
 input[type=range] {
   width: 100%; height: 5px; border-radius: 99px; outline: none;
   -webkit-appearance: none; cursor: pointer;
-  background: var(--fill1); margin: 6px 0;
+  background: var(--fill1); margin: 8px 0;
 }
 input[type=range]::-webkit-slider-thumb {
-  -webkit-appearance: none; width: 26px; height: 26px;
-  border-radius: 50%; background: #fff;
-  box-shadow: 0 2px 12px rgba(0,0,0,0.22), 0 0.5px 0 rgba(0,0,0,0.08);
-  cursor: pointer; transition: transform 0.12s;
+  -webkit-appearance: none; width: 28px; height: 28px;
+  border-radius: 50%; background: #ffffff;
+  box-shadow: 0 3px 16px rgba(0,0,0,0.25), 0 0.5px 0 rgba(0,0,0,0.1);
+  cursor: pointer; transition: transform 0.12s, box-shadow 0.12s;
 }
-input[type=range]:active::-webkit-slider-thumb { transform: scale(1.18); }
-.rl { display: flex; justify-content: space-between; font-size: 10px; color: var(--text3); }
+input[type=range]:active::-webkit-slider-thumb {
+  transform: scale(1.22);
+  box-shadow: 0 6px 24px rgba(0,0,0,0.3);
+}
+.rl { display: flex; justify-content: space-between; font-size: 10px; color: var(--text3); margin-top: 2px; }
  
 /* ── WEIGHT INPUT ── */
-.wr { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+.wr { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
 .winp {
-  flex: 1; font-family: -apple-system, system-ui, sans-serif;
-  font-size: 40px; font-weight: 300; letter-spacing: -1.5px;
-  text-align: center; border: none; border-radius: 14px;
-  padding: 10px 4px; outline: none;
+  flex: 1; font-family: -apple-system, 'SF Pro Display', system-ui, sans-serif;
+  font-size: 44px; font-weight: 300; letter-spacing: -2px;
+  text-align: center; border: none; border-radius: var(--radius-sm);
+  padding: 12px 4px; outline: none;
   background: var(--fill2); color: var(--text);
   -moz-appearance: textfield;
-  transition: background 0.2s;
+  transition: background 0.25s, transform 0.12s;
 }
 .winp:focus { background: var(--fill1); }
 .winp::-webkit-outer-spin-button, .winp::-webkit-inner-spin-button { -webkit-appearance: none; }
-.ac { display: flex; flex-direction: column; gap: 6px; }
+.ac { display: flex; flex-direction: column; gap: 7px; }
 .ab {
-  width: 42px; height: 42px; border-radius: 50%;
+  width: 44px; height: 44px; border-radius: 50%;
   background: var(--fill1); border: none;
-  font-size: 20px; font-weight: 300; cursor: pointer;
+  font-size: 22px; font-weight: 300; cursor: pointer;
   display: flex; align-items: center; justify-content: center;
   color: var(--blue); transition: all 0.12s;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
 }
-.ab:active { background: var(--fill2); transform: scale(0.9); }
+.ab:active { background: var(--fill2); transform: scale(0.88); }
  
-/* ── SEGMENTED CONTROL (Apple style) ── */
+/* ── SEGMENTED CONTROL ── */
 .seg {
   display: flex; background: var(--fill1);
-  border-radius: 10px; padding: 2px; gap: 2px;
+  border-radius: 11px; padding: 3px; gap: 2px;
 }
 .seg-btn {
-  flex: 1; padding: 7px 4px; border: none; border-radius: 8px;
+  flex: 1; padding: 8px 4px; border: none; border-radius: 9px;
   background: transparent; font-family: -apple-system, system-ui, sans-serif;
   font-size: 13px; font-weight: 500; color: var(--text2); cursor: pointer;
-  transition: all 0.2s; -webkit-appearance: none;
+  transition: all 0.22s cubic-bezier(0.4,0,0.2,1); -webkit-appearance: none;
 }
 .seg-btn.on {
   background: var(--bg1);
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1), 0 0.5px 0 rgba(0,0,0,0.06);
+  box-shadow: 0 2px 10px rgba(0,0,0,0.12), 0 0.5px 0 rgba(0,0,0,0.06);
   color: var(--text);
 }
  
 /* ── RATING ── */
-.rr { display: flex; gap: 3px; }
+.rr { display: flex; gap: 3px; flex-wrap: wrap; }
 .rb {
-  flex: 1; padding: 9px 2px; border: none; border-radius: 10px;
+  flex: 1; min-width: 26px; padding: 9px 2px; border: none; border-radius: 10px;
   background: var(--fill1); font-family: -apple-system, system-ui, sans-serif;
   font-size: 13px; font-weight: 500; color: var(--text2);
   cursor: pointer; text-align: center; transition: all 0.15s;
 }
-.rb.on { background: var(--blue); color: #fff; box-shadow: 0 2px 8px rgba(0,122,255,0.35); }
+.rb.on { background: var(--blue); color: #fff; box-shadow: 0 3px 10px rgba(0,122,255,0.4); transform: scale(1.06); }
  
 /* ── TIME PICKER ── */
-.tg2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px; }
-.tb label { display: block; font-size: 11px; font-weight: 500; color: var(--text2); margin-bottom: 5px; }
+.tg2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
+.tb label { display: block; font-size: 11px; font-weight: 600; color: var(--text2); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.4px; }
 .ti {
-  width: 100%; padding: 11px;
-  background: var(--fill1); border: none; border-radius: 12px;
+  width: 100%; padding: 13px;
+  background: var(--fill1); border: none; border-radius: var(--radius-sm);
   font-family: -apple-system, system-ui, sans-serif;
-  font-size: 22px; font-weight: 600; letter-spacing: -0.5px;
+  font-size: 24px; font-weight: 600; letter-spacing: -0.5px;
   text-align: center; color: var(--text); outline: none;
-  transition: background 0.2s;
+  transition: background 0.22s;
+  -webkit-appearance: none;
+  color-scheme: light dark;
 }
 .ti:focus { background: var(--fill2); }
  
+/* ── SLEEP SCORE (fixed) ── */
+.sleep-score-wrap {
+  margin-top: 14px;
+  border-radius: 18px;
+  overflow: hidden;
+  background: var(--fill1);
+  animation: scoreIn 0.3s cubic-bezier(0.34,1.2,0.64,1);
+}
+@keyframes scoreIn { from { opacity:0; transform:scale(0.94) translateY(8px); } to { opacity:1; transform:none; } }
+.sleep-score-main {
+  padding: 16px 18px;
+  display: flex; align-items: center; gap: 14px;
+}
+.sleep-score-icon { font-size: 36px; line-height: 1; flex-shrink: 0; }
+.sleep-score-info { flex: 1; }
+.sleep-score-num {
+  font-size: 36px; font-weight: 700; letter-spacing: -1.5px; line-height: 1;
+  display: flex; align-items: baseline; gap: 4px;
+}
+.sleep-score-denom { font-size: 16px; font-weight: 500; color: var(--text2); }
+.sleep-score-label { font-size: 14px; font-weight: 600; margin-top: 3px; }
+.sleep-score-desc { font-size: 12px; color: var(--text2); margin-top: 2px; line-height: 1.4; }
+.sleep-score-bar {
+  height: 4px;
+  border-radius: 0;
+  overflow: hidden;
+  background: rgba(0,0,0,0.06);
+}
+.sleep-score-bar-fill {
+  height: 100%;
+  transition: width 0.8s cubic-bezier(0.4,0,0.2,1);
+}
+ 
 /* ── WAKEUP STEPPER ── */
-.wu { display: flex; align-items: center; justify-content: space-between; padding: 10px 0; }
-.wu-ctr { display: flex; align-items: center; gap: 14px; }
+.wu { display: flex; align-items: center; justify-content: space-between; padding: 12px 0 4px; }
+.wu-ctr { display: flex; align-items: center; gap: 16px; }
 .wu-btn {
-  width: 36px; height: 36px; border-radius: 50%;
+  width: 38px; height: 38px; border-radius: 50%;
   background: var(--fill1); border: none;
   font-size: 20px; font-weight: 300; cursor: pointer;
   display: flex; align-items: center; justify-content: center;
   color: var(--blue); transition: all 0.12s;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
 }
 .wu-btn:active { background: var(--fill2); transform: scale(0.88); }
-.wu-num { font-size: 28px; font-weight: 600; min-width: 30px; text-align: center; letter-spacing: -1px; }
- 
-/* ── SLEEP SCORE ── */
-.ssl {
-  border-radius: 14px; padding: 14px;
-  margin-top: 10px; display: flex; align-items: center; gap: 12px;
-  background: var(--fill1);
-  animation: fadeIn 0.22s ease;
-}
-@keyframes fadeIn { from { opacity:0; transform:scale(0.97); } to { opacity:1; transform:none; } }
-.ssl-n { font-size: 26px; font-weight: 700; letter-spacing: -1px; }
-.ssl-l { font-size: 12px; font-weight: 600; margin-top: 2px; }
-.ssl-d { font-size: 11px; color: var(--text2); margin-top: 3px; }
+.wu-num { font-size: 30px; font-weight: 600; min-width: 32px; text-align: center; letter-spacing: -1px; }
  
 /* ── BUTTON ── */
 .btn {
-  width: 100%; padding: 16px; border: none; border-radius: 14px;
+  width: 100%; padding: 17px; border: none; border-radius: var(--radius-sm);
   background: var(--blue); color: #fff;
   font-family: -apple-system, system-ui, sans-serif;
   font-size: 17px; font-weight: 600;
-  cursor: pointer; transition: opacity 0.15s, transform 0.12s;
+  cursor: pointer; transition: opacity 0.15s, transform 0.12s, box-shadow 0.15s;
   margin-top: 6px; letter-spacing: -0.2px;
   -webkit-appearance: none;
+  box-shadow: 0 4px 16px rgba(0,122,255,0.35);
 }
-.btn:active { transform: scale(0.97); opacity: 0.85; }
-.btn.green { background: var(--green); }
-.btn.red { background: var(--red); }
+.btn:active { transform: scale(0.97); opacity: 0.88; box-shadow: 0 2px 8px rgba(0,122,255,0.3); }
+.btn.green { background: var(--green); box-shadow: 0 4px 16px rgba(52,199,89,0.35); }
+.btn.red { background: var(--red); box-shadow: 0 4px 16px rgba(255,59,48,0.35); }
 .btn.fill {
   background: var(--fill1); color: var(--text);
   box-shadow: none;
 }
+.btn.fill:active { box-shadow: none; }
  
 /* ── CALENDAR ── */
-.cal-hdr { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
-.cal-m { font-size: 17px; font-weight: 600; letter-spacing: -0.3px; }
+.cal-hdr { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+.cal-m { font-size: 18px; font-weight: 700; letter-spacing: -0.4px; }
 .cal-nav {
-  width: 30px; height: 30px; border-radius: 50%;
+  width: 32px; height: 32px; border-radius: 50%;
   background: var(--fill1); border: none; cursor: pointer;
   font-size: 16px; display: flex; align-items: center; justify-content: center;
   color: var(--blue); transition: all 0.15s;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
 }
 .cal-nav:active { background: var(--fill2); transform: scale(0.88); }
 .cgrid { display: grid; grid-template-columns: repeat(7,1fr); gap: 4px; }
-.cd { text-align: center; font-size: 10px; font-weight: 500; color: var(--text2); padding: 3px 0; }
+.cd { text-align: center; font-size: 10px; font-weight: 600; color: var(--text2); padding: 3px 0; letter-spacing: 0.2px; }
 .cc {
-  aspect-ratio: 1; border-radius: 10px;
+  aspect-ratio: 1; border-radius: 11px;
   display: flex; flex-direction: column; align-items: center; justify-content: center;
-  font-size: 12px; font-weight: 500; cursor: pointer;
-  transition: all 0.18s cubic-bezier(0.4,0,0.2,1);
+  font-size: 13px; font-weight: 500; cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4,0,0.2,1);
   position: relative; background: transparent;
 }
 .cc:active { transform: scale(0.88); }
-.cc.has { background: rgba(52,199,89,0.15); color: var(--green); }
-.cc.miss { background: rgba(255,59,48,0.08); color: var(--text3); }
-.cc.today { background: var(--blue); color: #fff; font-weight: 700; box-shadow: 0 2px 10px rgba(0,122,255,0.4); }
-.cc.future { opacity: 0.25; cursor: default; }
-.cc.goal-d { background: rgba(255,149,0,0.15); color: var(--orange); }
-.cc.sel { box-shadow: 0 0 0 2.5px var(--blue); transform: scale(1.06); z-index: 2; }
-.cdot { font-size: 6px; line-height: 1; opacity: 0.7; }
+.cc.has { background: rgba(52,199,89,0.14); color: var(--green); }
+.cc.miss { background: rgba(120,120,128,0.06); color: var(--text3); }
+.cc.today { background: var(--blue); color: #fff; font-weight: 700; box-shadow: 0 3px 12px rgba(0,122,255,0.45); }
+.cc.future { opacity: 0.22; cursor: default; }
+.cc.goal-d { background: rgba(255,149,0,0.14); color: var(--orange); }
+.cc.sel { box-shadow: 0 0 0 2.5px var(--blue); transform: scale(1.07); z-index: 2; }
+.cdot { font-size: 6px; line-height: 1; opacity: 0.7; margin-top: 1px; }
  
 .c-det {
-  border-radius: 14px; padding: 14px; margin-top: 10px;
+  border-radius: 16px; padding: 16px; margin-top: 12px;
   background: var(--fill1);
-  animation: fadeIn 0.2s ease;
+  animation: fadeIn 0.22s ease;
 }
-.c-det-date { font-size: 13px; font-weight: 600; color: var(--text2); margin-bottom: 8px; }
+.c-det-date { font-size: 13px; font-weight: 600; color: var(--text2); margin-bottom: 10px; }
 .ctag {
   display: inline-flex; align-items: center;
   font-size: 12px; font-weight: 500;
-  padding: 4px 10px; border-radius: 20px; margin: 2px 3px 2px 0;
-  background: var(--fill1); color: var(--text);
+  padding: 5px 11px; border-radius: 20px; margin: 3px 3px 3px 0;
+  background: var(--bg1); color: var(--text);
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  border: 0.5px solid rgba(0,0,0,0.05);
 }
  
 /* ── HISTORY ── */
 .hi {
-  display: flex; align-items: center; gap: 10px;
-  padding: 11px 0; border-bottom: 0.5px solid var(--sep);
+  display: flex; align-items: center; gap: 12px;
+  padding: 12px 0; border-bottom: 0.5px solid var(--sep);
 }
 .hi:last-child { border: none; }
-.hdate { font-size: 12px; color: var(--text2); font-weight: 500; min-width: 38px; }
+.hdate { font-size: 12px; color: var(--text2); font-weight: 600; min-width: 42px; }
 .htag {
-  font-size: 11px; font-weight: 500; padding: 3px 8px;
+  font-size: 11px; font-weight: 500; padding: 3px 9px;
   border-radius: 20px; background: var(--fill1); color: var(--text);
 }
  
 /* ── CHART ── */
-.chart { display: flex; align-items: flex-end; gap: 4px; height: 64px; }
-.cbar { flex: 1; border-radius: 5px 5px 0 0; min-height: 3px; transition: height 0.4s cubic-bezier(0.4,0,0.2,1); }
-.clbls { display: flex; gap: 4px; margin-top: 4px; }
-.clbl { flex: 1; text-align: center; font-size: 9px; color: var(--text3); }
+.chart { display: flex; align-items: flex-end; gap: 5px; height: 68px; }
+.cbar { flex: 1; border-radius: 6px 6px 0 0; min-height: 3px; transition: height 0.5s cubic-bezier(0.4,0,0.2,1); }
+.clbls { display: flex; gap: 5px; margin-top: 5px; }
+.clbl { flex: 1; text-align: center; font-size: 9px; color: var(--text3); font-weight: 500; }
  
 /* ── HEADER ── */
-.ph { display: flex; justify-content: space-between; align-items: center; padding: 16px 0 10px; }
-.ph-t { font-size: 34px; font-weight: 700; letter-spacing: -1px; }
-.ph-r { display: flex; align-items: center; gap: 8px; }
-.ph-d { font-size: 10px; color: var(--text2); font-weight: 500; text-align: right; line-height: 1.7; }
-.theme-btn {
-  width: 34px; height: 34px; border-radius: 50%;
+.ph { display: flex; justify-content: space-between; align-items: center; padding: 18px 0 12px; }
+.ph-t { font-size: 36px; font-weight: 700; letter-spacing: -1.5px; }
+.ph-r { display: flex; align-items: center; gap: 10px; }
+.ph-d { font-size: 10px; color: var(--text2); font-weight: 500; text-align: right; line-height: 1.8; }
+.ic-btn {
+  width: 36px; height: 36px; border-radius: 50%;
   background: var(--fill1); border: none; cursor: pointer;
   display: flex; align-items: center; justify-content: center;
-  font-size: 16px; transition: all 0.18s;
+  font-size: 17px; transition: all 0.18s;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.07);
 }
-.theme-btn:active { transform: scale(0.88); }
+.ic-btn:active { transform: scale(0.88); }
  
 /* ── SETUP ── */
 #setup { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 32px 20px; }
-.si { width: 100%; max-width: 380px; }
-.s-logo { font-size: 56px; text-align: center; margin-bottom: 6px; animation: breathe 3s ease-in-out infinite; }
-@keyframes breathe { 0%,100%{ transform:scale(1); } 50%{ transform:scale(1.06); } }
-.s-title { font-size: 34px; font-weight: 700; letter-spacing: -1px; text-align: center; margin-bottom: 3px; }
-.s-sub { font-size: 15px; color: var(--text2); text-align: center; margin-bottom: 32px; font-weight: 400; }
-.s-dots { display: flex; justify-content: center; gap: 5px; margin-bottom: 24px; }
-.s-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--fill1); transition: all 0.25s; }
-.s-dot.d { background: var(--blue); transform: scale(1.2); }
-.s-q { font-size: 22px; font-weight: 700; letter-spacing: -0.5px; margin-bottom: 16px; }
-.s-opts { display: flex; flex-direction: column; gap: 8px; }
+.si { width: 100%; max-width: 390px; }
+.s-logo { font-size: 60px; text-align: center; margin-bottom: 8px; animation: breathe 3.5s ease-in-out infinite; }
+@keyframes breathe { 0%,100%{ transform:scale(1); } 50%{ transform:scale(1.07); } }
+.s-title { font-size: 38px; font-weight: 700; letter-spacing: -1.5px; text-align: center; margin-bottom: 4px; }
+.s-sub { font-size: 16px; color: var(--text2); text-align: center; margin-bottom: 36px; font-weight: 400; }
+.s-dots { display: flex; justify-content: center; gap: 6px; margin-bottom: 28px; }
+.s-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--fill1); transition: all 0.3s cubic-bezier(0.34,1.4,0.64,1); }
+.s-dot.d { background: var(--blue); transform: scale(1.3); }
+.s-q { font-size: 24px; font-weight: 700; letter-spacing: -0.8px; margin-bottom: 18px; }
+.s-opts { display: flex; flex-direction: column; gap: 9px; }
 .so {
-  padding: 15px 16px; border-radius: 14px;
+  padding: 16px 18px; border-radius: 16px;
   background: var(--bg1);
   -webkit-backdrop-filter: var(--blur);
   backdrop-filter: var(--blur);
-  border: 0.5px solid rgba(255,255,255,0.5);
+  border: 0.5px solid rgba(255,255,255,0.55);
   box-shadow: var(--sh-card);
   font-family: -apple-system, system-ui, sans-serif;
   font-size: 17px; font-weight: 500; cursor: pointer;
-  text-align: left; transition: all 0.18s; color: var(--text);
-  -webkit-appearance: none;
+  text-align: left; transition: all 0.2s cubic-bezier(0.4,0,0.2,1); color: var(--text);
+  -webkit-appearance: none; position: relative; overflow: hidden;
 }
-[data-dark] .so { border-color: rgba(255,255,255,0.08); }
-.so:active { transform: scale(0.97); opacity: 0.8; }
-.so.on { background: var(--blue); color: #fff; border-color: transparent; }
+.so::after { content:''; position:absolute; inset:0; border-radius:16px; background:linear-gradient(135deg,rgba(255,255,255,0.1) 0%,transparent 60%); pointer-events:none; }
+[data-dark] .so { border-color: rgba(255,255,255,0.09); }
+.so:active { transform: scale(0.97); opacity: 0.82; }
+.so.on { background: var(--blue); color: #fff; border-color: transparent; box-shadow: 0 4px 16px rgba(0,122,255,0.4); }
 .sinp {
-  width: 100%; padding: 16px;
+  width: 100%; padding: 18px;
   background: var(--bg1);
   -webkit-backdrop-filter: var(--blur);
   backdrop-filter: var(--blur);
-  border: 0.5px solid rgba(255,255,255,0.5);
-  border-radius: 14px;
+  border: 0.5px solid rgba(255,255,255,0.55);
+  border-radius: 16px;
   font-family: -apple-system, system-ui, sans-serif;
-  font-size: 22px; font-weight: 600; letter-spacing: -0.5px;
+  font-size: 24px; font-weight: 600; letter-spacing: -0.5px;
   color: var(--text); outline: none;
   -moz-appearance: textfield;
   box-shadow: var(--sh-card);
-  transition: all 0.2s;
+  transition: all 0.22s;
 }
-.sinp:focus { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(0,122,255,0.2), var(--sh-card); }
+.sinp:focus { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(0,122,255,0.18), var(--sh-card); }
 .sinp::-webkit-outer-spin-button, .sinp::-webkit-inner-spin-button { -webkit-appearance: none; }
-.s-hint { font-size: 13px; color: var(--text2); margin-top: 6px; }
+.s-hint { font-size: 13px; color: var(--text2); margin-top: 8px; }
  
 /* ── PACE WIZARD ── */
 .pace-card {
   background: var(--bg1);
   -webkit-backdrop-filter: var(--blur);
   backdrop-filter: var(--blur);
-  border-radius: 20px; padding: 20px;
-  border: 0.5px solid rgba(255,255,255,0.5);
-  box-shadow: var(--sh-card); margin: 12px 0;
+  border-radius: 20px; padding: 22px;
+  border: 0.5px solid rgba(255,255,255,0.55);
+  box-shadow: var(--sh-card); margin: 14px 0;
 }
-[data-dark] .pace-card { border-color: rgba(255,255,255,0.08); }
-.pace-animal { font-size: 52px; text-align: center; margin-bottom: 6px; transition: all 0.3s; }
-.pace-lbl { font-size: 17px; font-weight: 700; text-align: center; margin-bottom: 4px; letter-spacing: -0.3px; }
-.pace-desc { font-size: 13px; color: var(--text2); text-align: center; margin-bottom: 14px; line-height: 1.45; }
-.pace-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px; }
-.pace-stat { background: var(--fill1); border-radius: 12px; padding: 12px; text-align: center; }
-.pace-stat-n { font-size: 20px; font-weight: 700; letter-spacing: -0.5px; }
-.pace-stat-l { font-size: 10px; color: var(--text2); font-weight: 500; text-transform: uppercase; letter-spacing: 0.3px; }
+[data-dark] .pace-card { border-color: rgba(255,255,255,0.09); }
+.pace-animal { font-size: 54px; text-align: center; margin-bottom: 7px; transition: all 0.35s cubic-bezier(0.34,1.3,0.64,1); }
+.pace-lbl { font-size: 18px; font-weight: 700; text-align: center; margin-bottom: 5px; letter-spacing: -0.4px; }
+.pace-desc { font-size: 13px; color: var(--text2); text-align: center; margin-bottom: 16px; line-height: 1.5; }
+.pace-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; margin-bottom: 14px; }
+.pace-stat { background: var(--fill1); border-radius: 13px; padding: 13px; text-align: center; }
+.pace-stat-n { font-size: 22px; font-weight: 700; letter-spacing: -0.6px; }
+.pace-stat-l { font-size: 10px; color: var(--text2); font-weight: 600; text-transform: uppercase; letter-spacing: 0.3px; }
  
 /* ── SHEET ── */
 .overlay {
   position: fixed; inset: 0;
-  background: rgba(0,0,0,0.4);
+  background: rgba(0,0,0,0.45);
   z-index: 200; display: flex; align-items: flex-end; justify-content: center;
-  animation: fIn 0.2s ease;
-  -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px);
+  animation: fIn 0.22s ease;
+  -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
 }
 .overlay.hid { display: none; }
 @keyframes fIn { from { opacity:0; } to { opacity:1; } }
 .sheet {
   background: var(--bg0);
-  border-radius: 24px 24px 0 0;
-  padding: 6px 16px calc(32px + env(safe-area-inset-bottom));
+  border-radius: 28px 28px 0 0;
+  padding: 6px 16px calc(36px + env(safe-area-inset-bottom));
   width: 100%; max-width: 430px; max-height: 94vh;
   overflow-y: auto;
-  animation: sUp 0.3s cubic-bezier(0.4,0,0.2,1);
-  transition: background 0.35s;
+  animation: sUp 0.32s cubic-bezier(0.34,1.1,0.64,1);
+  transition: background 0.4s;
 }
 @keyframes sUp { from { transform:translateY(100%); } to { transform:none; } }
 .drag {
-  width: 36px; height: 5px; background: var(--fill1);
-  border-radius: 99px; margin: 8px auto 16px;
+  width: 40px; height: 5px; background: var(--fill1);
+  border-radius: 99px; margin: 10px auto 18px;
 }
-.sheet-t { font-size: 17px; font-weight: 600; text-align: center; margin-bottom: 16px; letter-spacing: -0.3px; }
+.sheet-t { font-size: 17px; font-weight: 700; text-align: center; margin-bottom: 18px; letter-spacing: -0.4px; }
  
 /* ── TOAST ── */
 .toast {
-  position: fixed; bottom: calc(84px + env(safe-area-inset-bottom));
-  left: 50%; transform: translateX(-50%) translateY(12px);
-  background: rgba(40,40,40,0.9);
-  -webkit-backdrop-filter: blur(20px); backdrop-filter: blur(20px);
-  color: #fff; padding: 11px 20px; border-radius: 99px;
+  position: fixed; bottom: calc(92px + env(safe-area-inset-bottom));
+  left: 50%; transform: translateX(-50%) translateY(14px);
+  background: rgba(30,30,30,0.92);
+  -webkit-backdrop-filter: blur(24px); backdrop-filter: blur(24px);
+  color: #fff; padding: 12px 22px; border-radius: 99px;
   font-size: 14px; font-weight: 500;
-  opacity: 0; pointer-events: none; transition: all 0.24s;
+  opacity: 0; pointer-events: none; transition: all 0.26s cubic-bezier(0.34,1.2,0.64,1);
   z-index: 999; white-space: nowrap;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.2);
-  border: 0.5px solid rgba(255,255,255,0.15);
+  box-shadow: 0 6px 24px rgba(0,0,0,0.25);
+  border: 0.5px solid rgba(255,255,255,0.14);
 }
 .toast.on { opacity: 1; transform: translateX(-50%) translateY(0); }
-.toast.ok { background: rgba(52,199,89,0.92); }
-.toast.er { background: rgba(255,59,48,0.92); }
+.toast.ok { background: rgba(52,199,89,0.95); }
+.toast.er { background: rgba(255,59,48,0.95); }
  
 /* ── TODAY PILLS ── */
 .pill {
-  border-radius: 14px; padding: 12px 8px; text-align: center;
-  background: var(--fill1); transition: all 0.2s; cursor: default;
+  border-radius: var(--radius-sm); padding: 14px 10px; text-align: center;
+  background: var(--fill1); transition: all 0.25s; cursor: default;
+  border: 0.5px solid transparent;
 }
-.pill.filled { background: rgba(52,199,89,0.12); }
-.pill-ic { font-size: 20px; line-height: 1.2; }
-.pill-v { font-size: 13px; font-weight: 600; color: var(--text); margin: 3px 0 2px; letter-spacing: -0.3px; }
-.pill-l { font-size: 9px; font-weight: 500; color: var(--text2); text-transform: uppercase; letter-spacing: 0.3px; }
+.pill.filled { background: rgba(52,199,89,0.12); border-color: rgba(52,199,89,0.2); }
+.pill-ic { font-size: 22px; line-height: 1.2; }
+.pill-v { font-size: 13px; font-weight: 700; color: var(--text); margin: 4px 0 2px; letter-spacing: -0.3px; }
+.pill-l { font-size: 9px; font-weight: 600; color: var(--text2); text-transform: uppercase; letter-spacing: 0.4px; }
+ 
+/* ── PROFILE ── */
+.prof-avatar {
+  width: 88px; height: 88px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--blue), var(--indigo));
+  display: flex; align-items: center; justify-content: center;
+  font-size: 36px; font-weight: 700; color: white;
+  margin: 0 auto 16px;
+  box-shadow: 0 8px 32px rgba(0,122,255,0.4);
+}
+.prof-name { font-size: 26px; font-weight: 700; text-align: center; letter-spacing: -0.8px; margin-bottom: 4px; }
+.prof-sub { font-size: 13px; color: var(--text2); text-align: center; margin-bottom: 20px; }
+.prow {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 13px 0; border-bottom: 0.5px solid var(--sep);
+}
+.prow:last-child { border: none; }
+.prow-l { font-size: 15px; font-weight: 500; }
+.prow-r { font-size: 15px; color: var(--text2); display: flex; align-items: center; gap: 6px; }
+.prow-r .arr { color: var(--text3); font-size: 12px; }
+ 
+/* ── LANG / REGION ── */
+.opt-list { display: flex; flex-direction: column; gap: 6px; }
+.opt-item {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 16px; border-radius: 13px;
+  background: var(--fill1); cursor: pointer; transition: all 0.18s;
+  font-size: 15px; font-weight: 500;
+}
+.opt-item:active { transform: scale(0.97); }
+.opt-item.on { background: rgba(0,122,255,0.12); color: var(--blue); }
+.opt-check { font-size: 16px; }
+ 
+/* ── INLINE EDIT ── */
+.ie {
+  background: var(--fill1); border: none; border-radius: 10px;
+  font-family: -apple-system, system-ui, sans-serif;
+  font-size: 15px; font-weight: 500; color: var(--text);
+  padding: 8px 12px; outline: none; text-align: right;
+  max-width: 140px; width: 100%;
+  transition: background 0.2s;
+  -moz-appearance: textfield;
+}
+.ie::-webkit-outer-spin-button, .ie::-webkit-inner-spin-button { -webkit-appearance: none; }
+.ie:focus { background: var(--fill2); border-radius: 10px; box-shadow: 0 0 0 2px rgba(0,122,255,0.25); }
+ 
+/* ── DIVIDER ── */
+.div-sep { height: 0.5px; background: var(--sep); margin: 4px 0; }
+ 
+/* ── GLASS FLOATING HEADER ── */
+.float-hdr {
+  position: sticky; top: 0; z-index: 50;
+  background: var(--bg1);
+  -webkit-backdrop-filter: var(--blur-heavy);
+  backdrop-filter: var(--blur-heavy);
+  border-bottom: 0.5px solid var(--sep);
+  margin: 0 -16px;
+  padding: 12px 16px;
+  transition: background 0.4s;
+}
+ 
 </style>
 </head>
 <body>
 <div class="bg-mesh"></div>
+<div class="bg-mesh-3"></div>
  
 <!-- SETUP -->
 <div id="setup" style="display:none;">
   <div class="si">
     <div class="s-logo">⚡</div>
     <div class="s-title">FIT</div>
-    <div class="s-sub">Личный трекер</div>
+    <div class="s-sub" id="s-sub-txt">Личный трекер</div>
     <div class="s-dots" id="dots"></div>
     <div id="sbody"></div>
   </div>
@@ -515,102 +634,102 @@ input[type=range]:active::-webkit-slider-thumb { transform: scale(1.18); }
     <div class="ph">
       <div class="ph-t" id="h-name">FIT</div>
       <div class="ph-r">
-        <button class="theme-btn" onclick="toggleTheme()" id="tbtn">🌙</button>
+        <button class="ic-btn" onclick="toggleTheme()" id="tbtn">🌙</button>
         <div class="ph-d" id="h-date">—</div>
       </div>
     </div>
     <div class="sg2">
-      <div class="scard"><div class="sv" id="h-w">—</div><div class="sl">Вес кг</div></div>
-      <div class="scard"><div class="sv" id="h-dl" style="color:var(--text2)">—</div><div class="sl">До цели</div></div>
+      <div class="scard"><div class="sv" id="h-w">—</div><div class="sl" id="lb-weight-kg">Вес кг</div></div>
+      <div class="scard"><div class="sv" id="h-dl" style="color:var(--text2)">—</div><div class="sl" id="lb-days-left">До цели</div></div>
     </div>
     <div class="sg2">
-      <div class="scard"><div class="sv" id="h-prog" style="color:var(--green)">—</div><div class="sl">Прогресс</div></div>
-      <div class="scard"><div class="sv" id="h-strk">—</div><div class="sl">Стрик 🔥</div></div>
+      <div class="scard"><div class="sv" id="h-prog" style="color:var(--green)">—</div><div class="sl" id="lb-progress">Прогресс</div></div>
+      <div class="scard"><div class="sv" id="h-strk">—</div><div class="sl" id="lb-streak">Стрик 🔥</div></div>
     </div>
     <div class="card">
-      <div class="c-title">К цели</div>
+      <div class="c-title" id="lb-to-goal">К цели</div>
       <div class="ring-wrap">
-        <svg width="130" height="130" viewBox="0 0 130 130">
-          <circle cx="65" cy="65" r="52" fill="none" stroke="var(--fill1)" stroke-width="10"/>
-          <circle cx="65" cy="65" r="52" fill="none" stroke="var(--blue)" stroke-width="10"
-            stroke-linecap="round" stroke-dasharray="327" id="ring"
-            stroke-dashoffset="327" transform="rotate(-90 65 65)"
-            style="transition:stroke-dashoffset 1.1s cubic-bezier(0.4,0,0.2,1)"/>
+        <svg width="136" height="136" viewBox="0 0 136 136">
+          <circle cx="68" cy="68" r="54" fill="none" stroke="var(--fill1)" stroke-width="11"/>
+          <circle cx="68" cy="68" r="54" fill="none" stroke="var(--blue)" stroke-width="11"
+            stroke-linecap="round" stroke-dasharray="339" id="ring"
+            stroke-dashoffset="339" transform="rotate(-90 68 68)"
+            style="transition:stroke-dashoffset 1.2s cubic-bezier(0.4,0,0.2,1); filter:drop-shadow(0 0 8px rgba(0,122,255,0.4));"/>
         </svg>
         <div class="ring-center">
           <div class="ring-n" id="r-pct">0%</div>
-          <div class="ring-s">выполнено</div>
+          <div class="ring-s" id="lb-done">выполнено</div>
         </div>
       </div>
-      <div style="display:flex;justify-content:space-between;font-size:11px;font-weight:500;color:var(--text2);margin-bottom:4px;">
-        <span>Время</span><span id="t-pct">0%</span>
+      <div style="display:flex;justify-content:space-between;font-size:11px;font-weight:600;color:var(--text2);margin-bottom:4px;text-transform:uppercase;letter-spacing:0.4px;">
+        <span id="lb-time">Время</span><span id="t-pct">0%</span>
       </div>
       <div class="bar"><div class="bar-f" id="t-bar" style="width:0%;background:var(--blue)"></div></div>
     </div>
     <div class="card">
-      <div class="c-title">Сегодня</div>
-      <div id="today-pills" style="display:grid;grid-template-columns:1fr 1fr;gap:8px;"></div>
+      <div class="c-title" id="lb-today">Сегодня</div>
+      <div id="today-pills" style="display:grid;grid-template-columns:1fr 1fr;gap:9px;"></div>
     </div>
     <div class="card">
-      <div class="c-title">Шаги</div>
+      <div class="c-title" id="lb-steps">Шаги</div>
       <div class="sh">
-        <div><div class="sval" id="steps-val">0</div><div class="sunit">шагов</div></div>
+        <div><div class="sval" id="steps-val">0</div><div class="sunit" id="lb-steps-u">шагов</div></div>
         <div class="sglbl" id="steps-glbl"></div>
       </div>
       <div class="bar"><div class="bar-f" id="steps-bar" style="width:0%"></div></div>
-      <input type="range" id="steps-sl" min="0" max="30000" step="100" value="0" oninput="onSteps(this.value)">
+      <input type="range" id="steps-sl" min="0" max="30000" step="100" value="0" oninput="onSteps(this.value)" onchange="hapticSlider()">
       <div class="rl"><span>0</span><span>10к</span><span>20к</span><span>30к</span></div>
-      <button class="btn" style="margin-top:10px;" onclick="saveSteps()">Сохранить шаги</button>
+      <button class="btn" style="margin-top:12px;" onclick="saveSteps()" id="lb-save-steps-btn">Сохранить шаги</button>
     </div>
   </div>
  
   <!-- CHECKIN -->
   <div class="page" id="pg-ci">
-    <div class="ph"><div class="ph-t">Чек-ин</div><div class="ph-d" id="ci-d">—</div></div>
+    <div class="ph"><div class="ph-t" id="lb-ci-title">Чек-ин</div><div class="ph-d" id="ci-d">—</div></div>
     <div class="card">
-      <div class="c-title">Вес (кг)</div>
+      <div class="c-title" id="lb-weight-card">Вес (кг)</div>
       <div class="wr">
         <div class="ac">
           <button class="ab" onclick="adjW(-1)">−</button>
-          <button class="ab" onclick="adjW(-.1)" style="font-size:13px;">−.1</button>
+          <button class="ab" onclick="adjW(-.1)" style="font-size:12px;">−.1</button>
         </div>
         <input type="number" id="w-inp" class="winp" step=".1" min="30" max="300" placeholder="76.0" oninput="onWInp()">
         <div class="ac">
           <button class="ab" onclick="adjW(1)">+</button>
-          <button class="ab" onclick="adjW(.1)" style="font-size:13px;">+.1</button>
+          <button class="ab" onclick="adjW(.1)" style="font-size:12px;">+.1</button>
         </div>
       </div>
-      <div id="w-diff" style="text-align:center;font-size:13px;font-weight:500;color:var(--text2);min-height:18px;"></div>
+      <div id="w-diff" style="text-align:center;font-size:13px;font-weight:600;color:var(--text2);min-height:18px;"></div>
     </div>
     <div class="card">
-      <div class="c-title">Тренировка</div>
+      <div class="c-title" id="lb-workout">Тренировка</div>
       <div class="seg">
-        <button class="seg-btn" id="wo-y" onclick="setWO(true)">Была 💪</button>
-        <button class="seg-btn" id="wo-n" onclick="setWO(false)">Не было</button>
+        <button class="seg-btn" id="wo-y" onclick="setWO(true)" id="lb-wo-yes">Была 💪</button>
+        <button class="seg-btn" id="wo-n" onclick="setWO(false)" id="lb-wo-no">Не было</button>
       </div>
     </div>
     <div class="card">
-      <div class="c-title">Оценка дня</div>
+      <div class="c-title" id="lb-day-rating">Оценка дня</div>
       <div class="rr" id="rat-row"></div>
     </div>
-    <button class="btn" onclick="saveCI()">Сохранить</button>
+    <button class="btn" onclick="saveCI()" id="lb-save-ci-btn">Сохранить</button>
   </div>
  
   <!-- SLEEP -->
   <div class="page" id="pg-sl">
-    <div class="ph"><div class="ph-t">Сон</div></div>
+    <div class="ph"><div class="ph-t" id="lb-sleep-title">Сон</div></div>
     <div class="card">
-      <div class="c-title">Время</div>
+      <div class="c-title" id="lb-sleep-time">Время сна</div>
       <div class="tg2">
-        <div class="tb"><label>Лёг спать</label><input type="time" id="sl-s" class="ti" value="23:00" oninput="onSl()"></div>
-        <div class="tb"><label>Проснулся</label><input type="time" id="sl-e" class="ti" value="07:00" oninput="onSl()"></div>
+        <div class="tb"><label id="lb-fell-asleep">Лёг спать</label><input type="time" id="sl-s" class="ti" value="23:00" oninput="onSl()"></div>
+        <div class="tb"><label id="lb-woke-up">Проснулся</label><input type="time" id="sl-e" class="ti" value="07:00" oninput="onSl()"></div>
       </div>
-      <div class="bar"><div class="bar-f" id="sl-bar" style="width:70%"></div></div>
-      <div style="display:flex;justify-content:space-between;font-size:11px;font-weight:500;color:var(--text2);margin-top:2px;">
-        <span id="sl-h">8 ч 0 мин</span><span>Норма 7–9 ч</span>
+      <div class="bar" style="height:6px;"><div class="bar-f" id="sl-bar" style="width:70%;background:var(--green)"></div></div>
+      <div style="display:flex;justify-content:space-between;font-size:11px;font-weight:600;color:var(--text2);margin-top:5px;text-transform:uppercase;letter-spacing:0.4px;">
+        <span id="sl-h">8 ч 0 мин</span><span id="lb-norm">Норма 7–9 ч</span>
       </div>
       <div class="wu">
-        <div style="font-size:14px;font-weight:500;color:var(--text2);">Просыпался ночью</div>
+        <div style="font-size:14px;font-weight:500;color:var(--text2);" id="lb-wakeups">Просыпался ночью</div>
         <div class="wu-ctr">
           <button class="wu-btn" onclick="adjWU(-1)">−</button>
           <div class="wu-num" id="wu-n">0</div>
@@ -619,16 +738,16 @@ input[type=range]:active::-webkit-slider-thumb { transform: scale(1.18); }
       </div>
       <div id="sl-sc"></div>
     </div>
-    <button class="btn" onclick="saveSl()">Сохранить сон</button>
+    <button class="btn" onclick="saveSl()" id="lb-save-sleep-btn">Сохранить сон</button>
     <div class="card" style="margin-top:10px;">
-      <div class="c-title">История — 7 дней</div>
+      <div class="c-title" id="lb-sleep-hist">История — 7 дней</div>
       <div id="sl-hist"></div>
     </div>
   </div>
  
   <!-- CALENDAR -->
   <div class="page" id="pg-cal">
-    <div class="ph"><div class="ph-t">Дни</div></div>
+    <div class="ph"><div class="ph-t" id="lb-cal-title">Дни</div></div>
     <div class="card">
       <div class="cal-hdr">
         <button class="cal-nav" onclick="cp()">‹</button>
@@ -636,53 +755,124 @@ input[type=range]:active::-webkit-slider-thumb { transform: scale(1.18); }
         <button class="cal-nav" onclick="cn2()">›</button>
       </div>
       <div class="cgrid" id="cal-dows"></div>
-      <div style="height:5px;"></div>
+      <div style="height:6px;"></div>
       <div class="cgrid" id="cal-cells"></div>
       <div id="cal-det"></div>
     </div>
     <div class="card">
-      <div class="c-title">Последние 7 дней</div>
+      <div class="c-title" id="lb-last7">Последние 7 дней</div>
       <div id="cal-h7"></div>
     </div>
   </div>
  
   <!-- STATS -->
   <div class="page" id="pg-st">
-    <div class="ph"><div class="ph-t">Аналитика</div></div>
+    <div class="ph"><div class="ph-t" id="lb-stats-title">Аналитика</div></div>
     <div class="sg4">
-      <div class="scard"><div class="sv" id="an-d" style="font-size:17px">—</div><div class="sl">Дисц.</div></div>
-      <div class="scard"><div class="sv" id="an-s" style="font-size:17px">—</div><div class="sl">Стрик</div></div>
-      <div class="scard"><div class="sv" id="an-a" style="font-size:17px">—</div><div class="sl">Шаги</div></div>
-      <div class="scard"><div class="sv" id="an-sl" style="font-size:17px">—</div><div class="sl">Сон</div></div>
+      <div class="scard"><div class="sv" id="an-d" style="font-size:18px">—</div><div class="sl" id="lb-disc">Дисц.</div></div>
+      <div class="scard"><div class="sv" id="an-s" style="font-size:18px">—</div><div class="sl" id="lb-strk2">Стрик</div></div>
+      <div class="scard"><div class="sv" id="an-a" style="font-size:18px">—</div><div class="sl" id="lb-avg-steps">Шаги</div></div>
+      <div class="scard"><div class="sv" id="an-sl" style="font-size:18px">—</div><div class="sl" id="lb-avg-sleep">Сон</div></div>
     </div>
     <div class="card">
-      <div class="c-title">Шаги — 7 дней</div>
+      <div class="c-title" id="lb-steps-7">Шаги — 7 дней</div>
       <div class="chart" id="st-sc"></div>
       <div class="clbls" id="st-sl"></div>
     </div>
     <div class="card">
-      <div class="c-title">Вес</div>
-      <svg id="w-svg" width="100%" height="80" style="overflow:visible;display:block;"></svg>
-      <div style="display:flex;justify-content:space-between;font-size:11px;font-weight:500;color:var(--text2);margin-top:8px;">
+      <div class="c-title" id="lb-weight-chart">Вес</div>
+      <svg id="w-svg" width="100%" height="82" style="overflow:visible;display:block;"></svg>
+      <div style="display:flex;justify-content:space-between;font-size:11px;font-weight:600;color:var(--text2);margin-top:10px;">
         <span id="an-tr">—</span><span id="an-lo">—</span>
       </div>
     </div>
     <div class="card">
-      <div class="c-title">Сон — 7 дней</div>
+      <div class="c-title" id="lb-sleep-7">Сон — 7 дней</div>
       <div class="chart" id="st-sl2"></div>
       <div class="clbls" id="st-sl2l"></div>
     </div>
+  </div>
+ 
+  <!-- PROFILE -->
+  <div class="page" id="pg-pf">
+    <div class="ph"><div class="ph-t" id="lb-profile-title">Профиль</div></div>
+    <div class="card" style="text-align:center;">
+      <div class="prof-avatar" id="pf-avatar">?</div>
+      <div class="prof-name" id="pf-name">—</div>
+      <div class="prof-sub" id="pf-sub">—</div>
+    </div>
+ 
+    <div class="card">
+      <div class="c-title" id="lb-personal">Личные данные</div>
+      <div class="prow">
+        <div class="prow-l" id="lb-pf-name">Имя</div>
+        <div class="prow-r"><input class="ie" id="pf-inp-name" type="text" placeholder="—" onchange="savePF()"></div>
+      </div>
+      <div class="prow">
+        <div class="prow-l" id="lb-pf-age">Возраст</div>
+        <div class="prow-r"><input class="ie" id="pf-inp-age" type="number" placeholder="—" min="10" max="100" onchange="savePF()"></div>
+      </div>
+      <div class="prow">
+        <div class="prow-l" id="lb-pf-gender">Пол</div>
+        <div class="prow-r">
+          <select class="ie" id="pf-inp-gender" onchange="savePF()" style="cursor:pointer;">
+            <option value="male" id="lb-male">Мужской</option>
+            <option value="female" id="lb-female">Женский</option>
+          </select>
+        </div>
+      </div>
+      <div class="prow">
+        <div class="prow-l" id="lb-pf-height">Рост (см)</div>
+        <div class="prow-r"><input class="ie" id="pf-inp-height" type="number" placeholder="—" min="100" max="250" onchange="savePF()"></div>
+      </div>
+      <div class="prow">
+        <div class="prow-l" id="lb-pf-sw">Стартовый вес</div>
+        <div class="prow-r"><input class="ie" id="pf-inp-sw" type="number" placeholder="—" min="30" max="300" step="0.1" onchange="savePF()"></div>
+      </div>
+      <div class="prow">
+        <div class="prow-l" id="lb-pf-tw">Целевой вес</div>
+        <div class="prow-r"><input class="ie" id="pf-inp-tw" type="number" placeholder="—" min="30" max="300" step="0.1" onchange="savePF()"></div>
+      </div>
+      <div class="prow">
+        <div class="prow-l" id="lb-pf-gd">Дата цели</div>
+        <div class="prow-r"><input class="ie" id="pf-inp-gd" type="date" onchange="savePF()" style="font-size:13px;"></div>
+      </div>
+      <div class="prow">
+        <div class="prow-l" id="lb-pf-steps">Норма шагов</div>
+        <div class="prow-r"><input class="ie" id="pf-inp-steps" type="number" placeholder="10000" min="1000" max="50000" onchange="savePF()"></div>
+      </div>
+    </div>
+ 
+    <div class="card">
+      <div class="c-title" id="lb-app-settings">Настройки</div>
+      <div class="prow" onclick="openLangSheet()" style="cursor:pointer;">
+        <div class="prow-l" id="lb-lang-row">Язык</div>
+        <div class="prow-r"><span id="pf-lang-val">—</span><span class="arr">›</span></div>
+      </div>
+      <div class="prow" onclick="openRegSheet()" style="cursor:pointer;">
+        <div class="prow-l" id="lb-region-row">Регион / Часовой пояс</div>
+        <div class="prow-r"><span id="pf-reg-val">—</span><span class="arr">›</span></div>
+      </div>
+      <div class="prow" onclick="toggleTheme()" style="cursor:pointer;">
+        <div class="prow-l" id="lb-theme">Тема</div>
+        <div class="prow-r"><span id="pf-theme-val">—</span><span class="arr">›</span></div>
+      </div>
+    </div>
+ 
+    <button class="btn red" onclick="resetApp()" id="lb-reset-btn">Сбросить все данные</button>
+    <div style="height:16px;"></div>
   </div>
  
 </div><!-- /app -->
  
 <!-- NAV -->
 <nav class="nav" id="nav" style="display:none;">
-  <button class="nb on" onclick="gp('home',this)"><span class="nb-ic">⊙</span><span class="nb-lb">Главная</span></button>
-  <button class="nb" onclick="gp('ci',this)"><span class="nb-ic">◎</span><span class="nb-lb">Чек-ин</span></button>
-  <button class="nb" onclick="gp('sl',this)"><span class="nb-ic">◑</span><span class="nb-lb">Сон</span></button>
-  <button class="nb" onclick="gp('cal',this)"><span class="nb-ic">⊞</span><span class="nb-lb">Дни</span></button>
-  <button class="nb" onclick="gp('st',this)"><span class="nb-ic">△</span><span class="nb-lb">Стата</span></button>
+  <button class="nb on" onclick="gp('home',this)"><span class="nb-ic">⊙</span><span class="nb-lb" id="nb-home">Главная</span></button>
+  <button class="nb" onclick="gp('ci',this)"><span class="nb-ic">◎</span><span class="nb-lb" id="nb-ci">Чек-ин</span></button>
+  <button class="nb" onclick="gp('sl',this)"><span class="nb-ic">◑</span><span class="nb-lb" id="nb-sl">Сон</span></button>
+  <button class="nb" onclick="gp('cal',this)"><span class="nb-ic">⊞</span><span class="nb-lb" id="nb-cal">Дни</span></button>
+  <button class="nb" onclick="gp('st',this)"><span class="nb-ic">△</span><span class="nb-lb" id="nb-st">Стата</span></button>
+  <button class="nb" onclick="gp('pf',this)"><span class="nb-ic">○</span><span class="nb-lb" id="nb-pf">Профиль</span></button>
 </nav>
  
 <!-- EDIT SHEET -->
@@ -690,78 +880,92 @@ input[type=range]:active::-webkit-slider-thumb { transform: scale(1.18); }
   <div class="sheet">
     <div class="drag"></div>
     <div class="sheet-t" id="ed-t">Редактировать</div>
- 
     <div class="card" style="margin-bottom:8px;">
-      <div class="c-title">Вес (кг)</div>
+      <div class="c-title" id="lb-ew-weight">Вес (кг)</div>
       <div class="wr">
         <div class="ac">
           <button class="ab" onclick="adjEW(-1)">−</button>
-          <button class="ab" onclick="adjEW(-.1)" style="font-size:13px;">−.1</button>
+          <button class="ab" onclick="adjEW(-.1)" style="font-size:12px;">−.1</button>
         </div>
         <input type="number" id="ew" class="winp" step=".1" min="30" max="300" placeholder="—">
         <div class="ac">
           <button class="ab" onclick="adjEW(1)">+</button>
-          <button class="ab" onclick="adjEW(.1)" style="font-size:13px;">+.1</button>
+          <button class="ab" onclick="adjEW(.1)" style="font-size:12px;">+.1</button>
         </div>
       </div>
     </div>
- 
     <div class="card" style="margin-bottom:8px;">
-      <div class="c-title">Шаги</div>
-      <div class="sh"><div><div class="sval" id="es-d">0</div><div class="sunit">шагов</div></div></div>
+      <div class="c-title" id="lb-ew-steps">Шаги</div>
+      <div class="sh"><div><div class="sval" id="es-d">0</div><div class="sunit" id="lb-steps-u2">шагов</div></div></div>
       <div class="bar"><div class="bar-f" id="es-b" style="width:0%"></div></div>
-      <input type="range" id="es-sl" min="0" max="30000" step="100" value="0" oninput="onES(this.value)">
+      <input type="range" id="es-sl" min="0" max="30000" step="100" value="0" oninput="onES(this.value)" onchange="hapticSlider()">
       <div class="rl"><span>0</span><span>10к</span><span>20к</span><span>30к</span></div>
     </div>
- 
     <div class="card" style="margin-bottom:8px;">
-      <div class="c-title">Тренировка</div>
+      <div class="c-title" id="lb-ew-wo">Тренировка</div>
       <div class="seg">
         <button class="seg-btn" id="ewo-y" onclick="setEWO(true)">Была 💪</button>
         <button class="seg-btn" id="ewo-n" onclick="setEWO(false)">Не было</button>
         <button class="seg-btn" id="ewo-x" onclick="setEWO(null)" style="flex:0.7;font-size:11px;">—</button>
       </div>
     </div>
- 
     <div class="card" style="margin-bottom:8px;">
-      <div class="c-title">Оценка дня</div>
+      <div class="c-title" id="lb-ew-rat">Оценка дня</div>
       <div class="rr" id="e-rat"></div>
     </div>
- 
     <div class="card" style="margin-bottom:8px;">
-      <div class="c-title">Сон</div>
+      <div class="c-title" id="lb-ew-sleep">Сон</div>
       <div class="tg2">
-        <div class="tb"><label>Лёг</label><input type="time" id="e-sls" class="ti" value="23:00" oninput="onESl()"></div>
-        <div class="tb"><label>Встал</label><input type="time" id="e-sle" class="ti" value="07:00" oninput="onESl()"></div>
+        <div class="tb"><label id="lb-ew-fell">Лёг</label><input type="time" id="e-sls" class="ti" value="23:00" oninput="onESl()"></div>
+        <div class="tb"><label id="lb-ew-woke">Встал</label><input type="time" id="e-sle" class="ti" value="07:00" oninput="onESl()"></div>
       </div>
       <div class="bar"><div class="bar-f" id="e-slb" style="width:0%"></div></div>
-      <div style="font-size:11px;color:var(--text2);margin-top:2px;" id="e-slh">—</div>
+      <div style="font-size:11px;color:var(--text2);margin-top:3px;" id="e-slh">—</div>
       <div class="wu">
-        <div style="font-size:13px;font-weight:500;color:var(--text2);">Просыпался</div>
+        <div style="font-size:13px;font-weight:500;color:var(--text2);" id="lb-ew-wakeups">Просыпался</div>
         <div class="wu-ctr">
           <button class="wu-btn" onclick="adjEWU(-1)">−</button>
           <div class="wu-num" id="e-wun">0</div>
           <button class="wu-btn" onclick="adjEWU(1)">+</button>
         </div>
       </div>
-      <label style="display:flex;align-items:center;gap:10px;margin-top:10px;cursor:pointer;">
-        <input type="checkbox" id="e-slsv" style="width:18px;height:18px;cursor:pointer;accent-color:var(--blue);">
-        <span style="font-size:14px;font-weight:500;">Сохранить данные сна</span>
+      <label style="display:flex;align-items:center;gap:12px;margin-top:12px;cursor:pointer;">
+        <input type="checkbox" id="e-slsv" style="width:20px;height:20px;cursor:pointer;accent-color:var(--blue);">
+        <span style="font-size:14px;font-weight:500;" id="lb-save-sleep-chk">Сохранить данные сна</span>
       </label>
     </div>
- 
-    <div style="display:flex;gap:8px;margin-top:6px;">
-      <button class="btn fill" style="flex:1;" onclick="closeEd()">Отмена</button>
-      <button class="btn" style="flex:2;" onclick="saveEd()">Сохранить</button>
+    <div style="display:flex;gap:9px;margin-top:8px;">
+      <button class="btn fill" style="flex:1;" onclick="closeEd()" id="lb-cancel">Отмена</button>
+      <button class="btn" style="flex:2;" onclick="saveEd()" id="lb-save">Сохранить</button>
     </div>
-    <button class="btn red" style="margin-top:8px;" onclick="delDay()">Удалить данные дня</button>
+    <button class="btn red" style="margin-top:9px;" onclick="delDay()" id="lb-delete">Удалить данные дня</button>
+  </div>
+</div>
+ 
+<!-- LANG SHEET -->
+<div class="overlay hid" id="lang-ov" onclick="if(event.target===this)closeLang()">
+  <div class="sheet">
+    <div class="drag"></div>
+    <div class="sheet-t" id="lb-lang-title">Язык</div>
+    <div class="opt-list" id="lang-list"></div>
+    <button class="btn fill" style="margin-top:14px;" onclick="closeLang()" id="lb-close-lang">Закрыть</button>
+  </div>
+</div>
+ 
+<!-- REGION SHEET -->
+<div class="overlay hid" id="reg-ov" onclick="if(event.target===this)closeReg()">
+  <div class="sheet">
+    <div class="drag"></div>
+    <div class="sheet-t" id="lb-reg-title">Регион / Часовой пояс</div>
+    <div class="opt-list" id="reg-list"></div>
+    <button class="btn fill" style="margin-top:14px;" onclick="closeReg()" id="lb-close-reg">Закрыть</button>
   </div>
 </div>
  
 <div class="toast" id="toast"></div>
  
 <script>
-// ── HAPTICS ─────────────────────────────────────────────────────
+// ── HAPTICS ──────────────────────────────────────────────────────
 const tg = window.Telegram?.WebApp;
 if(tg){ tg.ready(); tg.expand(); }
  
@@ -775,20 +979,315 @@ function haptic(type='light') {
       else if(type==='error') tg.HapticFeedback.notificationOccurred('error');
       else if(type==='select') tg.HapticFeedback.selectionChanged();
     } else if(navigator.vibrate) {
-      // Fallback
-      const p = type==='heavy'?[30]:type==='medium'?[15]:type==='success'?[10,50,10]:[8];
+      const p = type==='heavy'?[35]:type==='medium'?[18]:type==='success'?[12,60,12]:type==='error'?[30,40,30]:[9];
       navigator.vibrate(p);
     }
   } catch(e){}
 }
  
+// Slider haptic – fires on value change with throttle
+let _slLast = 0;
+function hapticSlider() {
+  const now = Date.now();
+  if(now - _slLast > 40) { haptic('select'); _slLast = now; }
+}
+ 
+// Attach haptic to all sliders on input
+document.querySelectorAll('input[type=range]').forEach(sl => {
+  sl.addEventListener('input', () => hapticSlider());
+});
+ 
 // ── STORAGE ──────────────────────────────────────────────────────
 const S = {
-  g:(k,d=null)=>{ try{ const v=localStorage.getItem('f5_'+k); return v!=null?JSON.parse(v):d; }catch{ return d; } },
-  s:(k,v)=>{ try{ localStorage.setItem('f5_'+k,JSON.stringify(v)); }catch{} }
+  g:(k,d=null)=>{ try{ const v=localStorage.getItem('f6_'+k); return v!=null?JSON.parse(v):d; }catch{ return d; } },
+  s:(k,v)=>{ try{ localStorage.setItem('f6_'+k,JSON.stringify(v)); }catch{} }
 };
  
-// ── THEME ────────────────────────────────────────────────────────
+// ── LANGUAGES ────────────────────────────────────────────────────
+const LANGS = {
+  ru: {
+    name:'Русский', flag:'🇷🇺',
+    'weight-kg':'Вес кг','days-left':'До цели','progress':'Прогресс','streak':'Стрик 🔥',
+    'to-goal':'К цели','done':'выполнено','time':'Время','today':'Сегодня','steps':'Шаги',
+    'steps-u':'шагов','save-steps':'Сохранить шаги','ci-title':'Чек-ин',
+    'weight-card':'Вес (кг)','workout':'Тренировка','wo-yes':'Была 💪','wo-no':'Не было',
+    'day-rating':'Оценка дня','save-ci':'Сохранить','sleep-title':'Сон','sleep-time':'Время сна',
+    'fell-asleep':'Лёг спать','woke-up':'Проснулся','norm':'Норма 7–9 ч','wakeups':'Просыпался ночью',
+    'save-sleep':'Сохранить сон','sleep-hist':'История — 7 дней','cal-title':'Дни','last7':'Последние 7 дней',
+    'stats-title':'Аналитика','disc':'Дисц.','strk2':'Стрик','avg-steps':'Шаги','avg-sleep':'Сон',
+    'steps-7':'Шаги — 7 дней','weight-chart':'Вес','sleep-7':'Сон — 7 дней',
+    'profile-title':'Профиль','personal':'Личные данные','pf-name':'Имя','pf-age':'Возраст',
+    'pf-gender':'Пол','male':'Мужской','female':'Женский','pf-height':'Рост (см)',
+    'pf-sw':'Стартовый вес','pf-tw':'Целевой вес','pf-gd':'Дата цели','pf-steps':'Норма шагов',
+    'app-settings':'Настройки','lang-row':'Язык','region-row':'Регион / Часовой пояс','theme':'Тема',
+    'reset-btn':'Сбросить все данные','ew-weight':'Вес (кг)','ew-steps':'Шаги','ew-wo':'Тренировка',
+    'ew-rat':'Оценка дня','ew-sleep':'Сон','ew-fell':'Лёг','ew-woke':'Встал','ew-wakeups':'Просыпался',
+    'save-sleep-chk':'Сохранить данные сна','cancel':'Отмена','save':'Сохранить','delete':'Удалить данные дня',
+    'lang-title':'Язык','close-lang':'Закрыть','reg-title':'Регион / Часовой пояс','close-reg':'Закрыть',
+    'nb-home':'Главная','nb-ci':'Чек-ин','nb-sl':'Сон','nb-cal':'Дни','nb-st':'Стата','nb-pf':'Профиль',
+    'theme-light':'Светлая','theme-dark':'Тёмная','theme-auto':'Авто',
+    'goal-lose':'Похудеть','goal-gain':'Набрать массу','goal-maintain':'Поддерживать форму',
+    'saved':'Сохранено','ci-saved':'Чек-ин сохранён','steps-saved':'Шаги сохранены',
+    'sleep-saved':'Сон сохранён','day-saved':'День сохранён','deleted':'Удалено',
+    'enter-weight':'Введи вес','enter-time':'Укажи время','check-time':'Проверь время',
+    'profile-saved':'Профиль обновлён','confirm-reset':'Сбросить все данные? Это действие нельзя отменить.',
+    'q-goal':'Какая цель?','q-name':'Как тебя зовут?','q-age':'Сколько лет?','q-gender':'Пол?',
+    'q-height':'Рост (см)?','q-startw':'Текущий вес (кг)?','q-steps':'Норма шагов в день?',
+    'setup-done':'Профиль настроен','pace-slow':'Медленно','pace-ok':'Оптимально','pace-fast':'Быстро',
+    'pace-toofast':'Слишком быстро','pace-sd':'Комфортно, мышцы сохранятся',
+    'pace-od':'Лучший темп — быстро и безопасно','pace-fd':'Требует строгой диеты и дисциплины',
+    'pace-tfd':'Риск потери мышц. Увеличь срок!','pace-btn-ok':'Далее','pace-btn-bad':'Увеличь срок',
+    'q-pace':'До какой даты — цель?','goal-weight-lose':'Сколько хочешь сбросить?',
+    'goal-weight-gain':'Сколько хочешь набрать?','kgw':'кг/нед','kcal-def':'ккал/день дефицит',
+    'target-kg':'кг — цель','diff-kg':'кг разница','month1':'1 мес','sub':'Личный трекер',
+    'sleep-excellent':'Отличный','sleep-good':'Хороший','sleep-avg':'Средний','sleep-bad':'Плохой',
+    'no-data':'Нет данных','no-records':'Нет записей','min-2':'Нужно минимум 2 записи',
+    'progress-label':'Прогресс:','today-lbl':'Сег.','yesterday':'Вчера',
+    'dows':['Пн','Вт','Ср','Чт','Пт','Сб','Вс'],
+    'months':['Январь','Февраль','Март','Апрель','Май','Июнь','Июль','Август','Сентябрь','Октябрь','Ноябрь','Декабрь'],
+    'months-gen':['января','февраля','марта','апреля','мая','июня','июля','августа','сентября','октября','ноября','декабря'],
+    'months-short':['янв','фев','мар','апр','май','июн','июл','авг','сен','окт','ноя','дек'],
+    'dw-short':['Вс','Пн','Вт','Ср','Чт','Пт','Сб'],
+    'edit':'Изменить','workout-yes':'Трен.','workout-no':'—',
+    'days':'д','hours':'ч','min':'мин',
+  },
+  en: {
+    name:'English', flag:'🇬🇧',
+    'weight-kg':'Weight kg','days-left':'To goal','progress':'Progress','streak':'Streak 🔥',
+    'to-goal':'Goal','done':'completed','time':'Time','today':'Today','steps':'Steps',
+    'steps-u':'steps','save-steps':'Save steps','ci-title':'Check-in',
+    'weight-card':'Weight (kg)','workout':'Workout','wo-yes':'Done 💪','wo-no':'Skipped',
+    'day-rating':'Day rating','save-ci':'Save','sleep-title':'Sleep','sleep-time':'Sleep time',
+    'fell-asleep':'Fell asleep','woke-up':'Woke up','norm':'Target 7–9 h','wakeups':'Night wakeups',
+    'save-sleep':'Save sleep','sleep-hist':'History — 7 days','cal-title':'Days','last7':'Last 7 days',
+    'stats-title':'Analytics','disc':'Disc.','strk2':'Streak','avg-steps':'Steps','avg-sleep':'Sleep',
+    'steps-7':'Steps — 7 days','weight-chart':'Weight','sleep-7':'Sleep — 7 days',
+    'profile-title':'Profile','personal':'Personal','pf-name':'Name','pf-age':'Age',
+    'pf-gender':'Gender','male':'Male','female':'Female','pf-height':'Height (cm)',
+    'pf-sw':'Start weight','pf-tw':'Target weight','pf-gd':'Goal date','pf-steps':'Daily steps goal',
+    'app-settings':'Settings','lang-row':'Language','region-row':'Region / Timezone','theme':'Theme',
+    'reset-btn':'Reset all data','ew-weight':'Weight (kg)','ew-steps':'Steps','ew-wo':'Workout',
+    'ew-rat':'Day rating','ew-sleep':'Sleep','ew-fell':'Bedtime','ew-woke':'Wake time','ew-wakeups':'Wakeups',
+    'save-sleep-chk':'Save sleep data','cancel':'Cancel','save':'Save','delete':'Delete day data',
+    'lang-title':'Language','close-lang':'Close','reg-title':'Region / Timezone','close-reg':'Close',
+    'nb-home':'Home','nb-ci':'Check-in','nb-sl':'Sleep','nb-cal':'Days','nb-st':'Stats','nb-pf':'Profile',
+    'theme-light':'Light','theme-dark':'Dark','theme-auto':'Auto',
+    'goal-lose':'Lose weight','goal-gain':'Gain muscle','goal-maintain':'Maintain',
+    'saved':'Saved','ci-saved':'Check-in saved','steps-saved':'Steps saved',
+    'sleep-saved':'Sleep saved','day-saved':'Day saved','deleted':'Deleted',
+    'enter-weight':'Enter weight','enter-time':'Enter time','check-time':'Check time',
+    'profile-saved':'Profile updated','confirm-reset':'Reset all data? This cannot be undone.',
+    'q-goal':'What\'s your goal?','q-name':'What\'s your name?','q-age':'How old are you?','q-gender':'Gender?',
+    'q-height':'Height (cm)?','q-startw':'Current weight (kg)?','q-steps':'Daily steps goal?',
+    'setup-done':'Profile set up','pace-slow':'Slow','pace-ok':'Optimal','pace-fast':'Fast',
+    'pace-toofast':'Too fast','pace-sd':'Comfortable, muscle preserved',
+    'pace-od':'Best pace — fast and safe','pace-fd':'Requires strict diet & discipline',
+    'pace-tfd':'Risk of muscle loss. Extend timeline!','pace-btn-ok':'Continue','pace-btn-bad':'Extend timeline',
+    'q-pace':'Target date?','goal-weight-lose':'How much to lose?',
+    'goal-weight-gain':'How much to gain?','kgw':'kg/week','kcal-def':'kcal/day deficit',
+    'target-kg':'kg — target','diff-kg':'kg difference','month1':'1 mo','sub':'Personal tracker',
+    'sleep-excellent':'Excellent','sleep-good':'Good','sleep-avg':'Average','sleep-bad':'Poor',
+    'no-data':'No data','no-records':'No records','min-2':'Need at least 2 entries',
+    'progress-label':'Progress:','today-lbl':'Today','yesterday':'Yesterday',
+    'dows':['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],
+    'months':['January','February','March','April','May','June','July','August','September','October','November','December'],
+    'months-gen':['January','February','March','April','May','June','July','August','September','October','November','December'],
+    'months-short':['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
+    'dw-short':['Sun','Mon','Tue','Wed','Thu','Fri','Sat'],
+    'edit':'Edit','workout-yes':'Workout','workout-no':'—',
+    'days':'d','hours':'h','min':'min',
+  },
+  tr: {
+    name:'Türkçe', flag:'🇹🇷',
+    'weight-kg':'Kilo kg','days-left':'Hedefe','progress':'İlerleme','streak':'Seri 🔥',
+    'to-goal':'Hedefe','done':'tamamlandı','time':'Süre','today':'Bugün','steps':'Adım',
+    'steps-u':'adım','save-steps':'Adımları kaydet','ci-title':'Kontrol',
+    'weight-card':'Kilo (kg)','workout':'Antrenman','wo-yes':'Yapıldı 💪','wo-no':'Yapılmadı',
+    'day-rating':'Gün puanı','save-ci':'Kaydet','sleep-title':'Uyku','sleep-time':'Uyku süresi',
+    'fell-asleep':'Yattım','woke-up':'Kalktım','norm':'Hedef 7–9 sa','wakeups':'Gece uyanma',
+    'save-sleep':'Uykuyu kaydet','sleep-hist':'Geçmiş — 7 gün','cal-title':'Günler','last7':'Son 7 gün',
+    'stats-title':'Analitik','disc':'Disip.','strk2':'Seri','avg-steps':'Adım','avg-sleep':'Uyku',
+    'steps-7':'Adım — 7 gün','weight-chart':'Kilo','sleep-7':'Uyku — 7 gün',
+    'profile-title':'Profil','personal':'Kişisel bilgiler','pf-name':'Ad','pf-age':'Yaş',
+    'pf-gender':'Cinsiyet','male':'Erkek','female':'Kadın','pf-height':'Boy (cm)',
+    'pf-sw':'Başlangıç kilosu','pf-tw':'Hedef kilo','pf-gd':'Hedef tarihi','pf-steps':'Günlük adım hedefi',
+    'app-settings':'Ayarlar','lang-row':'Dil','region-row':'Bölge / Saat dilimi','theme':'Tema',
+    'reset-btn':'Tüm verileri sıfırla','ew-weight':'Kilo (kg)','ew-steps':'Adım','ew-wo':'Antrenman',
+    'ew-rat':'Gün puanı','ew-sleep':'Uyku','ew-fell':'Yatış','ew-woke':'Kalkış','ew-wakeups':'Uyanmalar',
+    'save-sleep-chk':'Uyku verilerini kaydet','cancel':'İptal','save':'Kaydet','delete':'Gün verilerini sil',
+    'lang-title':'Dil','close-lang':'Kapat','reg-title':'Bölge / Saat dilimi','close-reg':'Kapat',
+    'nb-home':'Ana Sayfa','nb-ci':'Kontrol','nb-sl':'Uyku','nb-cal':'Günler','nb-st':'İstatistik','nb-pf':'Profil',
+    'theme-light':'Açık','theme-dark':'Koyu','theme-auto':'Otomatik',
+    'goal-lose':'Kilo ver','goal-gain':'Kas kazan','goal-maintain':'Formu koru',
+    'saved':'Kaydedildi','ci-saved':'Kontrol kaydedildi','steps-saved':'Adımlar kaydedildi',
+    'sleep-saved':'Uyku kaydedildi','day-saved':'Gün kaydedildi','deleted':'Silindi',
+    'enter-weight':'Kilo gir','enter-time':'Süre gir','check-time':'Süreyi kontrol et',
+    'profile-saved':'Profil güncellendi','confirm-reset':'Tüm veriler silinsin mi? Geri alınamaz.',
+    'q-goal':'Hedefiniz ne?','q-name':'Adınız ne?','q-age':'Kaç yaşındasınız?','q-gender':'Cinsiyet?',
+    'q-height':'Boy (cm)?','q-startw':'Mevcut kilo (kg)?','q-steps':'Günlük adım hedefi?',
+    'setup-done':'Profil oluşturuldu','pace-slow':'Yavaş','pace-ok':'Optimal','pace-fast':'Hızlı',
+    'pace-toofast':'Çok hızlı','pace-sd':'Rahat, kaslar korunur',
+    'pace-od':'En iyi tempo — hızlı ve güvenli','pace-fd':'Katı diyet gerektirir',
+    'pace-tfd':'Kas kaybı riski. Süreyi uzat!','pace-btn-ok':'Devam','pace-btn-bad':'Süreyi uzat',
+    'q-pace':'Hedef tarih?','goal-weight-lose':'Ne kadar vermek istiyorsun?',
+    'goal-weight-gain':'Ne kadar almak istiyorsun?','kgw':'kg/hafta','kcal-def':'kcal/gün açık',
+    'target-kg':'kg — hedef','diff-kg':'kg fark','month1':'1 ay','sub':'Kişisel takipçi',
+    'sleep-excellent':'Mükemmel','sleep-good':'İyi','sleep-avg':'Orta','sleep-bad':'Kötü',
+    'no-data':'Veri yok','no-records':'Kayıt yok','min-2':'En az 2 kayıt gerekli',
+    'progress-label':'İlerleme:','today-lbl':'Bugün','yesterday':'Dün',
+    'dows':['Pzt','Sal','Çar','Per','Cum','Cmt','Paz'],
+    'months':['Ocak','Şubat','Mart','Nisan','Mayıs','Haziran','Temmuz','Ağustos','Eylül','Ekim','Kasım','Aralık'],
+    'months-gen':['Ocak','Şubat','Mart','Nisan','Mayıs','Haziran','Temmuz','Ağustos','Eylül','Ekim','Kasım','Aralık'],
+    'months-short':['Oca','Şub','Mar','Nis','May','Haz','Tem','Ağu','Eyl','Eki','Kas','Ara'],
+    'dw-short':['Paz','Pzt','Sal','Çar','Per','Cum','Cmt'],
+    'edit':'Düzenle','workout-yes':'Antrenman','workout-no':'—',
+    'days':'g','hours':'sa','min':'dk',
+  },
+  de: {
+    name:'Deutsch', flag:'🇩🇪',
+    'weight-kg':'Gewicht kg','days-left':'Zum Ziel','progress':'Fortschritt','streak':'Serie 🔥',
+    'to-goal':'Zum Ziel','done':'erreicht','time':'Zeit','today':'Heute','steps':'Schritte',
+    'steps-u':'Schritte','save-steps':'Schritte speichern','ci-title':'Check-in',
+    'weight-card':'Gewicht (kg)','workout':'Training','wo-yes':'Gemacht 💪','wo-no':'Kein Training',
+    'day-rating':'Tagesbewertung','save-ci':'Speichern','sleep-title':'Schlaf','sleep-time':'Schlafzeit',
+    'fell-asleep':'Eingeschlafen','woke-up':'Aufgewacht','norm':'Ziel 7–9 Std','wakeups':'Nachterwachen',
+    'save-sleep':'Schlaf speichern','sleep-hist':'Verlauf — 7 Tage','cal-title':'Tage','last7':'Letzte 7 Tage',
+    'stats-title':'Analyse','disc':'Disziplin','strk2':'Serie','avg-steps':'Schritte','avg-sleep':'Schlaf',
+    'steps-7':'Schritte — 7 Tage','weight-chart':'Gewicht','sleep-7':'Schlaf — 7 Tage',
+    'profile-title':'Profil','personal':'Persönliche Daten','pf-name':'Name','pf-age':'Alter',
+    'pf-gender':'Geschlecht','male':'Männlich','female':'Weiblich','pf-height':'Größe (cm)',
+    'pf-sw':'Startgewicht','pf-tw':'Zielgewicht','pf-gd':'Zieldatum','pf-steps':'Tägliches Schrittziel',
+    'app-settings':'Einstellungen','lang-row':'Sprache','region-row':'Region / Zeitzone','theme':'Thema',
+    'reset-btn':'Alle Daten zurücksetzen','ew-weight':'Gewicht (kg)','ew-steps':'Schritte','ew-wo':'Training',
+    'ew-rat':'Tagesbewertung','ew-sleep':'Schlaf','ew-fell':'Schlafenszeit','ew-woke':'Aufwachzeit','ew-wakeups':'Erwachungen',
+    'save-sleep-chk':'Schlafdaten speichern','cancel':'Abbrechen','save':'Speichern','delete':'Tagesdaten löschen',
+    'lang-title':'Sprache','close-lang':'Schließen','reg-title':'Region / Zeitzone','close-reg':'Schließen',
+    'nb-home':'Start','nb-ci':'Check-in','nb-sl':'Schlaf','nb-cal':'Tage','nb-st':'Statistik','nb-pf':'Profil',
+    'theme-light':'Hell','theme-dark':'Dunkel','theme-auto':'Auto',
+    'goal-lose':'Gewicht verlieren','goal-gain':'Muskeln aufbauen','goal-maintain':'Form halten',
+    'saved':'Gespeichert','ci-saved':'Check-in gespeichert','steps-saved':'Schritte gespeichert',
+    'sleep-saved':'Schlaf gespeichert','day-saved':'Tag gespeichert','deleted':'Gelöscht',
+    'enter-weight':'Gewicht eingeben','enter-time':'Zeit eingeben','check-time':'Zeit prüfen',
+    'profile-saved':'Profil aktualisiert','confirm-reset':'Alle Daten löschen? Nicht rückgängig machbar.',
+    'q-goal':'Was ist dein Ziel?','q-name':'Wie heißt du?','q-age':'Wie alt bist du?','q-gender':'Geschlecht?',
+    'q-height':'Größe (cm)?','q-startw':'Aktuelles Gewicht (kg)?','q-steps':'Tägliches Schrittziel?',
+    'setup-done':'Profil eingerichtet','pace-slow':'Langsam','pace-ok':'Optimal','pace-fast':'Schnell',
+    'pace-toofast':'Zu schnell','pace-sd':'Bequem, Muskeln bleiben erhalten',
+    'pace-od':'Bestes Tempo — schnell und sicher','pace-fd':'Erfordert strikte Diät',
+    'pace-tfd':'Muskelabbaurisiko. Zeitraum verlängern!','pace-btn-ok':'Weiter','pace-btn-bad':'Zeitraum verlängern',
+    'q-pace':'Zieldatum?','goal-weight-lose':'Wie viel möchtest du verlieren?',
+    'goal-weight-gain':'Wie viel möchtest du zunehmen?','kgw':'kg/Woche','kcal-def':'kcal/Tag Defizit',
+    'target-kg':'kg — Ziel','diff-kg':'kg Differenz','month1':'1 Mon','sub':'Persönlicher Tracker',
+    'sleep-excellent':'Ausgezeichnet','sleep-good':'Gut','sleep-avg':'Mittel','sleep-bad':'Schlecht',
+    'no-data':'Keine Daten','no-records':'Keine Einträge','min-2':'Mindestens 2 Einträge benötigt',
+    'progress-label':'Fortschritt:','today-lbl':'Heute','yesterday':'Gestern',
+    'dows':['Mo','Di','Mi','Do','Fr','Sa','So'],
+    'months':['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'],
+    'months-gen':['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'],
+    'months-short':['Jan','Feb','Mär','Apr','Mai','Jun','Jul','Aug','Sep','Okt','Nov','Dez'],
+    'dw-short':['So','Mo','Di','Mi','Do','Fr','Sa'],
+    'edit':'Bearbeiten','workout-yes':'Training','workout-no':'—',
+    'days':'T','hours':'Std','min':'Min',
+  },
+  es: {
+    name:'Español', flag:'🇪🇸',
+    'weight-kg':'Peso kg','days-left':'Para meta','progress':'Progreso','streak':'Racha 🔥',
+    'to-goal':'A la meta','done':'completado','time':'Tiempo','today':'Hoy','steps':'Pasos',
+    'steps-u':'pasos','save-steps':'Guardar pasos','ci-title':'Check-in',
+    'weight-card':'Peso (kg)','workout':'Entrenamiento','wo-yes':'Hecho 💪','wo-no':'Sin entreno',
+    'day-rating':'Valoración del día','save-ci':'Guardar','sleep-title':'Sueño','sleep-time':'Tiempo de sueño',
+    'fell-asleep':'Me dormí','woke-up':'Me desperté','norm':'Meta 7–9 h','wakeups':'Despertares nocturnos',
+    'save-sleep':'Guardar sueño','sleep-hist':'Historial — 7 días','cal-title':'Días','last7':'Últimos 7 días',
+    'stats-title':'Análisis','disc':'Discip.','strk2':'Racha','avg-steps':'Pasos','avg-sleep':'Sueño',
+    'steps-7':'Pasos — 7 días','weight-chart':'Peso','sleep-7':'Sueño — 7 días',
+    'profile-title':'Perfil','personal':'Datos personales','pf-name':'Nombre','pf-age':'Edad',
+    'pf-gender':'Género','male':'Masculino','female':'Femenino','pf-height':'Altura (cm)',
+    'pf-sw':'Peso inicial','pf-tw':'Peso objetivo','pf-gd':'Fecha objetivo','pf-steps':'Meta de pasos diarios',
+    'app-settings':'Ajustes','lang-row':'Idioma','region-row':'Región / Zona horaria','theme':'Tema',
+    'reset-btn':'Restablecer todos los datos','ew-weight':'Peso (kg)','ew-steps':'Pasos','ew-wo':'Entrenamiento',
+    'ew-rat':'Valoración del día','ew-sleep':'Sueño','ew-fell':'Acostarse','ew-woke':'Levantarse','ew-wakeups':'Despertares',
+    'save-sleep-chk':'Guardar datos de sueño','cancel':'Cancelar','save':'Guardar','delete':'Eliminar datos del día',
+    'lang-title':'Idioma','close-lang':'Cerrar','reg-title':'Región / Zona horaria','close-reg':'Cerrar',
+    'nb-home':'Inicio','nb-ci':'Check-in','nb-sl':'Sueño','nb-cal':'Días','nb-st':'Stats','nb-pf':'Perfil',
+    'theme-light':'Claro','theme-dark':'Oscuro','theme-auto':'Auto',
+    'goal-lose':'Perder peso','goal-gain':'Ganar músculo','goal-maintain':'Mantener forma',
+    'saved':'Guardado','ci-saved':'Check-in guardado','steps-saved':'Pasos guardados',
+    'sleep-saved':'Sueño guardado','day-saved':'Día guardado','deleted':'Eliminado',
+    'enter-weight':'Ingresa el peso','enter-time':'Ingresa la hora','check-time':'Verifica la hora',
+    'profile-saved':'Perfil actualizado','confirm-reset':'¿Restablecer todos los datos? No se puede deshacer.',
+    'q-goal':'¿Cuál es tu objetivo?','q-name':'¿Cómo te llamas?','q-age':'¿Cuántos años tienes?','q-gender':'¿Género?',
+    'q-height':'¿Altura (cm)?','q-startw':'Peso actual (kg)?','q-steps':'¿Meta de pasos diarios?',
+    'setup-done':'Perfil configurado','pace-slow':'Lento','pace-ok':'Óptimo','pace-fast':'Rápido',
+    'pace-toofast':'Demasiado rápido','pace-sd':'Cómodo, los músculos se conservan',
+    'pace-od':'Mejor ritmo — rápido y seguro','pace-fd':'Requiere dieta estricta',
+    'pace-tfd':'Riesgo de pérdida muscular. ¡Extiende el plazo!','pace-btn-ok':'Continuar','pace-btn-bad':'Extender plazo',
+    'q-pace':'¿Fecha objetivo?','goal-weight-lose':'¿Cuánto quieres perder?',
+    'goal-weight-gain':'¿Cuánto quieres ganar?','kgw':'kg/semana','kcal-def':'kcal/día déficit',
+    'target-kg':'kg — objetivo','diff-kg':'kg diferencia','month1':'1 mes','sub':'Tracker personal',
+    'sleep-excellent':'Excelente','sleep-good':'Bueno','sleep-avg':'Regular','sleep-bad':'Malo',
+    'no-data':'Sin datos','no-records':'Sin registros','min-2':'Se necesitan al menos 2 entradas',
+    'progress-label':'Progreso:','today-lbl':'Hoy','yesterday':'Ayer',
+    'dows':['Lun','Mar','Mié','Jue','Vie','Sáb','Dom'],
+    'months':['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'],
+    'months-gen':['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'],
+    'months-short':['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'],
+    'dw-short':['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'],
+    'edit':'Editar','workout-yes':'Entreno','workout-no':'—',
+    'days':'d','hours':'h','min':'min',
+  }
+};
+ 
+// ── REGIONS ───────────────────────────────────────────────────────
+const REGIONS = [
+  {id:'Europe/Istanbul', name:'Istanbul', flag:'🇹🇷'},
+  {id:'Europe/Moscow', name:'Moscow', flag:'🇷🇺'},
+  {id:'Europe/London', name:'London', flag:'🇬🇧'},
+  {id:'Europe/Berlin', name:'Berlin/Paris', flag:'🇩🇪'},
+  {id:'Asia/Dubai', name:'Dubai', flag:'🇦🇪'},
+  {id:'Asia/Almaty', name:'Almaty', flag:'🇰🇿'},
+  {id:'Asia/Tashkent', name:'Tashkent', flag:'🇺🇿'},
+  {id:'Asia/Yekaterinburg', name:'Yekaterinburg', flag:'🇷🇺'},
+  {id:'America/New_York', name:'New York', flag:'🇺🇸'},
+  {id:'America/Chicago', name:'Chicago', flag:'🇺🇸'},
+  {id:'America/Los_Angeles', name:'Los Angeles', flag:'🇺🇸'},
+  {id:'Asia/Tokyo', name:'Tokyo', flag:'🇯🇵'},
+  {id:'Asia/Shanghai', name:'Shanghai', flag:'🇨🇳'},
+  {id:'Asia/Kolkata', name:'Mumbai/Delhi', flag:'🇮🇳'},
+  {id:'Australia/Sydney', name:'Sydney', flag:'🇦🇺'},
+];
+ 
+let curLang = 'ru';
+let curRegion = 'Europe/Istanbul';
+ 
+function L(key) { return LANGS[curLang]?.[key] || LANGS.ru[key] || key; }
+ 
+function applyLang() {
+  const ids = ['weight-kg','days-left','progress','streak','to-goal','done','time','today','steps',
+    'steps-u','ci-title','weight-card','workout','day-rating','save-ci','sleep-title','sleep-time',
+    'fell-asleep','woke-up','norm','wakeups','save-sleep','sleep-hist','cal-title','last7',
+    'stats-title','disc','strk2','avg-steps','avg-sleep','steps-7','weight-chart','sleep-7',
+    'profile-title','personal','pf-name','pf-age','pf-gender','male','female','pf-height',
+    'pf-sw','pf-tw','pf-gd','pf-steps','app-settings','lang-row','region-row','theme','reset-btn',
+    'ew-weight','ew-steps','ew-wo','ew-rat','ew-sleep','ew-fell','ew-woke','ew-wakeups',
+    'save-sleep-chk','cancel','save','delete','lang-title','close-lang','reg-title','close-reg',
+    'nb-home','nb-ci','nb-sl','nb-cal','nb-st','nb-pf'];
+  ids.forEach(k => {
+    const el = document.getElementById('lb-'+k);
+    if(el) el.textContent = L(k);
+  });
+  // Nav save-steps
+  const ssb = document.getElementById('lb-save-steps-btn'); if(ssb) ssb.textContent = L('save-steps');
+  const wb = document.getElementById('lb-wo-yes'); if(wb) wb.textContent = L('wo-yes');
+  const wbn = document.getElementById('lb-wo-no'); if(wbn) wbn.textContent = L('wo-no');
+  document.getElementById('s-sub-txt').textContent = L('sub');
+  const dk = document.documentElement.hasAttribute('data-dark');
+  const tv = document.getElementById('pf-theme-val'); if(tv) tv.textContent = L(dk?'theme-dark':'theme-light');
+  const lv = document.getElementById('pf-lang-val'); if(lv) lv.textContent = (LANGS[curLang]?.flag||'') + ' ' + L('name');
+  const rv = document.getElementById('pf-reg-val');
+  if(rv) { const r = REGIONS.find(r=>r.id===curRegion); rv.textContent = r ? r.flag+' '+r.name : curRegion; }
+}
+ 
+// ── THEME ─────────────────────────────────────────────────────────
 function toggleTheme() {
   haptic('select');
   const dk = document.documentElement.hasAttribute('data-dark');
@@ -797,41 +1296,61 @@ function toggleTheme() {
 function applyTheme(dark) {
   if(dark) document.documentElement.setAttribute('data-dark','');
   else document.documentElement.removeAttribute('data-dark');
-  const b = document.getElementById('tbtn');
-  if(b) b.textContent = dark ? '☀️' : '🌙';
+  const b = document.getElementById('tbtn'); if(b) b.textContent = dark ? '☀️' : '🌙';
+  const tv = document.getElementById('pf-theme-val'); if(tv) tv.textContent = L(dark?'theme-dark':'theme-light');
   S.s('theme', dark?'dark':'light');
-  try{ tg.setHeaderColor(dark?'#000000':'#f2f2f7'); tg.setBackgroundColor(dark?'#000000':'#f2f2f7'); }catch{}
+  try{
+    if(dark){ tg.setHeaderColor('#000000'); tg.setBackgroundColor('#000000'); }
+    else { tg.setHeaderColor('#f2f2f7'); tg.setBackgroundColor('#f2f2f7'); }
+  }catch{}
 }
 function initTheme() {
-  const t = S.g('theme','light');
-  applyTheme(t==='dark');
+  // Try Telegram colorScheme first
+  let dark = false;
+  try {
+    const tgCs = tg?.colorScheme;
+    if(tgCs) { dark = tgCs === 'dark'; }
+    else {
+      const saved = S.g('theme');
+      if(saved) dark = saved === 'dark';
+      else dark = window.matchMedia?.('(prefers-color-scheme: dark)').matches;
+    }
+  } catch(e) {
+    dark = S.g('theme','light') === 'dark';
+  }
+  applyTheme(dark);
 }
  
-// ── TIME ─────────────────────────────────────────────────────────
-const TZ = { timeZone: 'Europe/Istanbul' };
-function nowIST() { return new Date(new Date().toLocaleString('en-US', TZ)); }
+// Listen for system theme changes
+try {
+  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+    if(!S.g('theme')) applyTheme(e.matches);
+  });
+} catch(e){}
+ 
+// ── TIME ──────────────────────────────────────────────────────────
+function nowTZ() {
+  return new Date(new Date().toLocaleString('en-US', { timeZone: curRegion }));
+}
 function dsStr(d) { return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`; }
-function today() { return dsStr(nowIST()); }
+function today() { return dsStr(nowTZ()); }
 function dLbl(s) {
-  const ms = ['янв','фев','мар','апр','май','июн','июл','авг','сен','окт','ноя','дек'];
-  const D = new Date(s);
-  const t = today(), y = dsStr(new Date(nowIST()-86400000));
-  return s===t ? 'Сег.' : s===y ? 'Вчера' : `${D.getDate()} ${ms[D.getMonth()]}`;
+  const t = today(), y = dsStr(new Date(nowTZ()-86400000));
+  if(s===t) return L('today-lbl');
+  if(s===y) return L('yesterday');
+  const D = new Date(s); return `${D.getDate()} ${L('months-short')[D.getMonth()]}`;
 }
 function fmtDate(s) {
-  const ms = ['января','февраля','марта','апреля','мая','июня','июля','августа','сентября','октября','ноября','декабря'];
   const D = new Date(s);
-  return `${D.getDate()} ${ms[D.getMonth()]} ${D.getFullYear()}`;
+  return `${D.getDate()} ${L('months-gen')[D.getMonth()]} ${D.getFullYear()}`;
 }
 function clock() {
-  const d = nowIST();
-  const dw = ['Вс','Пн','Вт','Ср','Чт','Пт','Сб'];
-  const ms = ['янв','фев','мар','апр','май','июн','июл','авг','сен','окт','ноя','дек'];
-  const t = `${dw[d.getDay()]} ${d.getDate()} ${ms[d.getMonth()]}<br>${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;
+  const d = nowTZ();
+  const t = `${L('dw-short')[d.getDay()]} ${d.getDate()} ${L('months-short')[d.getMonth()]}<br>${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;
   ['h-date','ci-d'].forEach(id=>{ const e=document.getElementById(id); if(e) e.innerHTML=t; });
 }
  
-// ── MATH ─────────────────────────────────────────────────────────
+// ── MATH ──────────────────────────────────────────────────────────
 function slMins(s,e) {
   const[sh,sm]=s.split(':').map(Number),[eh,em]=e.split(':').map(Number);
   let a=sh*60+sm, b=eh*60+em; if(b<=a) b+=1440; return b-a;
@@ -839,41 +1358,43 @@ function slMins(s,e) {
 function slScore(hrs,w) {
   const d = hrs>=7&&hrs<=9?50:hrs>=6.5?40:hrs>=6?28:hrs>=5?15:5;
   const ws = [50,38,26,16,10,5,0][Math.min(w,6)]; const t=d+ws;
-  if(t>=85) return{t,l:'Отличный',c:'var(--green)',ic:'🌟'};
-  if(t>=70) return{t,l:'Хороший',c:'var(--blue)',ic:'😴'};
-  if(t>=50) return{t,l:'Средний',c:'var(--orange)',ic:'😐'};
-  return{t,l:'Плохой',c:'var(--red)',ic:'😮'};
+  let lbl,ic,desc;
+  if(t>=85){lbl=L('sleep-excellent');ic='🌟';desc='7–9h, '+L('norm');}
+  else if(t>=70){lbl=L('sleep-good');ic='😴';}
+  else if(t>=50){lbl=L('sleep-avg');ic='😐';}
+  else{lbl=L('sleep-bad');ic='😮';}
+  const c = t>=85?'var(--green)':t>=70?'var(--blue)':t>=50?'var(--orange)':'var(--red)';
+  return{t,l:lbl,c,ic};
 }
 function streak(days) {
-  let d=new Date(nowIST()), n=0;
+  let d=new Date(nowTZ()), n=0;
   if(!days[today()]?.w) d=new Date(d-86400000);
-  for(let i=0;i<200;i++){ const s=dsStr(d); if(days[s]?.w){n++;d=new Date(d-86400000);}else break; }
+  for(let i=0;i<365;i++){ const s=dsStr(d); if(days[s]?.w){n++;d=new Date(d-86400000);}else break; }
   return n;
 }
 function calcPace(diffKg, goalDate) {
-  const days = Math.max(7,(new Date(goalDate)-nowIST())/86400000);
-  const weeks = days/7;
-  const kgW = diffKg/weeks;
-  const kcal = kgW*7700/7;
-  if(kgW<0.25) return{kgW,kcal,lbl:'Медленно',desc:'Комфортно, мышцы сохранятся',animal:'🐢',color:'var(--green)',ok:true};
-  if(kgW<0.6)  return{kgW,kcal,lbl:'Оптимально',desc:'Лучший темп — быстро и безопасно',animal:'🐇',color:'var(--blue)',ok:true};
-  if(kgW<1.0)  return{kgW,kcal,lbl:'Быстро',desc:'Требует строгой диеты и дисциплины',animal:'🦊',color:'var(--orange)',ok:true};
-  return{kgW,kcal,lbl:'Слишком быстро',desc:'Риск потери мышц. Увеличь срок!',animal:'⚠️',color:'var(--red)',ok:false};
+  const days = Math.max(7,(new Date(goalDate)-nowTZ())/86400000);
+  const weeks = days/7; const kgW = diffKg/weeks; const kcal = kgW*7700/7;
+  if(kgW<0.25) return{kgW,kcal,lbl:L('pace-slow'),desc:L('pace-sd'),animal:'🐢',color:'var(--green)',ok:true};
+  if(kgW<0.6)  return{kgW,kcal,lbl:L('pace-ok'),desc:L('pace-od'),animal:'🐇',color:'var(--blue)',ok:true};
+  if(kgW<1.0)  return{kgW,kcal,lbl:L('pace-fast'),desc:L('pace-fd'),animal:'🦊',color:'var(--orange)',ok:true};
+  return{kgW,kcal,lbl:L('pace-toofast'),desc:L('pace-tfd'),animal:'⚠️',color:'var(--red)',ok:false};
 }
  
-// ── SETUP ────────────────────────────────────────────────────────
+// ── SETUP ─────────────────────────────────────────────────────────
 let SD={}, SI=0;
-const STEPS = [
-  {id:'goal',q:'Какая цель?',type:'opts',opts:[
-    {v:'lose',l:'Похудеть'},{v:'gain',l:'Набрать массу'},{v:'maintain',l:'Поддерживать форму'}]},
-  {id:'name',q:'Как тебя зовут?',type:'text',ph:'Имя',hint:''},
-  {id:'age',q:'Сколько лет?',type:'int',ph:'25',hint:'',min:10,max:100},
-  {id:'gender',q:'Пол?',type:'opts',opts:[{v:'male',l:'Мужской'},{v:'female',l:'Женский'}]},
-  {id:'height',q:'Рост (см)?',type:'int',ph:'178',hint:'',min:100,max:250},
-  {id:'startWeight',q:'Текущий вес (кг)?',type:'dec',ph:'82.0',hint:'',min:30,max:300},
-  {id:'_pace',q:'Цель и темп',type:'pace'},
-  {id:'stepsGoal',q:'Норма шагов в день?',type:'int',ph:'10000',hint:'',min:1000,max:50000},
-];
+function getSteps() {
+  return [
+    {id:'goal',q:()=>L('q-goal'),type:'opts',opts:[{v:'lose',l:()=>L('goal-lose')},{v:'gain',l:()=>L('goal-gain')},{v:'maintain',l:()=>L('goal-maintain')}]},
+    {id:'name',q:()=>L('q-name'),type:'text',ph:'Alex',hint:'',min:null,max:null},
+    {id:'age',q:()=>L('q-age'),type:'int',ph:'25',hint:'',min:10,max:100},
+    {id:'gender',q:()=>L('q-gender'),type:'opts',opts:[{v:'male',l:()=>L('male')},{v:'female',l:()=>L('female')}]},
+    {id:'height',q:()=>L('q-height'),type:'int',ph:'178',hint:'',min:100,max:250},
+    {id:'startWeight',q:()=>L('q-startw'),type:'dec',ph:'82.0',hint:'',min:30,max:300},
+    {id:'_pace',q:()=>L('q-pace'),type:'pace'},
+    {id:'stepsGoal',q:()=>L('q-steps'),type:'int',ph:'10000',hint:'',min:1000,max:50000},
+  ];
+}
  
 function showSetup(){
   document.getElementById('setup').style.display='flex';
@@ -885,19 +1406,20 @@ function showApp(){
   document.getElementById('setup').style.display='none';
   document.getElementById('app').style.display='block';
   document.getElementById('nav').style.display='flex';
-  initTheme(); clock(); setInterval(clock,30000);
+  initTheme(); applyLang(); clock(); setInterval(clock,30000);
   renderHome(); prefillCI(); buildRat(); onSl(); renderSlHist();
+  loadProfile();
 }
 function renderStep(){
-  const step = STEPS[SI];
+  const STEPS = getSteps(); const step = STEPS[SI];
   let dots = '';
   for(let i=0;i<STEPS.length;i++) dots+=`<div class="s-dot${i<=SI?' d':''}"></div>`;
   document.getElementById('dots').innerHTML=dots;
   if(step.type==='pace'){ document.getElementById('sbody').innerHTML=renderPaceHTML(); initPace(); return; }
   const opts = typeof step.opts==='function'?step.opts():step.opts;
-  let html = `<div class="s-q">${step.q}</div>`;
+  let html = `<div class="s-q">${typeof step.q==='function'?step.q():step.q}</div>`;
   if(step.type==='opts'){
-    html += `<div class="s-opts">${opts.map(o=>`<button class="so" onclick="pickO('${step.id}','${o.v}')">${o.l}</button>`).join('')}</div>`;
+    html += `<div class="s-opts">${opts.map(o=>`<button class="so" onclick="pickO('${step.id}','${o.v}')">${typeof o.l==='function'?o.l():o.l}</button>`).join('')}</div>`;
   } else {
     const it = step.type==='dec'?'number':'text';
     html += `<input id="sinp" type="${it}" class="sinp" placeholder="${step.ph}"
@@ -905,40 +1427,40 @@ function renderStep(){
       ${step.min!=null?`min="${step.min}"`:''}${step.max!=null?`max="${step.max}"`:''}
       value="${SD[step.id]||''}"
       onkeydown="if(event.key==='Enter')nextS()">
-      <div class="s-hint">${step.hint}</div>
-      <button class="btn" style="margin-top:14px;" onclick="nextS()">Далее</button>`;
+      <div class="s-hint">${step.hint||''}</div>
+      <button class="btn" style="margin-top:16px;" onclick="nextS()">${L('nb-home')==='Home'?'Next →':'Далее'}</button>`;
   }
   document.getElementById('sbody').innerHTML=html;
   if(step.type!=='opts') setTimeout(()=>document.getElementById('sinp')?.focus(),100);
 }
  
 function renderPaceHTML(){
-  const months = [1,2,3,4,6];
-  return `<div class="s-q">До какой даты — цель?</div>
+  const months=[1,2,3,4,6];
+  return `<div class="s-q">${L('q-pace')}</div>
     <div class="s-opts" style="flex-direction:row;flex-wrap:wrap;gap:6px;">
-      ${months.map(m=>{
-        const l = m===1?'1 мес':m<5?`${m} мес.`:`${m} мес.`;
-        return `<button class="so" id="mo${m}" onclick="selMonth(${m})" style="flex:1;min-width:70px;text-align:center;">${l}</button>`;
+      ${months.map((m,i)=>{
+        const l=i===0?L('month1'):m+'m';
+        return `<button class="so" id="mo${m}" onclick="selMonth(${m})" style="flex:1;min-width:64px;text-align:center;">${l}</button>`;
       }).join('')}
     </div>
-    <div id="pw" style="display:none;margin-top:16px;">
-      <div class="s-q" id="p-q" style="margin-top:4px;">Целевой вес</div>
+    <div id="pw" style="display:none;margin-top:18px;">
+      <div class="s-q" id="p-q" style="margin-top:4px;">${L('goal-weight-lose')}</div>
       <div class="pace-card">
         <div class="pace-animal" id="p-anim">🐇</div>
         <div class="pace-lbl" id="p-lbl">—</div>
         <div class="pace-desc" id="p-desc">—</div>
         <div class="pace-stats">
-          <div class="pace-stat"><div class="pace-stat-n" id="p-kgw">—</div><div class="pace-stat-l">кг/нед</div></div>
-          <div class="pace-stat"><div class="pace-stat-n" id="p-kcal">—</div><div class="pace-stat-l">ккал/день дефицит</div></div>
+          <div class="pace-stat"><div class="pace-stat-n" id="p-kgw">—</div><div class="pace-stat-l">${L('kgw')}</div></div>
+          <div class="pace-stat"><div class="pace-stat-n" id="p-kcal">—</div><div class="pace-stat-l">${L('kcal-def')}</div></div>
         </div>
       </div>
       <div class="sh">
-        <div><div class="sval" id="tw-v">—</div><div class="sunit">кг — цель</div></div>
-        <div style="text-align:right"><div class="sval" id="tw-diff">—</div><div class="sunit" id="tw-dir">кг разница</div></div>
+        <div><div class="sval" id="tw-v">—</div><div class="sunit">${L('target-kg')}</div></div>
+        <div style="text-align:right"><div class="sval" id="tw-diff">—</div><div class="sunit" id="tw-dir">${L('diff-kg')}</div></div>
       </div>
-      <input type="range" id="tw-sl" min="1" max="40" step="0.5" value="5" oninput="onTW(this.value)">
-      <div class="rl"><span id="tw-min">−1 кг</span><span id="tw-max"></span></div>
-      <button class="btn" style="margin-top:14px;" id="p-next" onclick="confirmPace()" disabled>Далее</button>
+      <input type="range" id="tw-sl" min="1" max="40" step="0.5" value="5" oninput="onTW(this.value)" onchange="hapticSlider()">
+      <div class="rl"><span id="tw-min">−1 kg</span><span id="tw-max"></span></div>
+      <button class="btn" style="margin-top:16px;" id="p-next" onclick="confirmPace()" disabled>${L('pace-btn-ok')}</button>
     </div>`;
 }
  
@@ -953,50 +1475,48 @@ function selMonth(m){
   const sl=document.getElementById('tw-sl');
   if(sl){
     if(goal==='maintain'){ confirmPaceDirect(m); return; }
-    if(goal==='lose'){ sl.max=Math.min(40,sw-40); sl.min=0.5; document.getElementById('tw-min').textContent='−0.5 кг'; document.getElementById('tw-max').textContent=`−${sl.max} кг`; }
-    else{ sl.max=30; sl.min=0.5; document.getElementById('tw-min').textContent='+0.5 кг'; document.getElementById('tw-max').textContent='+30 кг'; }
+    if(goal==='lose'){ sl.max=Math.min(40,sw-40); sl.min=0.5; }
+    else{ sl.max=30; sl.min=0.5; }
     sl.value=Math.min(5,sl.max); onTW(sl.value);
   }
   const q=document.getElementById('p-q');
-  if(q) q.textContent=goal==='lose'?'Сколько хочешь сбросить?':'Сколько хочешь набрать?';
+  if(q) q.textContent=goal==='lose'?L('goal-weight-lose'):L('goal-weight-gain');
 }
 function confirmPaceDirect(m){
-  const n=nowIST(); const gd=new Date(n); gd.setMonth(gd.getMonth()+m);
-  SD.targetWeight=SD.startWeight; SD.goalDate=dsStr(gd); SD._pace=true; SI++; renderStep();
+  const n=nowTZ(); const gd=new Date(n); gd.setMonth(gd.getMonth()+m);
+  SD.targetWeight=SD.startWeight; SD.goalDate=dsStr(gd); SD._pace=true;
+  const STEPS=getSteps(); SI++; if(SI>=STEPS.length) finishSetup(); else renderStep();
 }
 function onTW(v){
   v=parseFloat(v)||1;
   const sw=SD.startWeight||80; const goal=SD.goal||'lose';
   const tw=goal==='lose'?sw-v:sw+v;
-  const n=nowIST(); const gd=new Date(n); gd.setMonth(gd.getMonth()+selMo);
+  const n=nowTZ(); const gd=new Date(n); gd.setMonth(gd.getMonth()+selMo);
   const pace=calcPace(v, dsStr(gd));
-  document.getElementById('tw-v').textContent=tw.toFixed(1);
-  document.getElementById('tw-diff').textContent=(goal==='lose'?'−':'+')+(v).toFixed(1);
-  document.getElementById('p-anim').textContent=pace.animal;
-  document.getElementById('p-lbl').textContent=pace.lbl;
-  document.getElementById('p-lbl').style.color=pace.color;
-  document.getElementById('p-desc').textContent=pace.desc;
-  document.getElementById('p-kgw').textContent=pace.kgW.toFixed(2);
-  document.getElementById('p-kgw').style.color=pace.color;
-  document.getElementById('p-kcal').textContent=Math.round(pace.kcal);
+  const twv=document.getElementById('tw-v'); if(twv) twv.textContent=tw.toFixed(1);
+  const twd=document.getElementById('tw-diff'); if(twd) twd.textContent=(goal==='lose'?'−':'+')+(v).toFixed(1);
+  const pa=document.getElementById('p-anim'); if(pa){ pa.textContent=pace.animal; pa.style.transform='scale(1.2)'; setTimeout(()=>pa.style.transform='',300); }
+  const pl=document.getElementById('p-lbl'); if(pl){ pl.textContent=pace.lbl; pl.style.color=pace.color; }
+  const pd=document.getElementById('p-desc'); if(pd) pd.textContent=pace.desc;
+  const pk=document.getElementById('p-kgw'); if(pk){ pk.textContent=pace.kgW.toFixed(2); pk.style.color=pace.color; }
+  const pc=document.getElementById('p-kcal'); if(pc) pc.textContent=Math.round(pace.kcal);
   const btn=document.getElementById('p-next');
-  if(btn){ btn.disabled=!pace.ok||!selMo; btn.textContent=pace.ok?'Далее':'Увеличь срок'; }
+  if(btn){ btn.disabled=!pace.ok||!selMo; btn.textContent=pace.ok?L('pace-btn-ok'):L('pace-btn-bad'); }
   SD._tw=tw; SD._diff=v; SD._selMo=selMo;
 }
 function confirmPace(){
-  haptic('medium');
-  if(!selMo||!SD._tw) return;
-  const n=nowIST(); const gd=new Date(n); gd.setMonth(gd.getMonth()+selMo);
+  haptic('medium'); if(!selMo||!SD._tw) return;
+  const n=nowTZ(); const gd=new Date(n); gd.setMonth(gd.getMonth()+selMo);
   SD.targetWeight=parseFloat(SD._tw.toFixed(1)); SD.goalDate=dsStr(gd); SD._pace=true;
-  SI++; renderStep();
+  const STEPS=getSteps(); SI++; if(SI>=STEPS.length) finishSetup(); else renderStep();
 }
 function pickO(id,val){
-  haptic('select');
-  SD[id]=isNaN(+val)?val:+val; SI++;
+  haptic('select'); SD[id]=isNaN(+val)?val:+val;
+  const STEPS=getSteps(); SI++;
   if(SI>=STEPS.length) finishSetup(); else renderStep();
 }
 function nextS(){
-  const step=STEPS[SI]; const inp=document.getElementById('sinp');
+  const STEPS=getSteps(); const step=STEPS[SI]; const inp=document.getElementById('sinp');
   const raw=inp.value.trim().replace(',','.');
   const val=step.type==='dec'?parseFloat(raw):step.type==='int'?parseInt(raw):raw;
   if(!val||(step.min!=null&&val<step.min)||(step.max!=null&&val>step.max)){
@@ -1009,10 +1529,10 @@ function finishSetup(){
   haptic('success');
   const cfg={...SD,setupDate:today(),currentWeight:SD.startWeight};
   S.s('cfg',cfg); SI=0; SD={};
-  showApp(); toast('Профиль настроен','ok');
+  showApp(); toast(L('setup-done'),'ok');
 }
  
-// ── NAV ──────────────────────────────────────────────────────────
+// ── NAV ───────────────────────────────────────────────────────────
 let calY, calMo;
 function gp(name, btn){
   haptic('select');
@@ -1020,15 +1540,16 @@ function gp(name, btn){
   document.querySelectorAll('.nb').forEach(b=>b.classList.remove('on'));
   document.getElementById('pg-'+name).classList.add('on');
   btn.classList.add('on');
-  if(name==='cal'){ calY=nowIST().getFullYear(); calMo=nowIST().getMonth(); renderCal(); renderH7(); }
+  if(name==='cal'){ calY=nowTZ().getFullYear(); calMo=nowTZ().getMonth(); renderCal(); renderH7(); }
   if(name==='st') renderStats();
-  if(name==='sl') renderSlHist();
+  if(name==='sl') { onSl(); renderSlHist(); }
+  if(name==='pf') loadProfile();
 }
  
-// ── HOME ─────────────────────────────────────────────────────────
+// ── HOME ──────────────────────────────────────────────────────────
 function renderHome(){
   const cfg=S.g('cfg',{}); const days=S.g('days',{}); const sld=S.g('sleep',{});
-  const td=today(); const now=nowIST();
+  const td=today(); const now=nowTZ();
   const ws=Object.entries(days).filter(([k,v])=>v?.w).sort((a,b)=>b[0].localeCompare(a[0]));
   const curW=ws.length?ws[0][1].w:(cfg.startWeight||0);
   const strk=streak(days);
@@ -1036,15 +1557,16 @@ function renderHome(){
   const done=cfg.startWeight?Math.abs(cfg.startWeight-curW):0;
   const gPct=tot>0?Math.min(100,Math.round(done/tot*100)):0;
   let dl='—'; try{ dl=Math.max(0,Math.round((new Date(cfg.goalDate)-now)/86400000)); }catch{}
-  const prog=cfg.goal==='gain'?`+${Math.max(0,curW-cfg.startWeight).toFixed(1)}`:`-${Math.max(0,cfg.startWeight-curW).toFixed(1)}`;
+  const isGain=cfg.goal==='gain';
+  const prog=isGain?`+${Math.max(0,curW-cfg.startWeight).toFixed(1)}`:`-${Math.max(0,(cfg.startWeight||0)-curW).toFixed(1)}`;
  
   document.getElementById('h-name').textContent=cfg.name||'FIT';
   document.getElementById('h-w').textContent=curW?curW.toFixed(1)+' кг':'—';
-  document.getElementById('h-dl').textContent=dl+' дн.';
+  document.getElementById('h-dl').textContent=dl+' '+L('days');
   document.getElementById('h-prog').textContent=prog+' кг';
-  document.getElementById('h-strk').textContent=strk+'д';
+  document.getElementById('h-strk').textContent=strk+L('days');
  
-  const C=2*Math.PI*52;
+  const C=2*Math.PI*54;
   document.getElementById('ring').style.strokeDashoffset=C*(1-gPct/100);
   document.getElementById('r-pct').textContent=gPct+'%';
  
@@ -1057,11 +1579,12 @@ function renderHome(){
   }catch{}
  
   const day=days[td]||{}; const slDay=sld[td]||{};
+  const slHrs = slDay.saved&&slDay.hrs ? Math.floor(slDay.hrs)+L('hours') : '—';
   const pills=[
     {ic:'⚖️',l:'Вес',ok:!!day.w,v:day.w?day.w.toFixed(1)+' кг':'—'},
-    {ic:'👟',l:'Шаги',ok:day.st!=null,v:day.st!=null?Number(day.st).toLocaleString('ru'):'—'},
-    {ic:'💪',l:'Трен.',ok:'wo'in day,v:'wo'in day?(day.wo?'Да':'Нет'):'—'},
-    {ic:'🌙',l:'Сон',ok:!!slDay.saved,v:slDay.saved?`${Math.floor(slDay.hrs)}ч`:'—'},
+    {ic:'👟',l:L('steps'),ok:day.st!=null,v:day.st!=null?Number(day.st).toLocaleString():'—'},
+    {ic:'💪',l:L('workout'),ok:'wo'in day,v:'wo'in day?(day.wo?L('wo-yes'):L('wo-no')):'—'},
+    {ic:'🌙',l:L('sleep-title'),ok:!!slDay.saved,v:slDay.saved?slHrs:'—'},
   ];
   document.getElementById('today-pills').innerHTML=pills.map(p=>`
     <div class="pill${p.ok?' filled':''}">
@@ -1070,47 +1593,44 @@ function renderHome(){
       <div class="pill-l">${p.l}</div>
     </div>`).join('');
  
-  const goal=cfg.stepsGoal||10000;
-  const ts=day.st||0;
+  const goal=cfg.stepsGoal||10000; const ts=day.st||0;
   document.getElementById('steps-sl').value=ts;
-  document.getElementById('steps-glbl').textContent='цель '+Number(goal).toLocaleString('ru');
+  document.getElementById('steps-glbl').textContent=Number(goal).toLocaleString();
   onSteps(ts);
 }
  
 function onSteps(v){
   v=parseInt(v)||0;
-  document.getElementById('steps-val').textContent=Number(v).toLocaleString('ru');
+  document.getElementById('steps-val').textContent=Number(v).toLocaleString();
   const goal=S.g('cfg',{}).stepsGoal||10000;
   const pct=Math.min(100,(v/goal)*100);
   const bar=document.getElementById('steps-bar');
   bar.style.width=pct+'%';
   bar.style.background=v>=goal?'var(--green)':v>=goal*.7?'var(--orange)':'var(--blue)';
-  bar.style.opacity=v>0?'1':'0.5';
 }
 function saveSteps(){
   haptic('success');
   const v=parseInt(document.getElementById('steps-sl').value)||0;
   const days=S.g('days',{}); const td=today();
   if(!days[td]) days[td]={}; days[td].st=v; S.s('days',days);
-  toast('Шаги сохранены','ok'); renderHome();
+  toast(L('steps-saved'),'ok'); renderHome();
 }
  
-// ── CHECKIN ──────────────────────────────────────────────────────
+// ── CHECKIN ───────────────────────────────────────────────────────
 let workout=null, rating=5;
 function buildRat(){
   ['rat-row','e-rat'].forEach(id=>{
     const row=document.getElementById(id); if(!row||row.children.length) return;
     for(let i=1;i<=10;i++){
       const b=document.createElement('button'); b.className='rb'+(i===5?' on':'');
-      b.textContent=i;
-      const isEdit=id==='e-rat';
-      b.onclick=()=>isEdit?setERat(i):setRat(i);
+      b.textContent=i; const isEdit=id==='e-rat';
+      b.onclick=()=>{ haptic('select'); isEdit?setERat(i):setRat(i); };
       b.id=(isEdit?'erb':'rb')+i; row.appendChild(b);
     }
   });
 }
-function setRat(v){ haptic('select'); rating=v; for(let i=1;i<=10;i++){ const b=document.getElementById('rb'+i); if(b) b.className='rb'+(i===v?' on':''); } }
-function setERat(v){ haptic('select'); eRating=v; for(let i=1;i<=10;i++){ const b=document.getElementById('erb'+i); if(b) b.className='rb'+(i===v?' on':''); } }
+function setRat(v){ rating=v; for(let i=1;i<=10;i++){ const b=document.getElementById('rb'+i); if(b) b.className='rb'+(i===v?' on':''); } }
+function setERat(v){ eRating=v; for(let i=1;i<=10;i++){ const b=document.getElementById('erb'+i); if(b) b.className='rb'+(i===v?' on':''); } }
 function setWO(v){
   haptic('select'); workout=v;
   document.getElementById('wo-y').className='seg-btn'+(v===true?' on':'');
@@ -1129,7 +1649,7 @@ function onWInp(){
   const el=document.getElementById('w-diff');
   if(prev.length&&w){
     const d=Math.round((w-prev[0][1].w)*10)/10;
-    el.textContent=d>0?`+${d} кг ↑`:d<0?`${d} кг ↓`:'Без изменений';
+    el.textContent=d>0?`+${d} кг ↑`:d<0?`${d} кг ↓`:'=';
     el.style.color=d<0?'var(--green)':d>0?'var(--red)':'var(--text2)';
   } else el.textContent='';
 }
@@ -1141,53 +1661,66 @@ function prefillCI(){
 }
 function saveCI(){
   const w=parseFloat(document.getElementById('w-inp').value);
-  if(!w||w<30||w>300){ haptic('error'); toast('Введи вес','er'); return; }
+  if(!w||w<30||w>300){ haptic('error'); toast(L('enter-weight'),'er'); return; }
   haptic('success');
   const days=S.g('days',{}); const td=today();
   if(!days[td]) days[td]={}; days[td].w=w;
   if(workout!==null) days[td].wo=workout; days[td].rt=rating;
   S.s('days',days);
   const cfg=S.g('cfg',{}); cfg.currentWeight=w; S.s('cfg',cfg);
-  toast('Чек-ин сохранён','ok'); renderHome();
+  toast(L('ci-saved'),'ok'); renderHome();
 }
  
-// ── SLEEP ────────────────────────────────────────────────────────
+// ── SLEEP ─────────────────────────────────────────────────────────
 let wakeups=0;
 function onSl(){
   const s=document.getElementById('sl-s')?.value, e=document.getElementById('sl-e')?.value;
   if(!s||!e) return;
   const mins=slMins(s,e); if(mins<=0||mins>1440) return;
-  const hrs=mins/60;
-  document.getElementById('sl-h').textContent=`${Math.floor(hrs)} ч ${Math.round((hrs%1)*60)} мин`;
+  const hrs=mins/60; const hh=Math.floor(hrs); const mm=Math.round((hrs%1)*60);
+  document.getElementById('sl-h').textContent=`${hh} ${L('hours')} ${mm} ${L('min')}`;
   const pct=Math.min(100,(hrs/10)*100);
   const bar=document.getElementById('sl-bar');
   bar.style.width=pct+'%';
   bar.style.background=hrs>=7&&hrs<=9?'var(--green)':hrs>=6?'var(--orange)':'var(--red)';
   const sc=slScore(hrs,wakeups);
-  document.getElementById('sl-sc').innerHTML=`
-    <div class="ssl">
-      <div style="font-size:28px;">${sc.ic}</div>
-      <div style="flex:1;">
-        <div class="ssl-n" style="color:${sc.c};">${sc.t}<span style="font-size:14px;font-weight:500;">/100</span></div>
-        <div class="ssl-l" style="color:${sc.c};">${sc.l}</div>
+  renderSleepScore('sl-sc', sc, hrs);
+}
+function renderSleepScore(containerId, sc, hrs) {
+  const el=document.getElementById(containerId); if(!el) return;
+  const pct=Math.min(100,sc.t);
+  el.innerHTML=`
+    <div class="sleep-score-wrap">
+      <div class="sleep-score-main">
+        <div class="sleep-score-icon">${sc.ic}</div>
+        <div class="sleep-score-info">
+          <div class="sleep-score-num" style="color:${sc.c};">
+            ${sc.t}<span class="sleep-score-denom">/100</span>
+          </div>
+          <div class="sleep-score-label" style="color:${sc.c};">${sc.l}</div>
+          <div class="sleep-score-desc">${hrs?`${Math.floor(hrs)}${L('hours')} ${Math.round((hrs%1)*60)}${L('min')}`:'—'}</div>
+        </div>
+      </div>
+      <div class="sleep-score-bar">
+        <div class="sleep-score-bar-fill" style="width:${pct}%;background:${sc.c};"></div>
       </div>
     </div>`;
 }
 function adjWU(d){ haptic('select'); wakeups=Math.max(0,Math.min(10,wakeups+d)); document.getElementById('wu-n').textContent=wakeups; onSl(); }
 function saveSl(){
   const s=document.getElementById('sl-s').value, e=document.getElementById('sl-e').value;
-  if(!s||!e){ haptic('error'); toast('Укажи время','er'); return; }
+  if(!s||!e){ haptic('error'); toast(L('enter-time'),'er'); return; }
   const mins=slMins(s,e);
-  if(mins<60||mins>1080){ haptic('error'); toast('Проверь время','er'); return; }
+  if(mins<60||mins>1080){ haptic('error'); toast(L('check-time'),'er'); return; }
   haptic('success');
   const hrs=parseFloat((mins/60).toFixed(2)); const sc=slScore(hrs,wakeups);
   const sld=S.g('sleep',{}); const td=today();
   sld[td]={start:s,end:e,wakeups,score:sc.t,hrs,saved:true,ts:Date.now()};
-  S.s('sleep',sld); toast(`Сон: ${sc.t}/100 — ${sc.l}`,'ok');
+  S.s('sleep',sld); toast(`${L('sleep-saved')}: ${sc.t}/100`,'ok');
   renderSlHist(); renderHome();
 }
 function renderSlHist(){
-  const sld=S.g('sleep',{}); const now=nowIST(); let html='';
+  const sld=S.g('sleep',{}); const now=nowTZ(); let html='';
   for(let i=0;i<7;i++){
     const d2=new Date(now-i*86400000); const s2=dsStr(d2); const e=sld[s2];
     if(e?.saved&&e.hrs>0){
@@ -1196,9 +1729,9 @@ function renderSlHist(){
       html+=`<div class="hi">
         <div class="hdate">${dLbl(s2)}</div>
         <div style="flex:1;">
-          <div style="display:flex;justify-content:space-between;font-size:12px;font-weight:500;margin-bottom:3px;">
-            <span>${e.start}–${e.end} · ${hh}ч ${mm}м</span>
-            <span style="color:${sc.c};font-weight:600;">${sc.t}/100</span>
+          <div style="display:flex;justify-content:space-between;font-size:12px;font-weight:600;margin-bottom:4px;">
+            <span>${e.start}–${e.end} · ${hh}${L('hours')} ${mm}${L('min')}</span>
+            <span style="color:${sc.c};font-weight:700;">${sc.t}/100</span>
           </div>
           <div class="bar" style="height:4px;margin:0;">
             <div class="bar-f" style="width:${Math.min(100,e.hrs/10*100)}%;background:${sc.c};"></div>
@@ -1206,22 +1739,21 @@ function renderSlHist(){
         </div>
       </div>`;
     } else if(i<3){
-      html+=`<div class="hi"><div class="hdate">${dLbl(s2)}</div><div style="font-size:12px;color:var(--text3);">Нет данных</div></div>`;
+      html+=`<div class="hi"><div class="hdate">${dLbl(s2)}</div><div style="font-size:12px;color:var(--text3);">${L('no-data')}</div></div>`;
     }
   }
-  document.getElementById('sl-hist').innerHTML=html||'<div style="color:var(--text3);font-size:13px;padding:8px 0;">Нет записей</div>';
+  document.getElementById('sl-hist').innerHTML=html||`<div style="color:var(--text3);font-size:13px;padding:8px 0;">${L('no-records')}</div>`;
 }
  
-// ── CALENDAR ─────────────────────────────────────────────────────
-const MN=['Январь','Февраль','Март','Апрель','Май','Июнь','Июль','Август','Сентябрь','Октябрь','Ноябрь','Декабрь'];
+// ── CALENDAR ──────────────────────────────────────────────────────
 let calSel=null;
 function cp(){ haptic('select'); calMo--; if(calMo<0){calMo=11;calY--;} renderCal(); }
 function cn2(){ haptic('select'); calMo++; if(calMo>11){calMo=0;calY++;} renderCal(); }
 function renderCal(){
   const days=S.g('days',{}); const sld=S.g('sleep',{}); const cfg=S.g('cfg',{});
-  const now=nowIST(); const td=today(); const gd=cfg.goalDate||'';
-  document.getElementById('cal-m').textContent=`${MN[calMo]} ${calY}`;
-  document.getElementById('cal-dows').innerHTML=['Пн','Вт','Ср','Чт','Пт','Сб','Вс'].map(d=>`<div class="cd">${d}</div>`).join('');
+  const now=nowTZ(); const td=today(); const gd=cfg.goalDate||'';
+  document.getElementById('cal-m').textContent=`${L('months')[calMo]} ${calY}`;
+  document.getElementById('cal-dows').innerHTML=L('dows').map(d=>`<div class="cd">${d}</div>`).join('');
   const grid=document.getElementById('cal-cells'); grid.innerHTML='';
   const first=new Date(calY,calMo,1); let dow=first.getDay(); dow=dow===0?6:dow-1;
   for(let i=0;i<dow;i++) grid.appendChild(document.createElement('div'));
@@ -1250,29 +1782,29 @@ function showDet(s2){
   const day=days[s2]||{}; const slDay=sld[s2]||{}; const goal=cfg.stepsGoal||10000;
   let tags='';
   if(day.w) tags+=`<span class="ctag">⚖️ ${day.w.toFixed(1)} кг</span>`;
-  if(day.st!=null) tags+=`<span class="ctag">👟 ${Number(day.st).toLocaleString('ru')}${day.st>=goal?' ✓':''}</span>`;
-  if('wo'in day) tags+=`<span class="ctag" style="color:${day.wo?'var(--green)':'var(--text2)'};">💪 ${day.wo?'Да':'Нет'}</span>`;
+  if(day.st!=null) tags+=`<span class="ctag">👟 ${Number(day.st).toLocaleString()}${day.st>=goal?' ✓':''}</span>`;
+  if('wo'in day) tags+=`<span class="ctag" style="color:${day.wo?'var(--green)':'var(--text2)'};">💪 ${day.wo?L('workout-yes'):L('workout-no')}</span>`;
   if(day.rt) tags+=`<span class="ctag">⭐ ${day.rt}/10</span>`;
-  if(slDay.saved&&slDay.hrs){ const sc=slScore(slDay.hrs,slDay.wakeups||0); tags+=`<span class="ctag" style="color:${sc.c};">🌙 ${Math.floor(slDay.hrs)}ч ${Math.round((slDay.hrs%1)*60)}м — ${sc.l}</span>`; }
-  if(!tags) tags='<span style="font-size:13px;color:var(--text3);">Нет данных</span>';
+  if(slDay.saved&&slDay.hrs){ const sc=slScore(slDay.hrs,slDay.wakeups||0); tags+=`<span class="ctag" style="color:${sc.c};">🌙 ${Math.floor(slDay.hrs)}${L('hours')} — ${sc.l}</span>`; }
+  if(!tags) tags=`<span style="font-size:13px;color:var(--text3);">${L('no-data')}</span>`;
   document.getElementById('cal-det').innerHTML=`
     <div class="c-det">
       <div class="c-det-date">${fmtDate(s2)}</div>
-      <div style="margin-bottom:10px;">${tags}</div>
-      <button class="btn fill" style="font-size:14px;padding:10px;" onclick="haptic('light');openEd('${s2}')">Изменить</button>
+      <div style="margin-bottom:12px;">${tags}</div>
+      <button class="btn fill" style="font-size:14px;padding:11px;" onclick="haptic('light');openEd('${s2}')">${L('edit')}</button>
     </div>`;
 }
 function renderH7(){
-  const days=S.g('days',{}); const sld=S.g('sleep',{}); const cfg=S.g('cfg',{}); const now=nowIST();
+  const days=S.g('days',{}); const sld=S.g('sleep',{}); const cfg=S.g('cfg',{}); const now=nowTZ();
   const goal=cfg.stepsGoal||10000; let html='';
   for(let i=0;i<7;i++){
     const d2=new Date(now-i*86400000); const s2=dsStr(d2); const day=days[s2]||{}; const slDay=sld[s2]||{};
     let tags='';
     if(day.w) tags+=`<span class="htag">${day.w.toFixed(1)} кг</span>`;
-    if(day.st!=null) tags+=`<span class="htag">${Number(day.st).toLocaleString('ru')}${day.st>=goal?' ✓':''}</span>`;
-    if('wo'in day) tags+=`<span class="htag" style="color:${day.wo?'var(--green)':'var(--text3)'};">${day.wo?'Трен.':'—'}</span>`;
-    if(slDay.saved&&slDay.hrs) tags+=`<span class="htag">${Math.floor(slDay.hrs)}ч сон</span>`;
-    if(!tags) tags='<span style="font-size:12px;color:var(--text3);">нет данных</span>';
+    if(day.st!=null) tags+=`<span class="htag">${Number(day.st).toLocaleString()}${day.st>=goal?' ✓':''}</span>`;
+    if('wo'in day) tags+=`<span class="htag" style="color:${day.wo?'var(--green)':'var(--text3)'};">${day.wo?L('workout-yes'):'—'}</span>`;
+    if(slDay.saved&&slDay.hrs) tags+=`<span class="htag">${Math.floor(slDay.hrs)}${L('hours')}</span>`;
+    if(!tags) tags=`<span style="font-size:12px;color:var(--text3);">${L('no-data')}</span>`;
     html+=`<div class="hi" onclick="haptic('select');openEd('${s2}')" style="cursor:pointer;">
       <div class="hdate">${dLbl(s2)}</div>
       <div style="display:flex;gap:5px;flex-wrap:wrap;align-items:center;flex:1;">${tags}</div>
@@ -1282,11 +1814,10 @@ function renderH7(){
   document.getElementById('cal-h7').innerHTML=html;
 }
  
-// ── EDIT SHEET ───────────────────────────────────────────────────
+// ── EDIT SHEET ────────────────────────────────────────────────────
 let edDate=null,eWO=null,eRating=5,eWU=0;
 function openEd(s2){
-  haptic('medium');
-  edDate=s2;
+  haptic('medium'); edDate=s2;
   const days=S.g('days',{}); const sld=S.g('sleep',{});
   const day=days[s2]||{}; const slDay=sld[s2]||{};
   document.getElementById('ed-t').textContent=fmtDate(s2);
@@ -1311,9 +1842,10 @@ function setEWO(v){
 function adjEW(d){ haptic('select'); const inp=document.getElementById('ew'); const cur=parseFloat(inp.value)||(S.g('cfg',{}).startWeight||75); inp.value=Math.round((cur+d)*10)/10; }
 function onES(v){
   v=parseInt(v)||0;
-  document.getElementById('es-d').textContent=Number(v).toLocaleString('ru');
+  document.getElementById('es-d').textContent=Number(v).toLocaleString();
   const goal=S.g('cfg',{}).stepsGoal||10000; const pct=Math.min(100,(v/goal)*100);
   const bar=document.getElementById('es-b'); bar.style.width=pct+'%'; bar.style.opacity=v>0?'1':'0.3';
+  bar.style.background=v>=goal?'var(--green)':v>=goal*.7?'var(--orange)':'var(--blue)';
 }
 function adjEWU(d){ haptic('select'); eWU=Math.max(0,Math.min(10,eWU+d)); document.getElementById('e-wun').textContent=eWU; onESl(); }
 function onESl(){
@@ -1321,12 +1853,13 @@ function onESl(){
   if(!s||!e) return;
   const mins=slMins(s,e); if(mins<=0||mins>1440) return;
   const hrs=mins/60;
-  document.getElementById('e-slh').textContent=`${Math.floor(hrs)} ч ${Math.round((hrs%1)*60)} мин`;
-  document.getElementById('e-slb').style.width=Math.min(100,(hrs/10)*100)+'%';
+  document.getElementById('e-slh').textContent=`${Math.floor(hrs)} ${L('hours')} ${Math.round((hrs%1)*60)} ${L('min')}`;
+  const bar=document.getElementById('e-slb');
+  bar.style.width=Math.min(100,(hrs/10)*100)+'%';
+  bar.style.background=hrs>=7&&hrs<=9?'var(--green)':hrs>=6?'var(--orange)':'var(--red)';
 }
 function saveEd(){
-  haptic('success');
-  if(!edDate) return;
+  haptic('success'); if(!edDate) return;
   const w=parseFloat(document.getElementById('ew').value);
   const steps=parseInt(document.getElementById('es-sl').value)||0;
   const days=S.g('days',{}); const sld=S.g('sleep',{});
@@ -1334,8 +1867,7 @@ function saveEd(){
   if(w&&w>=30&&w<=300) days[edDate].w=w; else delete days[edDate].w;
   days[edDate].st=steps;
   if(eWO!==null) days[edDate].wo=eWO; else delete days[edDate].wo;
-  days[edDate].rt=eRating;
-  S.s('days',days);
+  days[edDate].rt=eRating; S.s('days',days);
   if(document.getElementById('e-slsv').checked){
     const s=document.getElementById('e-sls').value, e=document.getElementById('e-sle').value;
     const mins=slMins(s,e); const hrs=parseFloat((mins/60).toFixed(2));
@@ -1344,36 +1876,35 @@ function saveEd(){
     sld[edDate]={start:s,end:e,wakeups:eWU,score:sc.t,hrs,saved:true,ts:Date.now()};
     S.s('sleep',sld);
   }
-  closeEd(); toast('День сохранён','ok');
+  closeEd(); toast(L('day-saved'),'ok');
   renderHome(); renderCal(); renderH7(); renderSlHist();
 }
 function delDay(){
-  if(!edDate) return;
-  haptic('heavy');
-  if(!confirm('Удалить данные за '+fmtDate(edDate)+'?')) return;
+  if(!edDate) return; haptic('heavy');
+  if(!confirm(L('deleted')+': '+fmtDate(edDate)+'?')) return;
   const days=S.g('days',{}); const sld=S.g('sleep',{});
   delete days[edDate]; delete sld[edDate];
   S.s('days',days); S.s('sleep',sld);
-  closeEd(); toast('Удалено','');
+  closeEd(); toast(L('deleted'),'');
   renderHome(); renderCal(); renderH7(); renderSlHist();
 }
  
-// ── ANALYTICS ────────────────────────────────────────────────────
+// ── ANALYTICS ─────────────────────────────────────────────────────
 function renderStats(){
   const cfg=S.g('cfg',{}); const days=S.g('days',{}); const sld=S.g('sleep',{});
-  const now=nowIST(); const goal=cfg.stepsGoal||10000;
+  const now=nowTZ(); const goal=cfg.stepsGoal||10000;
   const strk=streak(days);
   const SU=new Date(cfg.setupDate||today());
   const elapsed=Math.max(1,Math.round((now-SU)/86400000)+1);
   const done=Object.values(days).filter(v=>v?.w).length;
   document.getElementById('an-d').textContent=Math.round(done/elapsed*100)+'%';
-  document.getElementById('an-s').textContent=strk+'д';
+  document.getElementById('an-s').textContent=strk+L('days');
   const allSt=Object.values(days).filter(v=>v?.st!=null).map(v=>v.st);
   const avgSt=allSt.length?Math.round(allSt.reduce((a,b)=>a+b,0)/allSt.length):0;
   document.getElementById('an-a').textContent=avgSt>=1000?(avgSt/1000).toFixed(1)+'к':avgSt||'—';
   const allSl=Object.values(sld).filter(v=>v?.saved&&v.hrs>0).map(v=>v.hrs);
   const avgSl=allSl.length?(allSl.reduce((a,b)=>a+b,0)/allSl.length).toFixed(1):0;
-  document.getElementById('an-sl').textContent=avgSl?avgSl+'ч':'—';
+  document.getElementById('an-sl').textContent=avgSl?avgSl+L('hours'):'—';
  
   // Steps chart
   const sR=[],lR=[];
@@ -1382,11 +1913,12 @@ function renderStats(){
   const sc=document.getElementById('st-sc'); sc.innerHTML='';
   const sl=document.getElementById('st-sl'); sl.innerHTML='';
   sR.forEach((s,i)=>{
-    const wrap=document.createElement('div'); wrap.style.cssText='flex:1;';
+    const wrap=document.createElement('div'); wrap.style.cssText='flex:1;display:flex;flex-direction:column;align-items:stretch;';
     const bar=document.createElement('div'); bar.className='cbar';
-    bar.style.height=Math.max(3,Math.round(s/maxS*60))+'px';
+    bar.style.height=Math.max(4,Math.round(s/maxS*64))+'px';
     bar.style.background=s>=goal?'var(--green)':s>=goal*.7?'var(--orange)':'var(--fill1)';
     bar.style.opacity=s>0?'1':'0.5'; bar.style.width='100%';
+    if(s>=goal) bar.style.boxShadow='0 2px 8px rgba(52,199,89,0.3)';
     wrap.appendChild(bar); sc.appendChild(wrap);
     const lb=document.createElement('div'); lb.className='clbl'; lb.textContent=lR[i]; sl.appendChild(lb);
   });
@@ -1397,22 +1929,25 @@ function renderStats(){
   if(ws.length>=2){
     const vals=ws.map(([k,v])=>v.w);
     const minW=Math.min(...vals)-.5, maxW=Math.max(...vals)+.5;
-    const W=svg.parentElement?.offsetWidth||300, H=72;
-    const pts=ws.map(([k,v],i)=>[i/(ws.length-1)*W, H-((v.w-minW)/(maxW-minW))*H]);
+    const W=svg.parentElement?.offsetWidth||300, H=74;
+    const pts=ws.map(([k,v],i)=>[i/(ws.length-1)*W, H-((v.w-minW)/(maxW-minW))*(H-4)+2]);
     const poly=pts.map(p=>p.join(',')).join(' ');
     const area=`${pts[0][0]},${H} ${poly} ${pts[pts.length-1][0]},${H}`;
     const trend=vals[vals.length-1]-vals[0];
     const col=trend<0?'var(--green)':'var(--red)';
-    svg.innerHTML=`<defs><linearGradient id="wg" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="${col}" stop-opacity=".2"/>
-      <stop offset="100%" stop-color="${col}" stop-opacity="0"/>
-    </linearGradient></defs>
+    svg.innerHTML=`<defs>
+      <linearGradient id="wg" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="${col}" stop-opacity=".22"/>
+        <stop offset="100%" stop-color="${col}" stop-opacity="0"/>
+      </linearGradient>
+      <filter id="blur2"><feGaussianBlur stdDeviation="1"/></filter>
+    </defs>
     <polygon points="${area}" fill="url(#wg)"/>
-    <polyline points="${poly}" fill="none" stroke="${col}" stroke-width="2" stroke-linejoin="round"/>
-    ${pts.map(([x,y])=>`<circle cx="${x}" cy="${y}" r="2.5" fill="${col}"/>`).join('')}`;
+    <polyline points="${poly}" fill="none" stroke="${col}" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+    ${pts.map(([x,y])=>`<circle cx="${x}" cy="${y}" r="3" fill="${col}" filter="url(#blur2)" opacity="0.5"/><circle cx="${x}" cy="${y}" r="2" fill="${col}"/>`).join('')}`;
     document.getElementById('an-tr').textContent=`${trend>0?'+':''}${trend.toFixed(1)} кг`;
-    document.getElementById('an-lo').textContent=cfg.startWeight?`Прогресс: ${Math.abs(cfg.startWeight-vals[vals.length-1]).toFixed(1)} кг`:'';
-  } else svg.innerHTML=`<text x="50%" y="50%" text-anchor="middle" fill="var(--text3)" font-size="13" font-family="-apple-system,system-ui,sans-serif">Нужно минимум 2 записи</text>`;
+    document.getElementById('an-lo').textContent=cfg.startWeight?`${L('progress-label')} ${Math.abs(cfg.startWeight-vals[vals.length-1]).toFixed(1)} кг`:'';
+  } else svg.innerHTML=`<text x="50%" y="50%" text-anchor="middle" fill="var(--text3)" font-size="13" font-family="-apple-system,system-ui,sans-serif">${L('min-2')}</text>`;
  
   // Sleep chart
   const sl2=document.getElementById('st-sl2'); sl2.innerHTML='';
@@ -1422,7 +1957,7 @@ function renderStats(){
     const wrap=document.createElement('div'); wrap.style.cssText='flex:1;';
     const bar=document.createElement('div'); bar.className='cbar';
     const hrs=e?.saved&&e.hrs>0?e.hrs:0;
-    bar.style.height=Math.max(3,Math.round(hrs/10*60))+'px';
+    bar.style.height=Math.max(4,Math.round(hrs/10*64))+'px';
     const sc2=hrs>0?slScore(hrs,e?.wakeups||0):null;
     bar.style.background=sc2?sc2.c:'var(--fill1)'; bar.style.opacity=hrs>0?'1':'0.3';
     bar.style.width='100%'; wrap.appendChild(bar); sl2.appendChild(wrap);
@@ -1430,16 +1965,92 @@ function renderStats(){
   }
 }
  
-// ── TOAST ────────────────────────────────────────────────────────
+// ── PROFILE ───────────────────────────────────────────────────────
+function loadProfile(){
+  const cfg=S.g('cfg',{});
+  document.getElementById('pf-inp-name').value = cfg.name||'';
+  document.getElementById('pf-inp-age').value = cfg.age||'';
+  document.getElementById('pf-inp-gender').value = cfg.gender||'male';
+  document.getElementById('pf-inp-height').value = cfg.height||'';
+  document.getElementById('pf-inp-sw').value = cfg.startWeight||'';
+  document.getElementById('pf-inp-tw').value = cfg.targetWeight||'';
+  document.getElementById('pf-inp-gd').value = cfg.goalDate||'';
+  document.getElementById('pf-inp-steps').value = cfg.stepsGoal||'';
+ 
+  const av=document.getElementById('pf-avatar');
+  if(av) av.textContent = cfg.name?cfg.name[0].toUpperCase():'?';
+  const pn=document.getElementById('pf-name');
+  if(pn) pn.textContent = cfg.name||'—';
+  const ps=document.getElementById('pf-sub');
+  if(ps){
+    const goal=cfg.goal?L('goal-'+cfg.goal):'';
+    const hw=cfg.height&&cfg.startWeight?` · ${cfg.height}cm · ${cfg.startWeight}кг`:'';
+    ps.textContent = goal+hw;
+  }
+  applyLang();
+}
+function savePF(){
+  const cfg=S.g('cfg',{});
+  cfg.name = document.getElementById('pf-inp-name').value.trim()||cfg.name;
+  const age=parseInt(document.getElementById('pf-inp-age').value); if(age>=10&&age<=100) cfg.age=age;
+  cfg.gender = document.getElementById('pf-inp-gender').value;
+  const h=parseInt(document.getElementById('pf-inp-height').value); if(h>=100&&h<=250) cfg.height=h;
+  const sw=parseFloat(document.getElementById('pf-inp-sw').value); if(sw>=30&&sw<=300) cfg.startWeight=sw;
+  const tw=parseFloat(document.getElementById('pf-inp-tw').value); if(tw>=30&&tw<=300) cfg.targetWeight=tw;
+  const gd=document.getElementById('pf-inp-gd').value; if(gd) cfg.goalDate=gd;
+  const st=parseInt(document.getElementById('pf-inp-steps').value); if(st>=1000&&st<=50000) cfg.stepsGoal=st;
+  S.s('cfg',cfg);
+  loadProfile(); renderHome();
+  toast(L('profile-saved'),'ok');
+}
+function resetApp(){
+  if(!confirm(L('confirm-reset'))) return;
+  haptic('heavy');
+  ['days','sleep','cfg','theme','lang','region'].forEach(k=>localStorage.removeItem('f6_'+k));
+  location.reload();
+}
+ 
+// ── LANG SHEET ────────────────────────────────────────────────────
+function openLangSheet(){
+  haptic('light');
+  const list=document.getElementById('lang-list'); list.innerHTML='';
+  Object.entries(LANGS).forEach(([k,v])=>{
+    const el=document.createElement('div'); el.className='opt-item'+(k===curLang?' on':'');
+    el.innerHTML=`<span>${v.flag} ${v.name}</span>${k===curLang?'<span class="opt-check">✓</span>':''}`;
+    el.onclick=()=>{ haptic('select'); curLang=k; S.s('lang',k); closeLang(); applyLang(); renderHome(); renderSlHist(); };
+    list.appendChild(el);
+  });
+  document.getElementById('lang-ov').classList.remove('hid');
+}
+function closeLang(){ document.getElementById('lang-ov').classList.add('hid'); }
+ 
+// ── REGION SHEET ──────────────────────────────────────────────────
+function openRegSheet(){
+  haptic('light');
+  const list=document.getElementById('reg-list'); list.innerHTML='';
+  REGIONS.forEach(r=>{
+    const el=document.createElement('div'); el.className='opt-item'+(r.id===curRegion?' on':'');
+    el.innerHTML=`<span>${r.flag} ${r.name}</span>${r.id===curRegion?'<span class="opt-check">✓</span>':''}`;
+    el.onclick=()=>{ haptic('select'); curRegion=r.id; S.s('region',r.id); closeReg(); applyLang(); clock(); renderHome(); };
+    list.appendChild(el);
+  });
+  document.getElementById('reg-ov').classList.remove('hid');
+}
+function closeReg(){ document.getElementById('reg-ov').classList.add('hid'); }
+ 
+// ── TOAST ─────────────────────────────────────────────────────────
 let _tt;
 function toast(msg,type=''){
   const el=document.getElementById('toast');
   el.textContent=msg; el.className=`toast on${type==='ok'?' ok':type==='er'?' er':''}`;
-  clearTimeout(_tt); _tt=setTimeout(()=>el.classList.remove('on'),2600);
+  clearTimeout(_tt); _tt=setTimeout(()=>el.classList.remove('on'),2800);
 }
  
-// ── INIT ─────────────────────────────────────────────────────────
+// ── INIT ──────────────────────────────────────────────────────────
 window.addEventListener('load',()=>{
+  // Load saved lang & region
+  curLang = S.g('lang','ru');
+  curRegion = S.g('region','Europe/Istanbul');
   initTheme();
   const cfg=S.g('cfg');
   if(cfg?.startWeight) showApp(); else showSetup();
