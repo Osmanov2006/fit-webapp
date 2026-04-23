@@ -2,1087 +2,1448 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>FIT TRACKER</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<title>FIT</title>
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap');
-*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
-:root{
-  --bg:#f7f8fc;--card:#fff;--text:#1a1d2e;--muted:#9499b5;--border:#e8eaf2;
-  --green:#22c55e;--red:#ef4444;--blue:#3b82f6;--indigo:#4f46e5;--amber:#f59e0b;
-  --shadow:0 2px 12px rgba(0,0,0,0.07);
+/* ═══════════════════════════════════════════════
+   SF PRO + APPLE SYSTEM FONT STACK
+═══════════════════════════════════════════════ */
+@supports (font: -apple-system-body) {
+  body { font: -apple-system-body; }
 }
-body{background:var(--bg);font-family:'Nunito',sans-serif;color:var(--text);
-  min-height:100vh;padding:16px 16px 100px;max-width:480px;margin:0 auto;}
  
-.header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;padding-top:4px;}
-.header-title{font-size:22px;font-weight:900;}
-.header-date{font-size:11px;color:var(--muted);font-weight:700;text-align:right;line-height:1.6;}
+* { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
  
-.tabs{display:flex;gap:4px;margin-bottom:18px;background:var(--card);padding:5px;
-  border-radius:14px;box-shadow:var(--shadow);overflow-x:auto;}
-.tab{flex:1;padding:9px 2px;border:none;border-radius:10px;background:transparent;
-  font-family:'Nunito',sans-serif;font-size:11px;font-weight:700;color:var(--muted);
-  cursor:pointer;transition:all 0.2s;white-space:nowrap;}
-.tab.active{background:var(--indigo);color:#fff;box-shadow:0 2px 8px rgba(79,70,229,0.3);}
+:root {
+  /* Light — iOS 18 / 26 palette */
+  --bg0: #f2f2f7;
+  --bg1: rgba(255,255,255,0.72);
+  --bg2: rgba(255,255,255,0.55);
+  --bg3: rgba(255,255,255,0.35);
+  --fill1: rgba(120,120,128,0.12);
+  --fill2: rgba(120,120,128,0.08);
+  --sep: rgba(60,60,67,0.18);
+  --text: #000000;
+  --text2: rgba(60,60,67,0.6);
+  --text3: rgba(60,60,67,0.3);
+  --blur: saturate(180%) blur(24px);
+  --blur-heavy: saturate(200%) blur(40px);
+  /* iOS accent */
+  --blue: #007AFF;
+  --green: #34C759;
+  --red: #FF3B30;
+  --orange: #FF9500;
+  --teal: #30D158;
+  --indigo: #5856D6;
+  --sh: 0 2px 16px rgba(0,0,0,0.06), 0 0.5px 0 rgba(0,0,0,0.08);
+  --sh-card: 0 4px 24px rgba(0,0,0,0.08), 0 1px 0 rgba(255,255,255,0.6) inset;
+}
  
-.section{display:none;animation:fadeUp 0.2s ease;}
-.section.active{display:block;}
-@keyframes fadeUp{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+[data-dark] {
+  --bg0: #000000;
+  --bg1: rgba(28,28,30,0.78);
+  --bg2: rgba(44,44,46,0.65);
+  --bg3: rgba(58,58,60,0.45);
+  --fill1: rgba(120,120,128,0.24);
+  --fill2: rgba(120,120,128,0.18);
+  --sep: rgba(84,84,88,0.55);
+  --text: #ffffff;
+  --text2: rgba(235,235,245,0.6);
+  --text3: rgba(235,235,245,0.3);
+  --sh: 0 2px 16px rgba(0,0,0,0.4), 0 0.5px 0 rgba(255,255,255,0.06);
+  --sh-card: 0 4px 24px rgba(0,0,0,0.4), 0 1px 0 rgba(255,255,255,0.06) inset;
+}
  
-.card{background:var(--card);border-radius:18px;padding:18px;margin-bottom:12px;box-shadow:var(--shadow);}
-.card-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;
-  color:var(--muted);margin-bottom:10px;}
+body {
+  font-family: -apple-system, 'SF Pro Text', 'SF Pro Display', system-ui, sans-serif;
+  background: var(--bg0);
+  color: var(--text);
+  min-height: 100vh;
+  padding-bottom: calc(80px + env(safe-area-inset-bottom));
+  max-width: 430px;
+  margin: 0 auto;
+  transition: background 0.35s, color 0.35s;
+  -webkit-font-smoothing: antialiased;
+}
  
-.stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;}
-.stat-card{background:var(--card);border-radius:16px;padding:14px;box-shadow:var(--shadow);text-align:center;}
-.stat-val{font-size:26px;font-weight:900;line-height:1;margin-bottom:3px;}
-.stat-lbl{font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;}
+/* ── ANIMATED GRADIENT BG ── */
+.bg-mesh {
+  position: fixed; inset: 0; z-index: -1;
+  background: var(--bg0);
+  transition: background 0.35s;
+}
+.bg-mesh::before {
+  content: '';
+  position: absolute;
+  width: 320px; height: 320px;
+  border-radius: 50%;
+  top: -60px; right: -80px;
+  background: radial-gradient(circle, rgba(0,122,255,0.18) 0%, transparent 70%);
+  animation: drift1 8s ease-in-out infinite alternate;
+}
+.bg-mesh::after {
+  content: '';
+  position: absolute;
+  width: 280px; height: 280px;
+  border-radius: 50%;
+  bottom: 120px; left: -60px;
+  background: radial-gradient(circle, rgba(52,199,89,0.14) 0%, transparent 70%);
+  animation: drift2 10s ease-in-out infinite alternate;
+}
+[data-dark] .bg-mesh::before { background: radial-gradient(circle, rgba(0,122,255,0.12) 0%, transparent 70%); }
+[data-dark] .bg-mesh::after  { background: radial-gradient(circle, rgba(48,209,88,0.10) 0%, transparent 70%); }
+@keyframes drift1 { from { transform: translate(0,0) scale(1); } to { transform: translate(20px,30px) scale(1.1); } }
+@keyframes drift2 { from { transform: translate(0,0) scale(1); } to { transform: translate(-15px,-25px) scale(1.08); } }
  
-.ring-wrap{display:flex;justify-content:center;margin:4px 0 14px;position:relative;}
-.ring-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;}
-.ring-pct{font-size:28px;font-weight:900;}
-.ring-sub{font-size:10px;color:var(--muted);font-weight:700;}
+/* ── NAV ── */
+.nav {
+  position: fixed; bottom: 0; left: 0; right: 0;
+  max-width: 430px; margin: 0 auto;
+  background: var(--bg1);
+  -webkit-backdrop-filter: var(--blur-heavy);
+  backdrop-filter: var(--blur-heavy);
+  border-top: 0.5px solid var(--sep);
+  display: flex; z-index: 100;
+  padding: 8px 0 calc(8px + env(safe-area-inset-bottom));
+}
+.nb {
+  flex: 1; display: flex; flex-direction: column; align-items: center;
+  padding: 4px 4px 0; border: none; background: none; cursor: pointer;
+  color: var(--text3); gap: 2px; transition: color 0.2s, transform 0.12s;
+  -webkit-appearance: none;
+}
+.nb.on { color: var(--blue); }
+.nb:active { transform: scale(0.88); }
+.nb-ic { font-size: 24px; line-height: 1.1; }
+.nb-lb { font-size: 10px; font-weight: 500; letter-spacing: -0.1px; }
  
-.slider-header{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px;}
-.slider-val{font-size:32px;font-weight:900;line-height:1;}
-.slider-unit{font-size:13px;color:var(--muted);font-weight:600;}
-.slider-goal-txt{font-size:11px;color:var(--indigo);font-weight:700;}
+/* ── PAGES ── */
+.page { display: none; padding: 0 16px; animation: pgIn 0.28s cubic-bezier(0.4,0,0.2,1); }
+.page.on { display: block; }
+@keyframes pgIn { from { opacity:0; transform:translateY(8px) scale(0.98); } to { opacity:1; transform:none; } }
  
-input[type=range]{width:100%;height:6px;border-radius:99px;outline:none;
-  -webkit-appearance:none;cursor:pointer;background:var(--border);margin-bottom:6px;}
-input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:24px;height:24px;
-  border-radius:50%;background:var(--indigo);box-shadow:0 2px 8px rgba(79,70,229,0.4);
-  cursor:pointer;transition:transform 0.1s;}
-input[type=range]:active::-webkit-slider-thumb{transform:scale(1.15);}
-.range-labels{display:flex;justify-content:space-between;font-size:10px;color:var(--muted);font-weight:600;}
+/* ── GLASS CARD ── */
+.card {
+  background: var(--bg1);
+  -webkit-backdrop-filter: var(--blur);
+  backdrop-filter: var(--blur);
+  border-radius: 20px;
+  padding: 16px;
+  margin-bottom: 12px;
+  box-shadow: var(--sh-card);
+  border: 0.5px solid rgba(255,255,255,0.5);
+  transition: background 0.35s;
+  overflow: hidden;
+  position: relative;
+}
+[data-dark] .card { border-color: rgba(255,255,255,0.08); }
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.8), transparent);
+}
+[data-dark] .card::before { background: linear-gradient(90deg, transparent, rgba(255,255,255,0.12), transparent); }
  
-.pbar-wrap{background:var(--border);border-radius:99px;height:7px;overflow:hidden;margin:8px 0;}
-.pbar-fill{height:100%;border-radius:99px;transition:width 0.4s cubic-bezier(0.4,0,0.2,1);}
+.c-title {
+  font-size: 11px; font-weight: 600; text-transform: uppercase;
+  letter-spacing: 0.5px; color: var(--text2); margin-bottom: 12px;
+}
  
-.weight-row{display:flex;align-items:center;gap:10px;margin-bottom:14px;}
-.w-input{flex:1;font-family:'Nunito',sans-serif;font-size:36px;font-weight:900;
-  text-align:center;border:2px solid var(--border);border-radius:14px;padding:10px 4px;
-  outline:none;background:var(--bg);color:var(--text);-moz-appearance:textfield;
-  transition:border-color 0.2s;}
-.w-input:focus{border-color:var(--indigo);}
-.w-input::-webkit-outer-spin-button,.w-input::-webkit-inner-spin-button{-webkit-appearance:none;}
-.adj-col{display:flex;flex-direction:column;gap:6px;}
-.adj-btn{width:40px;height:40px;border:1px solid var(--border);border-radius:12px;
-  background:var(--bg);font-size:16px;font-weight:800;color:var(--text);cursor:pointer;
-  display:flex;align-items:center;justify-content:center;transition:background 0.1s;}
-.adj-btn:active{background:var(--border);}
+/* ── STAT GRID ── */
+.sg2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+.sg4 { display: grid; grid-template-columns: repeat(4,1fr); gap: 8px; margin-bottom: 10px; }
+.scard {
+  background: var(--bg2);
+  -webkit-backdrop-filter: var(--blur);
+  backdrop-filter: var(--blur);
+  border-radius: 16px; padding: 14px 10px; text-align: center;
+  box-shadow: var(--sh);
+  border: 0.5px solid rgba(255,255,255,0.45);
+  transition: all 0.18s; cursor: default;
+}
+[data-dark] .scard { border-color: rgba(255,255,255,0.06); }
+.scard:active { transform: scale(0.96); }
+.sv { font-size: 22px; font-weight: 700; line-height: 1; margin-bottom: 2px; letter-spacing: -0.5px; }
+.sl { font-size: 9px; font-weight: 500; color: var(--text2); text-transform: uppercase; letter-spacing: 0.3px; }
  
-.toggle-row{display:flex;gap:8px;}
-.toggle-btn{flex:1;padding:13px;border:2px solid var(--border);border-radius:14px;
-  background:var(--bg);font-family:'Nunito',sans-serif;font-size:14px;font-weight:700;
-  color:var(--muted);cursor:pointer;transition:all 0.15s;}
-.toggle-btn.yes{border-color:var(--green);background:rgba(34,197,94,0.08);color:var(--green);}
-.toggle-btn.no{border-color:var(--red);background:rgba(239,68,68,0.08);color:var(--red);}
+/* ── RING ── */
+.ring-wrap { display: flex; justify-content: center; position: relative; margin: 8px 0 14px; }
+.ring-center { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); text-align: center; }
+.ring-n { font-size: 32px; font-weight: 700; letter-spacing: -1px; }
+.ring-s { font-size: 11px; color: var(--text2); font-weight: 500; }
  
-.rating-row{display:flex;gap:4px;}
-.rating-btn{flex:1;padding:10px 2px;border:2px solid var(--border);border-radius:10px;
-  background:var(--bg);font-family:'Nunito',sans-serif;font-size:13px;font-weight:800;
-  color:var(--muted);cursor:pointer;text-align:center;transition:all 0.15s;}
-.rating-btn.sel{background:var(--indigo);border-color:var(--indigo);color:#fff;}
+/* ── PROGRESS ── */
+.bar { background: var(--fill1); border-radius: 99px; height: 5px; overflow: hidden; margin: 6px 0; }
+.bar-f { height: 100%; border-radius: 99px; transition: width 0.6s cubic-bezier(0.4,0,0.2,1); }
  
-.time-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;}
-.time-block label{display:block;font-size:11px;font-weight:700;color:var(--muted);
-  text-transform:uppercase;margin-bottom:6px;}
-.time-input{width:100%;padding:12px;border:2px solid var(--border);border-radius:14px;
-  font-family:'Nunito',sans-serif;font-size:22px;font-weight:900;text-align:center;
-  background:var(--bg);color:var(--text);outline:none;transition:border-color 0.2s;}
-.time-input:focus{border-color:var(--indigo);}
+/* ── SLIDER ── */
+.sh { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 8px; }
+.sval { font-size: 30px; font-weight: 700; letter-spacing: -1px; }
+.sunit { font-size: 12px; color: var(--text2); }
+.sglbl { font-size: 11px; color: var(--text2); }
  
-.wakeup-row{display:flex;align-items:center;justify-content:space-between;padding:8px 0;}
-.wakeup-lbl{font-size:13px;font-weight:700;color:var(--muted);}
-.wakeup-ctr{display:flex;align-items:center;gap:14px;}
-.wakeup-btn{width:36px;height:36px;border-radius:50%;border:2px solid var(--border);
-  background:var(--bg);font-size:18px;font-weight:700;cursor:pointer;
-  display:flex;align-items:center;justify-content:center;transition:all 0.1s;}
-.wakeup-btn:active{background:var(--border);}
-.wakeup-num{font-size:24px;font-weight:900;min-width:28px;text-align:center;}
+input[type=range] {
+  width: 100%; height: 5px; border-radius: 99px; outline: none;
+  -webkit-appearance: none; cursor: pointer;
+  background: var(--fill1); margin: 6px 0;
+}
+input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none; width: 26px; height: 26px;
+  border-radius: 50%; background: #fff;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.22), 0 0.5px 0 rgba(0,0,0,0.08);
+  cursor: pointer; transition: transform 0.12s;
+}
+input[type=range]:active::-webkit-slider-thumb { transform: scale(1.18); }
+.rl { display: flex; justify-content: space-between; font-size: 10px; color: var(--text3); }
  
-.sleep-score{border-radius:14px;padding:14px 16px;margin-top:10px;
-  display:flex;align-items:center;gap:12px;animation:fadeUp 0.2s ease;}
-.score-emoji{font-size:26px;}
-.score-val{font-size:22px;font-weight:900;line-height:1;}
-.score-lbl{font-size:11px;font-weight:700;margin-top:2px;}
-.score-desc{font-size:11px;color:var(--muted);margin-top:4px;line-height:1.4;}
+/* ── WEIGHT INPUT ── */
+.wr { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+.winp {
+  flex: 1; font-family: -apple-system, system-ui, sans-serif;
+  font-size: 40px; font-weight: 300; letter-spacing: -1.5px;
+  text-align: center; border: none; border-radius: 14px;
+  padding: 10px 4px; outline: none;
+  background: var(--fill2); color: var(--text);
+  -moz-appearance: textfield;
+  transition: background 0.2s;
+}
+.winp:focus { background: var(--fill1); }
+.winp::-webkit-outer-spin-button, .winp::-webkit-inner-spin-button { -webkit-appearance: none; }
+.ac { display: flex; flex-direction: column; gap: 6px; }
+.ab {
+  width: 42px; height: 42px; border-radius: 50%;
+  background: var(--fill1); border: none;
+  font-size: 20px; font-weight: 300; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--blue); transition: all 0.12s;
+}
+.ab:active { background: var(--fill2); transform: scale(0.9); }
  
-.btn-main{width:100%;padding:16px;border:none;border-radius:16px;background:var(--indigo);
-  color:#fff;font-family:'Nunito',sans-serif;font-size:16px;font-weight:800;cursor:pointer;
-  box-shadow:0 4px 14px rgba(79,70,229,0.35);transition:opacity 0.15s,transform 0.1s;margin-top:4px;}
-.btn-main:active{transform:scale(0.98);opacity:0.9;}
-.btn-danger{background:#ef4444;box-shadow:0 4px 14px rgba(239,68,68,0.3);}
-.btn-secondary{background:var(--bg);color:var(--indigo);border:2px solid var(--indigo);
-  box-shadow:none;}
+/* ── SEGMENTED CONTROL (Apple style) ── */
+.seg {
+  display: flex; background: var(--fill1);
+  border-radius: 10px; padding: 2px; gap: 2px;
+}
+.seg-btn {
+  flex: 1; padding: 7px 4px; border: none; border-radius: 8px;
+  background: transparent; font-family: -apple-system, system-ui, sans-serif;
+  font-size: 13px; font-weight: 500; color: var(--text2); cursor: pointer;
+  transition: all 0.2s; -webkit-appearance: none;
+}
+.seg-btn.on {
+  background: var(--bg1);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1), 0 0.5px 0 rgba(0,0,0,0.06);
+  color: var(--text);
+}
  
-.cal-grid-wrap{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;}
-.cal-dow{text-align:center;font-size:10px;font-weight:700;color:var(--muted);padding:4px 0;}
-.cal-cell{aspect-ratio:1;border-radius:10px;display:flex;flex-direction:column;
-  align-items:center;justify-content:center;font-size:11px;font-weight:700;
-  border:2px solid transparent;position:relative;cursor:pointer;transition:transform 0.1s;}
-.cal-cell:active{transform:scale(0.92);}
-.cal-cell.has{background:#f0fdf4;border-color:#bbf7d0;color:var(--green);}
-.cal-cell.miss{background:#fef2f2;border-color:#fecaca;color:var(--red);}
-.cal-cell.today{border-color:var(--indigo);background:rgba(79,70,229,0.06);color:var(--indigo);}
-.cal-cell.future{opacity:0.3;background:var(--bg);cursor:default;}
-.cal-cell.goal{background:#fffbeb;border-color:#fcd34d;color:var(--amber);}
-.cal-cell.sel-edit{border-color:var(--indigo)!important;box-shadow:0 0 0 3px rgba(79,70,229,0.25);transform:scale(1.05);}
-.cal-dot{font-size:8px;}
+/* ── RATING ── */
+.rr { display: flex; gap: 3px; }
+.rb {
+  flex: 1; padding: 9px 2px; border: none; border-radius: 10px;
+  background: var(--fill1); font-family: -apple-system, system-ui, sans-serif;
+  font-size: 13px; font-weight: 500; color: var(--text2);
+  cursor: pointer; text-align: center; transition: all 0.15s;
+}
+.rb.on { background: var(--blue); color: #fff; box-shadow: 0 2px 8px rgba(0,122,255,0.35); }
  
-.hist-item{display:flex;align-items:center;gap:10px;padding:11px 0;border-bottom:1px solid var(--border);}
-.hist-item:last-child{border:none;}
-.hist-date{font-size:12px;color:var(--muted);font-weight:700;min-width:38px;}
-.hist-tags{display:flex;gap:6px;flex-wrap:wrap;}
-.tag{font-size:11px;font-weight:700;padding:3px 8px;border-radius:8px;}
+/* ── TIME PICKER ── */
+.tg2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px; }
+.tb label { display: block; font-size: 11px; font-weight: 500; color: var(--text2); margin-bottom: 5px; }
+.ti {
+  width: 100%; padding: 11px;
+  background: var(--fill1); border: none; border-radius: 12px;
+  font-family: -apple-system, system-ui, sans-serif;
+  font-size: 22px; font-weight: 600; letter-spacing: -0.5px;
+  text-align: center; color: var(--text); outline: none;
+  transition: background 0.2s;
+}
+.ti:focus { background: var(--fill2); }
  
-/* Day Editor */
-.edit-overlay{position:fixed;inset:0;background:rgba(26,29,46,0.6);z-index:200;
-  display:flex;align-items:flex-end;justify-content:center;
-  animation:fadeIn 0.2s ease;backdrop-filter:blur(4px);}
-.edit-overlay.hidden{display:none;}
-@keyframes fadeIn{from{opacity:0}to{opacity:1}}
-.edit-sheet{background:var(--card);border-radius:24px 24px 0 0;padding:20px 20px 40px;
-  width:100%;max-width:480px;max-height:90vh;overflow-y:auto;
-  animation:slideUp 0.3s cubic-bezier(0.4,0,0.2,1);}
-@keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
-.edit-drag{width:40px;height:4px;background:var(--border);border-radius:99px;margin:0 auto 18px;}
-.edit-title{font-size:18px;font-weight:900;margin-bottom:16px;text-align:center;}
+/* ── WAKEUP STEPPER ── */
+.wu { display: flex; align-items: center; justify-content: space-between; padding: 10px 0; }
+.wu-ctr { display: flex; align-items: center; gap: 14px; }
+.wu-btn {
+  width: 36px; height: 36px; border-radius: 50%;
+  background: var(--fill1); border: none;
+  font-size: 20px; font-weight: 300; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--blue); transition: all 0.12s;
+}
+.wu-btn:active { background: var(--fill2); transform: scale(0.88); }
+.wu-num { font-size: 28px; font-weight: 600; min-width: 30px; text-align: center; letter-spacing: -1px; }
  
-/* Settings */
-.setting-row{display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--border);}
-.setting-row:last-child{border:none;}
-.setting-lbl{font-size:14px;font-weight:700;}
-.setting-sub{font-size:11px;color:var(--muted);font-weight:600;}
-.setting-val{font-size:20px;font-weight:900;color:var(--indigo);}
-.stepper{display:flex;align-items:center;gap:12px;}
-.step-btn{width:36px;height:36px;border-radius:50%;border:2px solid var(--border);
-  background:var(--bg);font-size:18px;font-weight:700;cursor:pointer;
-  display:flex;align-items:center;justify-content:center;}
-.step-btn:active{background:var(--border);}
+/* ── SLEEP SCORE ── */
+.ssl {
+  border-radius: 14px; padding: 14px;
+  margin-top: 10px; display: flex; align-items: center; gap: 12px;
+  background: var(--fill1);
+  animation: fadeIn 0.22s ease;
+}
+@keyframes fadeIn { from { opacity:0; transform:scale(0.97); } to { opacity:1; transform:none; } }
+.ssl-n { font-size: 26px; font-weight: 700; letter-spacing: -1px; }
+.ssl-l { font-size: 12px; font-weight: 600; margin-top: 2px; }
+.ssl-d { font-size: 11px; color: var(--text2); margin-top: 3px; }
  
-.num-input-big{width:100%;font-family:'Nunito',sans-serif;font-size:28px;font-weight:900;
-  text-align:center;border:2px solid var(--border);border-radius:14px;padding:12px;
-  outline:none;background:var(--bg);color:var(--text);-moz-appearance:textfield;}
-.num-input-big:focus{border-color:var(--indigo);}
-.num-input-big::-webkit-outer-spin-button,.num-input-big::-webkit-inner-spin-button{-webkit-appearance:none;}
+/* ── BUTTON ── */
+.btn {
+  width: 100%; padding: 16px; border: none; border-radius: 14px;
+  background: var(--blue); color: #fff;
+  font-family: -apple-system, system-ui, sans-serif;
+  font-size: 17px; font-weight: 600;
+  cursor: pointer; transition: opacity 0.15s, transform 0.12s;
+  margin-top: 6px; letter-spacing: -0.2px;
+  -webkit-appearance: none;
+}
+.btn:active { transform: scale(0.97); opacity: 0.85; }
+.btn.green { background: var(--green); }
+.btn.red { background: var(--red); }
+.btn.fill {
+  background: var(--fill1); color: var(--text);
+  box-shadow: none;
+}
  
-.date-input{width:100%;font-family:'Nunito',sans-serif;font-size:18px;font-weight:800;
-  text-align:center;border:2px solid var(--border);border-radius:14px;padding:12px;
-  outline:none;background:var(--bg);color:var(--text);}
-.date-input:focus{border-color:var(--indigo);}
+/* ── CALENDAR ── */
+.cal-hdr { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+.cal-m { font-size: 17px; font-weight: 600; letter-spacing: -0.3px; }
+.cal-nav {
+  width: 30px; height: 30px; border-radius: 50%;
+  background: var(--fill1); border: none; cursor: pointer;
+  font-size: 16px; display: flex; align-items: center; justify-content: center;
+  color: var(--blue); transition: all 0.15s;
+}
+.cal-nav:active { background: var(--fill2); transform: scale(0.88); }
+.cgrid { display: grid; grid-template-columns: repeat(7,1fr); gap: 4px; }
+.cd { text-align: center; font-size: 10px; font-weight: 500; color: var(--text2); padding: 3px 0; }
+.cc {
+  aspect-ratio: 1; border-radius: 10px;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 500; cursor: pointer;
+  transition: all 0.18s cubic-bezier(0.4,0,0.2,1);
+  position: relative; background: transparent;
+}
+.cc:active { transform: scale(0.88); }
+.cc.has { background: rgba(52,199,89,0.15); color: var(--green); }
+.cc.miss { background: rgba(255,59,48,0.08); color: var(--text3); }
+.cc.today { background: var(--blue); color: #fff; font-weight: 700; box-shadow: 0 2px 10px rgba(0,122,255,0.4); }
+.cc.future { opacity: 0.25; cursor: default; }
+.cc.goal-d { background: rgba(255,149,0,0.15); color: var(--orange); }
+.cc.sel { box-shadow: 0 0 0 2.5px var(--blue); transform: scale(1.06); z-index: 2; }
+.cdot { font-size: 6px; line-height: 1; opacity: 0.7; }
  
-/* Month picker */
-.month-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:8px;}
-.month-btn{padding:10px 4px;border:2px solid var(--border);border-radius:12px;
-  background:var(--bg);font-family:'Nunito',sans-serif;font-size:13px;font-weight:800;
-  color:var(--muted);cursor:pointer;text-align:center;}
-.month-btn.sel{background:var(--indigo);border-color:var(--indigo);color:#fff;}
+.c-det {
+  border-radius: 14px; padding: 14px; margin-top: 10px;
+  background: var(--fill1);
+  animation: fadeIn 0.2s ease;
+}
+.c-det-date { font-size: 13px; font-weight: 600; color: var(--text2); margin-bottom: 8px; }
+.ctag {
+  display: inline-flex; align-items: center;
+  font-size: 12px; font-weight: 500;
+  padding: 4px 10px; border-radius: 20px; margin: 2px 3px 2px 0;
+  background: var(--fill1); color: var(--text);
+}
  
-.toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%) translateY(10px);
-  background:var(--text);color:#fff;padding:12px 22px;border-radius:99px;
-  font-size:13px;font-weight:700;opacity:0;pointer-events:none;transition:all 0.25s;
-  z-index:999;white-space:nowrap;box-shadow:0 4px 16px rgba(0,0,0,0.2);}
-.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
-.toast.ok{background:var(--green);}
+/* ── HISTORY ── */
+.hi {
+  display: flex; align-items: center; gap: 10px;
+  padding: 11px 0; border-bottom: 0.5px solid var(--sep);
+}
+.hi:last-child { border: none; }
+.hdate { font-size: 12px; color: var(--text2); font-weight: 500; min-width: 38px; }
+.htag {
+  font-size: 11px; font-weight: 500; padding: 3px 8px;
+  border-radius: 20px; background: var(--fill1); color: var(--text);
+}
  
-.edit-month-nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
-.edit-month-title{font-size:14px;font-weight:800;color:var(--indigo);}
-.edit-month-btn{width:34px;height:34px;border-radius:10px;border:2px solid var(--border);
-  background:var(--bg);font-size:16px;font-weight:700;cursor:pointer;
-  display:flex;align-items:center;justify-content:center;}
+/* ── CHART ── */
+.chart { display: flex; align-items: flex-end; gap: 4px; height: 64px; }
+.cbar { flex: 1; border-radius: 5px 5px 0 0; min-height: 3px; transition: height 0.4s cubic-bezier(0.4,0,0.2,1); }
+.clbls { display: flex; gap: 4px; margin-top: 4px; }
+.clbl { flex: 1; text-align: center; font-size: 9px; color: var(--text3); }
+ 
+/* ── HEADER ── */
+.ph { display: flex; justify-content: space-between; align-items: center; padding: 16px 0 10px; }
+.ph-t { font-size: 34px; font-weight: 700; letter-spacing: -1px; }
+.ph-r { display: flex; align-items: center; gap: 8px; }
+.ph-d { font-size: 10px; color: var(--text2); font-weight: 500; text-align: right; line-height: 1.7; }
+.theme-btn {
+  width: 34px; height: 34px; border-radius: 50%;
+  background: var(--fill1); border: none; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px; transition: all 0.18s;
+}
+.theme-btn:active { transform: scale(0.88); }
+ 
+/* ── SETUP ── */
+#setup { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 32px 20px; }
+.si { width: 100%; max-width: 380px; }
+.s-logo { font-size: 56px; text-align: center; margin-bottom: 6px; animation: breathe 3s ease-in-out infinite; }
+@keyframes breathe { 0%,100%{ transform:scale(1); } 50%{ transform:scale(1.06); } }
+.s-title { font-size: 34px; font-weight: 700; letter-spacing: -1px; text-align: center; margin-bottom: 3px; }
+.s-sub { font-size: 15px; color: var(--text2); text-align: center; margin-bottom: 32px; font-weight: 400; }
+.s-dots { display: flex; justify-content: center; gap: 5px; margin-bottom: 24px; }
+.s-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--fill1); transition: all 0.25s; }
+.s-dot.d { background: var(--blue); transform: scale(1.2); }
+.s-q { font-size: 22px; font-weight: 700; letter-spacing: -0.5px; margin-bottom: 16px; }
+.s-opts { display: flex; flex-direction: column; gap: 8px; }
+.so {
+  padding: 15px 16px; border-radius: 14px;
+  background: var(--bg1);
+  -webkit-backdrop-filter: var(--blur);
+  backdrop-filter: var(--blur);
+  border: 0.5px solid rgba(255,255,255,0.5);
+  box-shadow: var(--sh-card);
+  font-family: -apple-system, system-ui, sans-serif;
+  font-size: 17px; font-weight: 500; cursor: pointer;
+  text-align: left; transition: all 0.18s; color: var(--text);
+  -webkit-appearance: none;
+}
+[data-dark] .so { border-color: rgba(255,255,255,0.08); }
+.so:active { transform: scale(0.97); opacity: 0.8; }
+.so.on { background: var(--blue); color: #fff; border-color: transparent; }
+.sinp {
+  width: 100%; padding: 16px;
+  background: var(--bg1);
+  -webkit-backdrop-filter: var(--blur);
+  backdrop-filter: var(--blur);
+  border: 0.5px solid rgba(255,255,255,0.5);
+  border-radius: 14px;
+  font-family: -apple-system, system-ui, sans-serif;
+  font-size: 22px; font-weight: 600; letter-spacing: -0.5px;
+  color: var(--text); outline: none;
+  -moz-appearance: textfield;
+  box-shadow: var(--sh-card);
+  transition: all 0.2s;
+}
+.sinp:focus { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(0,122,255,0.2), var(--sh-card); }
+.sinp::-webkit-outer-spin-button, .sinp::-webkit-inner-spin-button { -webkit-appearance: none; }
+.s-hint { font-size: 13px; color: var(--text2); margin-top: 6px; }
+ 
+/* ── PACE WIZARD ── */
+.pace-card {
+  background: var(--bg1);
+  -webkit-backdrop-filter: var(--blur);
+  backdrop-filter: var(--blur);
+  border-radius: 20px; padding: 20px;
+  border: 0.5px solid rgba(255,255,255,0.5);
+  box-shadow: var(--sh-card); margin: 12px 0;
+}
+[data-dark] .pace-card { border-color: rgba(255,255,255,0.08); }
+.pace-animal { font-size: 52px; text-align: center; margin-bottom: 6px; transition: all 0.3s; }
+.pace-lbl { font-size: 17px; font-weight: 700; text-align: center; margin-bottom: 4px; letter-spacing: -0.3px; }
+.pace-desc { font-size: 13px; color: var(--text2); text-align: center; margin-bottom: 14px; line-height: 1.45; }
+.pace-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px; }
+.pace-stat { background: var(--fill1); border-radius: 12px; padding: 12px; text-align: center; }
+.pace-stat-n { font-size: 20px; font-weight: 700; letter-spacing: -0.5px; }
+.pace-stat-l { font-size: 10px; color: var(--text2); font-weight: 500; text-transform: uppercase; letter-spacing: 0.3px; }
+ 
+/* ── SHEET ── */
+.overlay {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.4);
+  z-index: 200; display: flex; align-items: flex-end; justify-content: center;
+  animation: fIn 0.2s ease;
+  -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px);
+}
+.overlay.hid { display: none; }
+@keyframes fIn { from { opacity:0; } to { opacity:1; } }
+.sheet {
+  background: var(--bg0);
+  border-radius: 24px 24px 0 0;
+  padding: 6px 16px calc(32px + env(safe-area-inset-bottom));
+  width: 100%; max-width: 430px; max-height: 94vh;
+  overflow-y: auto;
+  animation: sUp 0.3s cubic-bezier(0.4,0,0.2,1);
+  transition: background 0.35s;
+}
+@keyframes sUp { from { transform:translateY(100%); } to { transform:none; } }
+.drag {
+  width: 36px; height: 5px; background: var(--fill1);
+  border-radius: 99px; margin: 8px auto 16px;
+}
+.sheet-t { font-size: 17px; font-weight: 600; text-align: center; margin-bottom: 16px; letter-spacing: -0.3px; }
+ 
+/* ── TOAST ── */
+.toast {
+  position: fixed; bottom: calc(84px + env(safe-area-inset-bottom));
+  left: 50%; transform: translateX(-50%) translateY(12px);
+  background: rgba(40,40,40,0.9);
+  -webkit-backdrop-filter: blur(20px); backdrop-filter: blur(20px);
+  color: #fff; padding: 11px 20px; border-radius: 99px;
+  font-size: 14px; font-weight: 500;
+  opacity: 0; pointer-events: none; transition: all 0.24s;
+  z-index: 999; white-space: nowrap;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+  border: 0.5px solid rgba(255,255,255,0.15);
+}
+.toast.on { opacity: 1; transform: translateX(-50%) translateY(0); }
+.toast.ok { background: rgba(52,199,89,0.92); }
+.toast.er { background: rgba(255,59,48,0.92); }
+ 
+/* ── TODAY PILLS ── */
+.pill {
+  border-radius: 14px; padding: 12px 8px; text-align: center;
+  background: var(--fill1); transition: all 0.2s; cursor: default;
+}
+.pill.filled { background: rgba(52,199,89,0.12); }
+.pill-ic { font-size: 20px; line-height: 1.2; }
+.pill-v { font-size: 13px; font-weight: 600; color: var(--text); margin: 3px 0 2px; letter-spacing: -0.3px; }
+.pill-l { font-size: 9px; font-weight: 500; color: var(--text2); text-transform: uppercase; letter-spacing: 0.3px; }
 </style>
 </head>
 <body>
+<div class="bg-mesh"></div>
  
-<div class="header">
-  <div class="header-title">🔥 FIT</div>
-  <div class="header-date" id="hdr-date">—</div>
+<!-- SETUP -->
+<div id="setup" style="display:none;">
+  <div class="si">
+    <div class="s-logo">⚡</div>
+    <div class="s-title">FIT</div>
+    <div class="s-sub">Личный трекер</div>
+    <div class="s-dots" id="dots"></div>
+    <div id="sbody"></div>
+  </div>
 </div>
  
-<div class="tabs">
-  <button class="tab active" onclick="setTab('home',this)">🏠</button>
-  <button class="tab" onclick="setTab('checkin',this)">✅ Чек-ин</button>
-  <button class="tab" onclick="setTab('sleep',this)">🌙 Сон</button>
-  <button class="tab" onclick="setTab('cal',this)">📅 Дни</button>
-  <button class="tab" onclick="setTab('settings',this)">⚙️</button>
-</div>
+<!-- APP -->
+<div id="app" style="display:none;">
  
-<!-- HOME -->
-<div class="section active" id="sec-home">
-  <div class="stat-grid">
-    <div class="stat-card"><div class="stat-val" id="h-w" style="color:var(--indigo)">—</div><div class="stat-lbl">Вес кг</div></div>
-    <div class="stat-card"><div class="stat-val" id="h-dl" style="color:var(--amber)">—</div><div class="stat-lbl">Дней до цели</div></div>
-  </div>
-  <div class="stat-grid">
-    <div class="stat-card"><div class="stat-val" id="h-lost" style="color:var(--green)">—</div><div class="stat-lbl">Сброшено кг</div></div>
-    <div class="stat-card"><div class="stat-val" id="h-strk" style="color:var(--red)">—</div><div class="stat-lbl">Стрик 🔥</div></div>
-  </div>
- 
-  <div class="card">
-    <div class="card-label">Прогресс к цели</div>
-    <div class="ring-wrap">
-      <svg width="130" height="130" viewBox="0 0 130 130">
-        <circle cx="65" cy="65" r="52" fill="none" stroke="#e8eaf2" stroke-width="12"/>
-        <circle cx="65" cy="65" r="52" fill="none" stroke="url(#g1)" stroke-width="12"
-          stroke-linecap="round" stroke-dasharray="327" id="ring-arc"
-          stroke-dashoffset="327" transform="rotate(-90 65 65)" style="transition:stroke-dashoffset 0.8s ease"/>
-        <defs><linearGradient id="g1" x1="0%" y1="0%" x2="100%" y2="0%">
-          <stop offset="0%" stop-color="#4f46e5"/><stop offset="100%" stop-color="#22c55e"/>
-        </linearGradient></defs>
-      </svg>
-      <div class="ring-center">
-        <div class="ring-pct" id="ring-pct">0%</div>
-        <div class="ring-sub">к цели</div>
+  <!-- HOME -->
+  <div class="page on" id="pg-home">
+    <div class="ph">
+      <div class="ph-t" id="h-name">FIT</div>
+      <div class="ph-r">
+        <button class="theme-btn" onclick="toggleTheme()" id="tbtn">🌙</button>
+        <div class="ph-d" id="h-date">—</div>
       </div>
     </div>
-    <div style="display:flex;justify-content:space-between;font-size:11px;font-weight:700;color:var(--muted);margin-bottom:4px;">
-      <span>Время</span><span id="time-pct">0%</span>
+    <div class="sg2">
+      <div class="scard"><div class="sv" id="h-w">—</div><div class="sl">Вес кг</div></div>
+      <div class="scard"><div class="sv" id="h-dl" style="color:var(--text2)">—</div><div class="sl">До цели</div></div>
     </div>
-    <div class="pbar-wrap"><div class="pbar-fill" id="time-bar" style="width:0%;background:linear-gradient(90deg,#4f46e5,#8b5cf6)"></div></div>
-  </div>
- 
-  <div class="card">
-    <div class="card-label">Сегодня</div>
-    <div id="today-pills" style="display:grid;grid-template-columns:1fr 1fr;gap:8px;"></div>
-  </div>
- 
-  <div class="card">
-    <div class="card-label">Шаги сегодня</div>
-    <div class="slider-header">
-      <div><div class="slider-val" id="steps-disp">0</div><div class="slider-unit">шагов</div></div>
-      <div class="slider-goal-txt" id="steps-goal-lbl">цель: 10 000</div>
+    <div class="sg2">
+      <div class="scard"><div class="sv" id="h-prog" style="color:var(--green)">—</div><div class="sl">Прогресс</div></div>
+      <div class="scard"><div class="sv" id="h-strk">—</div><div class="sl">Стрик 🔥</div></div>
     </div>
-    <div class="pbar-wrap"><div class="pbar-fill" id="steps-pbar" style="width:0%;background:var(--blue)"></div></div>
-    <input type="range" id="steps-sl" min="0" max="30000" step="100" value="0" oninput="onSteps(this.value)">
-    <div class="range-labels"><span>0</span><span>10к</span><span>20к</span><span>30к</span></div>
-    <button class="btn-main" style="margin-top:10px;" onclick="saveSteps()">💾 Сохранить шаги</button>
-  </div>
-</div>
- 
-<!-- CHECKIN -->
-<div class="section" id="sec-checkin">
-  <div class="card">
-    <div class="card-label">Вес сегодня</div>
-    <div class="weight-row">
-      <div class="adj-col">
-        <button class="adj-btn" onclick="adjW(-1)">−</button>
-        <button class="adj-btn" onclick="adjW(-0.1)" style="font-size:11px;">−.1</button>
-      </div>
-      <input type="number" id="w-inp" class="w-input" step="0.1" min="30" max="300" placeholder="76.0" oninput="onWInp()">
-      <div class="adj-col">
-        <button class="adj-btn" onclick="adjW(1)">+</button>
-        <button class="adj-btn" onclick="adjW(0.1)" style="font-size:11px;">+.1</button>
-      </div>
-    </div>
-    <div id="w-diff" style="text-align:center;font-size:13px;font-weight:700;color:var(--muted);min-height:18px;"></div>
-  </div>
- 
-  <div class="card">
-    <div class="card-label">Тренировка</div>
-    <div class="toggle-row">
-      <button class="toggle-btn" id="wo-y" onclick="setWO(true)">💪 Да</button>
-      <button class="toggle-btn" id="wo-n" onclick="setWO(false)">😴 Нет</button>
-    </div>
-  </div>
- 
-  <div class="card">
-    <div class="card-label">Оценка дня (1–10)</div>
-    <div class="rating-row" id="rating-row"></div>
-  </div>
- 
-  <div class="card">
-    <div class="card-label">Шаги (чек-ин)</div>
-    <div class="slider-header">
-      <div><div class="slider-val" id="ci-steps-disp">0</div><div class="slider-unit">шагов</div></div>
-      <div class="slider-goal-txt" id="ci-steps-goal"></div>
-    </div>
-    <div class="pbar-wrap"><div class="pbar-fill" id="ci-steps-pbar" style="width:0%;background:var(--blue)"></div></div>
-    <input type="range" id="ci-steps-sl" min="0" max="30000" step="100" value="0" oninput="onCiSteps(this.value)">
-    <div class="range-labels"><span>0</span><span>10к</span><span>20к</span><span>30к</span></div>
-  </div>
- 
-  <button class="btn-main" onclick="saveCheckin()">✅ Сохранить чек-ин</button>
-</div>
- 
-<!-- SLEEP -->
-<div class="section" id="sec-sleep">
-  <div class="card">
-    <div class="card-label">Сон</div>
-    <div class="time-grid">
-      <div class="time-block"><label>Лёг спать</label>
-        <input type="time" id="sl-start" class="time-input" value="23:00" oninput="onSleep()"></div>
-      <div class="time-block"><label>Проснулся</label>
-        <input type="time" id="sl-end" class="time-input" value="07:00" oninput="onSleep()"></div>
-    </div>
-    <div class="pbar-wrap"><div class="pbar-fill" id="sl-pbar" style="width:0%;background:var(--indigo)"></div></div>
-    <div style="display:flex;justify-content:space-between;font-size:11px;font-weight:700;color:var(--muted);margin-top:2px;">
-      <span id="sl-hrs">—</span><span>Норма: 7–9 ч</span>
-    </div>
-    <div class="wakeup-row">
-      <div class="wakeup-lbl">Просыпался ночью:</div>
-      <div class="wakeup-ctr">
-        <button class="wakeup-btn" onclick="adjWU(-1)">−</button>
-        <div class="wakeup-num" id="wu-num">0</div>
-        <button class="wakeup-btn" onclick="adjWU(1)">+</button>
-      </div>
-    </div>
-    <div id="sl-score"></div>
-  </div>
-  <button class="btn-main" onclick="saveSleep()">🌙 Сохранить сон</button>
- 
-  <div class="card" style="margin-top:12px;">
-    <div class="card-label">История сна</div>
-    <div id="sl-hist"></div>
-  </div>
-</div>
- 
-<!-- CALENDAR / HISTORY -->
-<div class="section" id="sec-cal">
-  <div class="card">
-    <div class="edit-month-nav">
-      <button class="edit-month-btn" onclick="calPrevMonth()">‹</button>
-      <div class="edit-month-title" id="cal-month-title">—</div>
-      <button class="edit-month-btn" onclick="calNextMonth()">›</button>
-    </div>
-    <div class="card-label" style="margin-bottom:6px;">Нажми на день чтобы редактировать</div>
-    <div class="cal-grid-wrap" id="cal-dows"></div>
-    <div style="height:5px;"></div>
-    <div class="cal-grid-wrap" id="cal-cells"></div>
-    <div style="display:flex;gap:12px;margin-top:10px;font-size:10px;font-weight:700;color:var(--muted);">
-      <span style="color:var(--green)">✅ вес есть</span>
-      <span style="color:var(--red)">❌ нет</span>
-      <span style="color:var(--amber)">🎯 цель</span>
-    </div>
-  </div>
-  <div class="card">
-    <div class="card-label">Последние 7 дней</div>
-    <div id="hist-list"></div>
-  </div>
-</div>
- 
-<!-- SETTINGS -->
-<div class="section" id="sec-settings">
-  <div class="card">
-    <div class="card-label">Параметры тела</div>
- 
-    <div style="margin-bottom:14px;">
-      <div class="card-label" style="margin-bottom:8px;">Начальный вес (кг)</div>
-      <div class="weight-row">
-        <div class="adj-col">
-          <button class="adj-btn" onclick="adjSetting('sw',-1)">−</button>
-          <button class="adj-btn" onclick="adjSetting('sw',-0.1)" style="font-size:11px;">−.1</button>
-        </div>
-        <input type="number" id="cfg-sw" class="w-input" step="0.1" min="30" max="300" placeholder="85.0" oninput="saveCfgField('sw',this.value)">
-        <div class="adj-col">
-          <button class="adj-btn" onclick="adjSetting('sw',1)">+</button>
-          <button class="adj-btn" onclick="adjSetting('sw',0.1)" style="font-size:11px;">+.1</button>
+    <div class="card">
+      <div class="c-title">К цели</div>
+      <div class="ring-wrap">
+        <svg width="130" height="130" viewBox="0 0 130 130">
+          <circle cx="65" cy="65" r="52" fill="none" stroke="var(--fill1)" stroke-width="10"/>
+          <circle cx="65" cy="65" r="52" fill="none" stroke="var(--blue)" stroke-width="10"
+            stroke-linecap="round" stroke-dasharray="327" id="ring"
+            stroke-dashoffset="327" transform="rotate(-90 65 65)"
+            style="transition:stroke-dashoffset 1.1s cubic-bezier(0.4,0,0.2,1)"/>
+        </svg>
+        <div class="ring-center">
+          <div class="ring-n" id="r-pct">0%</div>
+          <div class="ring-s">выполнено</div>
         </div>
       </div>
+      <div style="display:flex;justify-content:space-between;font-size:11px;font-weight:500;color:var(--text2);margin-bottom:4px;">
+        <span>Время</span><span id="t-pct">0%</span>
+      </div>
+      <div class="bar"><div class="bar-f" id="t-bar" style="width:0%;background:var(--blue)"></div></div>
     </div>
+    <div class="card">
+      <div class="c-title">Сегодня</div>
+      <div id="today-pills" style="display:grid;grid-template-columns:1fr 1fr;gap:8px;"></div>
+    </div>
+    <div class="card">
+      <div class="c-title">Шаги</div>
+      <div class="sh">
+        <div><div class="sval" id="steps-val">0</div><div class="sunit">шагов</div></div>
+        <div class="sglbl" id="steps-glbl"></div>
+      </div>
+      <div class="bar"><div class="bar-f" id="steps-bar" style="width:0%"></div></div>
+      <input type="range" id="steps-sl" min="0" max="30000" step="100" value="0" oninput="onSteps(this.value)">
+      <div class="rl"><span>0</span><span>10к</span><span>20к</span><span>30к</span></div>
+      <button class="btn" style="margin-top:10px;" onclick="saveSteps()">Сохранить шаги</button>
+    </div>
+  </div>
  
-    <div style="margin-bottom:14px;">
-      <div class="card-label" style="margin-bottom:8px;">Целевой вес (кг)</div>
-      <div class="weight-row">
-        <div class="adj-col">
-          <button class="adj-btn" onclick="adjSetting('tw',-1)">−</button>
-          <button class="adj-btn" onclick="adjSetting('tw',-0.1)" style="font-size:11px;">−.1</button>
+  <!-- CHECKIN -->
+  <div class="page" id="pg-ci">
+    <div class="ph"><div class="ph-t">Чек-ин</div><div class="ph-d" id="ci-d">—</div></div>
+    <div class="card">
+      <div class="c-title">Вес (кг)</div>
+      <div class="wr">
+        <div class="ac">
+          <button class="ab" onclick="adjW(-1)">−</button>
+          <button class="ab" onclick="adjW(-.1)" style="font-size:13px;">−.1</button>
         </div>
-        <input type="number" id="cfg-tw" class="w-input" step="0.1" min="30" max="300" placeholder="73.0" oninput="saveCfgField('tw',this.value)">
-        <div class="adj-col">
-          <button class="adj-btn" onclick="adjSetting('tw',1)">+</button>
-          <button class="adj-btn" onclick="adjSetting('tw',0.1)" style="font-size:11px;">+.1</button>
+        <input type="number" id="w-inp" class="winp" step=".1" min="30" max="300" placeholder="76.0" oninput="onWInp()">
+        <div class="ac">
+          <button class="ab" onclick="adjW(1)">+</button>
+          <button class="ab" onclick="adjW(.1)" style="font-size:13px;">+.1</button>
         </div>
       </div>
+      <div id="w-diff" style="text-align:center;font-size:13px;font-weight:500;color:var(--text2);min-height:18px;"></div>
     </div>
-  </div>
- 
-  <div class="card">
-    <div class="card-label">Дата начала</div>
-    <input type="date" id="cfg-setup-date" class="date-input" oninput="saveCfgDate('setupDate',this.value)" style="margin-bottom:6px;">
-    <div style="font-size:11px;color:var(--muted);font-weight:600;">День когда ты начал трекить прогресс</div>
-  </div>
- 
-  <div class="card">
-    <div class="card-label">Срок достижения цели</div>
-    <div style="font-size:12px;color:var(--muted);font-weight:700;margin-bottom:12px;">Выбери через сколько месяцев хочешь достичь цели:</div>
-    <div class="month-grid" id="month-btns"></div>
-    <div style="margin-top:12px;padding:12px;background:var(--bg);border-radius:12px;text-align:center;">
-      <div style="font-size:11px;color:var(--muted);font-weight:700;">Дата цели</div>
-      <div id="goal-date-display" style="font-size:20px;font-weight:900;color:var(--indigo);margin-top:4px;">—</div>
+    <div class="card">
+      <div class="c-title">Тренировка</div>
+      <div class="seg">
+        <button class="seg-btn" id="wo-y" onclick="setWO(true)">Была 💪</button>
+        <button class="seg-btn" id="wo-n" onclick="setWO(false)">Не было</button>
+      </div>
     </div>
-  </div>
- 
-  <div class="card">
-    <div class="card-label">Цель по шагам</div>
-    <div class="slider-header">
-      <div><div class="slider-val" id="cfg-steps-disp">10 000</div><div class="slider-unit">шагов/день</div></div>
+    <div class="card">
+      <div class="c-title">Оценка дня</div>
+      <div class="rr" id="rat-row"></div>
     </div>
-    <div class="pbar-wrap"><div class="pbar-fill" id="cfg-steps-pbar" style="width:33%;background:var(--blue)"></div></div>
-    <input type="range" id="cfg-steps-sl" min="2000" max="30000" step="500" value="10000" oninput="onCfgSteps(this.value)">
-    <div class="range-labels"><span>2к</span><span>10к</span><span>20к</span><span>30к</span></div>
-    <button class="btn-main" style="margin-top:10px;" onclick="saveCfgSteps()">💾 Сохранить цель шагов</button>
+    <button class="btn" onclick="saveCI()">Сохранить</button>
   </div>
  
-  <div class="card">
-    <div class="card-label" style="color:var(--red);">⚠️ Опасная зона</div>
-    <button class="btn-main btn-danger" onclick="confirmReset()">🗑️ Сбросить все данные</button>
-  </div>
-</div>
- 
-<!-- Day Edit Sheet -->
-<div class="edit-overlay hidden" id="edit-overlay" onclick="closeEdit(event)">
-  <div class="edit-sheet" id="edit-sheet">
-    <div class="edit-drag"></div>
-    <div class="edit-title" id="edit-title">Редактировать день</div>
- 
-    <div class="card" style="margin-bottom:10px;">
-      <div class="card-label">Вес (кг)</div>
-      <div class="weight-row">
-        <div class="adj-col">
-          <button class="adj-btn" onclick="adjEW(-1)">−</button>
-          <button class="adj-btn" onclick="adjEW(-0.1)" style="font-size:11px;">−.1</button>
+  <!-- SLEEP -->
+  <div class="page" id="pg-sl">
+    <div class="ph"><div class="ph-t">Сон</div></div>
+    <div class="card">
+      <div class="c-title">Время</div>
+      <div class="tg2">
+        <div class="tb"><label>Лёг спать</label><input type="time" id="sl-s" class="ti" value="23:00" oninput="onSl()"></div>
+        <div class="tb"><label>Проснулся</label><input type="time" id="sl-e" class="ti" value="07:00" oninput="onSl()"></div>
+      </div>
+      <div class="bar"><div class="bar-f" id="sl-bar" style="width:70%"></div></div>
+      <div style="display:flex;justify-content:space-between;font-size:11px;font-weight:500;color:var(--text2);margin-top:2px;">
+        <span id="sl-h">8 ч 0 мин</span><span>Норма 7–9 ч</span>
+      </div>
+      <div class="wu">
+        <div style="font-size:14px;font-weight:500;color:var(--text2);">Просыпался ночью</div>
+        <div class="wu-ctr">
+          <button class="wu-btn" onclick="adjWU(-1)">−</button>
+          <div class="wu-num" id="wu-n">0</div>
+          <button class="wu-btn" onclick="adjWU(1)">+</button>
         </div>
-        <input type="number" id="e-w" class="w-input" step="0.1" min="30" max="300" placeholder="—">
-        <div class="adj-col">
-          <button class="adj-btn" onclick="adjEW(1)">+</button>
-          <button class="adj-btn" onclick="adjEW(0.1)" style="font-size:11px;">+.1</button>
+      </div>
+      <div id="sl-sc"></div>
+    </div>
+    <button class="btn" onclick="saveSl()">Сохранить сон</button>
+    <div class="card" style="margin-top:10px;">
+      <div class="c-title">История — 7 дней</div>
+      <div id="sl-hist"></div>
+    </div>
+  </div>
+ 
+  <!-- CALENDAR -->
+  <div class="page" id="pg-cal">
+    <div class="ph"><div class="ph-t">Дни</div></div>
+    <div class="card">
+      <div class="cal-hdr">
+        <button class="cal-nav" onclick="cp()">‹</button>
+        <div class="cal-m" id="cal-m">—</div>
+        <button class="cal-nav" onclick="cn2()">›</button>
+      </div>
+      <div class="cgrid" id="cal-dows"></div>
+      <div style="height:5px;"></div>
+      <div class="cgrid" id="cal-cells"></div>
+      <div id="cal-det"></div>
+    </div>
+    <div class="card">
+      <div class="c-title">Последние 7 дней</div>
+      <div id="cal-h7"></div>
+    </div>
+  </div>
+ 
+  <!-- STATS -->
+  <div class="page" id="pg-st">
+    <div class="ph"><div class="ph-t">Аналитика</div></div>
+    <div class="sg4">
+      <div class="scard"><div class="sv" id="an-d" style="font-size:17px">—</div><div class="sl">Дисц.</div></div>
+      <div class="scard"><div class="sv" id="an-s" style="font-size:17px">—</div><div class="sl">Стрик</div></div>
+      <div class="scard"><div class="sv" id="an-a" style="font-size:17px">—</div><div class="sl">Шаги</div></div>
+      <div class="scard"><div class="sv" id="an-sl" style="font-size:17px">—</div><div class="sl">Сон</div></div>
+    </div>
+    <div class="card">
+      <div class="c-title">Шаги — 7 дней</div>
+      <div class="chart" id="st-sc"></div>
+      <div class="clbls" id="st-sl"></div>
+    </div>
+    <div class="card">
+      <div class="c-title">Вес</div>
+      <svg id="w-svg" width="100%" height="80" style="overflow:visible;display:block;"></svg>
+      <div style="display:flex;justify-content:space-between;font-size:11px;font-weight:500;color:var(--text2);margin-top:8px;">
+        <span id="an-tr">—</span><span id="an-lo">—</span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="c-title">Сон — 7 дней</div>
+      <div class="chart" id="st-sl2"></div>
+      <div class="clbls" id="st-sl2l"></div>
+    </div>
+  </div>
+ 
+</div><!-- /app -->
+ 
+<!-- NAV -->
+<nav class="nav" id="nav" style="display:none;">
+  <button class="nb on" onclick="gp('home',this)"><span class="nb-ic">⊙</span><span class="nb-lb">Главная</span></button>
+  <button class="nb" onclick="gp('ci',this)"><span class="nb-ic">◎</span><span class="nb-lb">Чек-ин</span></button>
+  <button class="nb" onclick="gp('sl',this)"><span class="nb-ic">◑</span><span class="nb-lb">Сон</span></button>
+  <button class="nb" onclick="gp('cal',this)"><span class="nb-ic">⊞</span><span class="nb-lb">Дни</span></button>
+  <button class="nb" onclick="gp('st',this)"><span class="nb-ic">△</span><span class="nb-lb">Стата</span></button>
+</nav>
+ 
+<!-- EDIT SHEET -->
+<div class="overlay hid" id="ov" onclick="if(event.target===this)closeEd()">
+  <div class="sheet">
+    <div class="drag"></div>
+    <div class="sheet-t" id="ed-t">Редактировать</div>
+ 
+    <div class="card" style="margin-bottom:8px;">
+      <div class="c-title">Вес (кг)</div>
+      <div class="wr">
+        <div class="ac">
+          <button class="ab" onclick="adjEW(-1)">−</button>
+          <button class="ab" onclick="adjEW(-.1)" style="font-size:13px;">−.1</button>
+        </div>
+        <input type="number" id="ew" class="winp" step=".1" min="30" max="300" placeholder="—">
+        <div class="ac">
+          <button class="ab" onclick="adjEW(1)">+</button>
+          <button class="ab" onclick="adjEW(.1)" style="font-size:13px;">+.1</button>
         </div>
       </div>
     </div>
  
-    <div class="card" style="margin-bottom:10px;">
-      <div class="card-label">Шаги</div>
-      <div class="slider-header">
-        <div><div class="slider-val" id="e-steps-disp">0</div><div class="slider-unit">шагов</div></div>
-      </div>
-      <div class="pbar-wrap"><div class="pbar-fill" id="e-steps-pbar" style="width:0%;background:var(--blue)"></div></div>
-      <input type="range" id="e-steps-sl" min="0" max="30000" step="100" value="0" oninput="onESteps(this.value)">
-      <div class="range-labels"><span>0</span><span>10к</span><span>20к</span><span>30к</span></div>
+    <div class="card" style="margin-bottom:8px;">
+      <div class="c-title">Шаги</div>
+      <div class="sh"><div><div class="sval" id="es-d">0</div><div class="sunit">шагов</div></div></div>
+      <div class="bar"><div class="bar-f" id="es-b" style="width:0%"></div></div>
+      <input type="range" id="es-sl" min="0" max="30000" step="100" value="0" oninput="onES(this.value)">
+      <div class="rl"><span>0</span><span>10к</span><span>20к</span><span>30к</span></div>
     </div>
  
-    <div class="card" style="margin-bottom:10px;">
-      <div class="card-label">Тренировка</div>
-      <div class="toggle-row">
-        <button class="toggle-btn" id="e-wo-y" onclick="setEWO(true)">💪 Да</button>
-        <button class="toggle-btn" id="e-wo-n" onclick="setEWO(false)">😴 Нет</button>
-        <button class="toggle-btn" id="e-wo-none" onclick="setEWO(null)">— Нет данных</button>
+    <div class="card" style="margin-bottom:8px;">
+      <div class="c-title">Тренировка</div>
+      <div class="seg">
+        <button class="seg-btn" id="ewo-y" onclick="setEWO(true)">Была 💪</button>
+        <button class="seg-btn" id="ewo-n" onclick="setEWO(false)">Не было</button>
+        <button class="seg-btn" id="ewo-x" onclick="setEWO(null)" style="flex:0.7;font-size:11px;">—</button>
       </div>
     </div>
  
-    <div class="card" style="margin-bottom:10px;">
-      <div class="card-label">Оценка дня (1–10)</div>
-      <div class="rating-row" id="e-rating-row"></div>
+    <div class="card" style="margin-bottom:8px;">
+      <div class="c-title">Оценка дня</div>
+      <div class="rr" id="e-rat"></div>
     </div>
  
-    <div class="card" style="margin-bottom:10px;">
-      <div class="card-label">Сон</div>
-      <div class="time-grid">
-        <div class="time-block"><label>Лёг спать</label>
-          <input type="time" id="e-sl-start" class="time-input" value="23:00" oninput="onESleep()"></div>
-        <div class="time-block"><label>Проснулся</label>
-          <input type="time" id="e-sl-end" class="time-input" value="07:00" oninput="onESleep()"></div>
+    <div class="card" style="margin-bottom:8px;">
+      <div class="c-title">Сон</div>
+      <div class="tg2">
+        <div class="tb"><label>Лёг</label><input type="time" id="e-sls" class="ti" value="23:00" oninput="onESl()"></div>
+        <div class="tb"><label>Встал</label><input type="time" id="e-sle" class="ti" value="07:00" oninput="onESl()"></div>
       </div>
-      <div class="pbar-wrap"><div class="pbar-fill" id="e-sl-pbar" style="width:0%;background:var(--indigo)"></div></div>
-      <div style="display:flex;justify-content:space-between;font-size:11px;font-weight:700;color:var(--muted);margin-top:2px;">
-        <span id="e-sl-hrs">—</span><span>Норма: 7–9 ч</span>
-      </div>
-      <div class="wakeup-row">
-        <div class="wakeup-lbl">Просыпался:</div>
-        <div class="wakeup-ctr">
-          <button class="wakeup-btn" onclick="adjEWU(-1)">−</button>
-          <div class="wakeup-num" id="e-wu-num">0</div>
-          <button class="wakeup-btn" onclick="adjEWU(1)">+</button>
+      <div class="bar"><div class="bar-f" id="e-slb" style="width:0%"></div></div>
+      <div style="font-size:11px;color:var(--text2);margin-top:2px;" id="e-slh">—</div>
+      <div class="wu">
+        <div style="font-size:13px;font-weight:500;color:var(--text2);">Просыпался</div>
+        <div class="wu-ctr">
+          <button class="wu-btn" onclick="adjEWU(-1)">−</button>
+          <div class="wu-num" id="e-wun">0</div>
+          <button class="wu-btn" onclick="adjEWU(1)">+</button>
         </div>
       </div>
-      <label style="display:flex;align-items:center;gap:10px;margin-top:8px;cursor:pointer;">
-        <input type="checkbox" id="e-sl-save" style="width:18px;height:18px;cursor:pointer;">
-        <span style="font-size:13px;font-weight:700;">Сохранить данные сна для этого дня</span>
+      <label style="display:flex;align-items:center;gap:10px;margin-top:10px;cursor:pointer;">
+        <input type="checkbox" id="e-slsv" style="width:18px;height:18px;cursor:pointer;accent-color:var(--blue);">
+        <span style="font-size:14px;font-weight:500;">Сохранить данные сна</span>
       </label>
     </div>
  
-    <div style="display:flex;gap:8px;margin-top:8px;">
-      <button class="btn-main btn-secondary" style="flex:1" onclick="closeEdit()">Отмена</button>
-      <button class="btn-main" style="flex:2" onclick="saveEdit()">💾 Сохранить</button>
+    <div style="display:flex;gap:8px;margin-top:6px;">
+      <button class="btn fill" style="flex:1;" onclick="closeEd()">Отмена</button>
+      <button class="btn" style="flex:2;" onclick="saveEd()">Сохранить</button>
     </div>
-    <div style="margin-top:8px;">
-      <button class="btn-main btn-danger" onclick="deleteDay()">🗑️ Удалить данные дня</button>
-    </div>
+    <button class="btn red" style="margin-top:8px;" onclick="delDay()">Удалить данные дня</button>
   </div>
 </div>
  
 <div class="toast" id="toast"></div>
  
 <script>
+// ── HAPTICS ─────────────────────────────────────────────────────
 const tg = window.Telegram?.WebApp;
 if(tg){ tg.ready(); tg.expand(); }
  
-// ── Storage ──────────────────────────────────────────────────────
+function haptic(type='light') {
+  try {
+    if(tg?.HapticFeedback) {
+      if(type==='light') tg.HapticFeedback.impactOccurred('light');
+      else if(type==='medium') tg.HapticFeedback.impactOccurred('medium');
+      else if(type==='heavy') tg.HapticFeedback.impactOccurred('heavy');
+      else if(type==='success') tg.HapticFeedback.notificationOccurred('success');
+      else if(type==='error') tg.HapticFeedback.notificationOccurred('error');
+      else if(type==='select') tg.HapticFeedback.selectionChanged();
+    } else if(navigator.vibrate) {
+      // Fallback
+      const p = type==='heavy'?[30]:type==='medium'?[15]:type==='success'?[10,50,10]:[8];
+      navigator.vibrate(p);
+    }
+  } catch(e){}
+}
+ 
+// ── STORAGE ──────────────────────────────────────────────────────
 const S = {
-  get:(k,d=null)=>{ try{const v=localStorage.getItem('ft_'+k);return v!=null?JSON.parse(v):d;}catch{return d;} },
-  set:(k,v)=>{ try{localStorage.setItem('ft_'+k,JSON.stringify(v));}catch{} }
+  g:(k,d=null)=>{ try{ const v=localStorage.getItem('f5_'+k); return v!=null?JSON.parse(v):d; }catch{ return d; } },
+  s:(k,v)=>{ try{ localStorage.setItem('f5_'+k,JSON.stringify(v)); }catch{} }
 };
  
-// ── Defaults ─────────────────────────────────────────────────────
-if(!S.get('cfg')){
-  S.set('cfg',{sw:85,tw:73,stepsGoal:10000,goal:'lose',
-    setupDate:'2026-04-21',goalMonths:1,goalDate:'2026-05-21'});
+// ── THEME ────────────────────────────────────────────────────────
+function toggleTheme() {
+  haptic('select');
+  const dk = document.documentElement.hasAttribute('data-dark');
+  applyTheme(!dk);
+}
+function applyTheme(dark) {
+  if(dark) document.documentElement.setAttribute('data-dark','');
+  else document.documentElement.removeAttribute('data-dark');
+  const b = document.getElementById('tbtn');
+  if(b) b.textContent = dark ? '☀️' : '🌙';
+  S.s('theme', dark?'dark':'light');
+  try{ tg.setHeaderColor(dark?'#000000':'#f2f2f7'); tg.setBackgroundColor(dark?'#000000':'#f2f2f7'); }catch{}
+}
+function initTheme() {
+  const t = S.g('theme','light');
+  applyTheme(t==='dark');
 }
  
-// ── Time (Istanbul) ───────────────────────────────────────────────
-function nowIST(){ return new Date(new Date().toLocaleString('en-US',{timeZone:'Europe/Istanbul'})); }
-function todayStr(){
-  const d=nowIST();
-  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+// ── TIME ─────────────────────────────────────────────────────────
+const TZ = { timeZone: 'Europe/Istanbul' };
+function nowIST() { return new Date(new Date().toLocaleString('en-US', TZ)); }
+function dsStr(d) { return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`; }
+function today() { return dsStr(nowIST()); }
+function dLbl(s) {
+  const ms = ['янв','фев','мар','апр','май','июн','июл','авг','сен','окт','ноя','дек'];
+  const D = new Date(s);
+  const t = today(), y = dsStr(new Date(nowIST()-86400000));
+  return s===t ? 'Сег.' : s===y ? 'Вчера' : `${D.getDate()} ${ms[D.getMonth()]}`;
 }
-function fmtDate(ds){
-  const d=new Date(ds+'T12:00:00');
-  const ms=['янв','фев','мар','апр','май','июн','июл','авг','сен','окт','ноя','дек'];
-  return `${d.getDate()} ${ms[d.getMonth()]}`;
+function fmtDate(s) {
+  const ms = ['января','февраля','марта','апреля','мая','июня','июля','августа','сентября','октября','ноября','декабря'];
+  const D = new Date(s);
+  return `${D.getDate()} ${ms[D.getMonth()]} ${D.getFullYear()}`;
 }
-function dLabel(ds){
-  const t=todayStr();
-  const y=new Date(nowIST()-86400000);
-  const ys=`${y.getFullYear()}-${String(y.getMonth()+1).padStart(2,'0')}-${String(y.getDate()).padStart(2,'0')}`;
-  return ds===t?'Сегодня':ds===ys?'Вчера':fmtDate(ds);
-}
-function addMonths(dateStr, months){
-  const d = new Date(dateStr+'T12:00:00');
-  d.setMonth(d.getMonth()+months);
-  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
-}
- 
-// ── Calendar state ────────────────────────────────────────────────
-let calYear = nowIST().getFullYear();
-let calMonth = nowIST().getMonth();
- 
-// ── State ─────────────────────────────────────────────────────────
-let wakeups=0,workout=null,rating=5;
-let editDate=null,eWakeups=0,eWorkout=null,eRating=5;
- 
-// ── Boot ──────────────────────────────────────────────────────────
-window.addEventListener('load',()=>{
-  updateHdr(); buildRating(); buildERating(); loadSettings();
-  renderHome(); prefillCheckin(); onSleep(); renderSlHist(); renderCal(); renderHist();
-  setInterval(updateHdr,30000);
-});
- 
-function updateHdr(){
-  const d=nowIST();
-  const days=['Вс','Пн','Вт','Ср','Чт','Пт','Сб'];
-  const ms=['янв','фев','мар','апр','май','июн','июл','авг','сен','окт','ноя','дек'];
-  const hh=String(d.getHours()).padStart(2,'0'), mm=String(d.getMinutes()).padStart(2,'0');
-  document.getElementById('hdr-date').innerHTML=`${days[d.getDay()]} ${d.getDate()} ${ms[d.getMonth()]}<br>${hh}:${mm}`;
+function clock() {
+  const d = nowIST();
+  const dw = ['Вс','Пн','Вт','Ср','Чт','Пт','Сб'];
+  const ms = ['янв','фев','мар','апр','май','июн','июл','авг','сен','окт','ноя','дек'];
+  const t = `${dw[d.getDay()]} ${d.getDate()} ${ms[d.getMonth()]}<br>${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;
+  ['h-date','ci-d'].forEach(id=>{ const e=document.getElementById(id); if(e) e.innerHTML=t; });
 }
  
-// ── TABS ──────────────────────────────────────────────────────────
-function setTab(name,btn){
-  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
-  document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));
-  document.getElementById('sec-'+name).classList.add('active');
-  btn.classList.add('active');
-  if(name==='home') renderHome();
-  if(name==='cal'){renderCal();renderHist();}
-  if(name==='sleep') renderSlHist();
-  if(name==='settings') loadSettings();
+// ── MATH ─────────────────────────────────────────────────────────
+function slMins(s,e) {
+  const[sh,sm]=s.split(':').map(Number),[eh,em]=e.split(':').map(Number);
+  let a=sh*60+sm, b=eh*60+em; if(b<=a) b+=1440; return b-a;
+}
+function slScore(hrs,w) {
+  const d = hrs>=7&&hrs<=9?50:hrs>=6.5?40:hrs>=6?28:hrs>=5?15:5;
+  const ws = [50,38,26,16,10,5,0][Math.min(w,6)]; const t=d+ws;
+  if(t>=85) return{t,l:'Отличный',c:'var(--green)',ic:'🌟'};
+  if(t>=70) return{t,l:'Хороший',c:'var(--blue)',ic:'😴'};
+  if(t>=50) return{t,l:'Средний',c:'var(--orange)',ic:'😐'};
+  return{t,l:'Плохой',c:'var(--red)',ic:'😮'};
+}
+function streak(days) {
+  let d=new Date(nowIST()), n=0;
+  if(!days[today()]?.w) d=new Date(d-86400000);
+  for(let i=0;i<200;i++){ const s=dsStr(d); if(days[s]?.w){n++;d=new Date(d-86400000);}else break; }
+  return n;
+}
+function calcPace(diffKg, goalDate) {
+  const days = Math.max(7,(new Date(goalDate)-nowIST())/86400000);
+  const weeks = days/7;
+  const kgW = diffKg/weeks;
+  const kcal = kgW*7700/7;
+  if(kgW<0.25) return{kgW,kcal,lbl:'Медленно',desc:'Комфортно, мышцы сохранятся',animal:'🐢',color:'var(--green)',ok:true};
+  if(kgW<0.6)  return{kgW,kcal,lbl:'Оптимально',desc:'Лучший темп — быстро и безопасно',animal:'🐇',color:'var(--blue)',ok:true};
+  if(kgW<1.0)  return{kgW,kcal,lbl:'Быстро',desc:'Требует строгой диеты и дисциплины',animal:'🦊',color:'var(--orange)',ok:true};
+  return{kgW,kcal,lbl:'Слишком быстро',desc:'Риск потери мышц. Увеличь срок!',animal:'⚠️',color:'var(--red)',ok:false};
 }
  
-// ── HOME ──────────────────────────────────────────────────────────
+// ── SETUP ────────────────────────────────────────────────────────
+let SD={}, SI=0;
+const STEPS = [
+  {id:'goal',q:'Какая цель?',type:'opts',opts:[
+    {v:'lose',l:'Похудеть'},{v:'gain',l:'Набрать массу'},{v:'maintain',l:'Поддерживать форму'}]},
+  {id:'name',q:'Как тебя зовут?',type:'text',ph:'Имя',hint:''},
+  {id:'age',q:'Сколько лет?',type:'int',ph:'25',hint:'',min:10,max:100},
+  {id:'gender',q:'Пол?',type:'opts',opts:[{v:'male',l:'Мужской'},{v:'female',l:'Женский'}]},
+  {id:'height',q:'Рост (см)?',type:'int',ph:'178',hint:'',min:100,max:250},
+  {id:'startWeight',q:'Текущий вес (кг)?',type:'dec',ph:'82.0',hint:'',min:30,max:300},
+  {id:'_pace',q:'Цель и темп',type:'pace'},
+  {id:'stepsGoal',q:'Норма шагов в день?',type:'int',ph:'10000',hint:'',min:1000,max:50000},
+];
+ 
+function showSetup(){
+  document.getElementById('setup').style.display='flex';
+  document.getElementById('app').style.display='none';
+  document.getElementById('nav').style.display='none';
+  renderStep();
+}
+function showApp(){
+  document.getElementById('setup').style.display='none';
+  document.getElementById('app').style.display='block';
+  document.getElementById('nav').style.display='flex';
+  initTheme(); clock(); setInterval(clock,30000);
+  renderHome(); prefillCI(); buildRat(); onSl(); renderSlHist();
+}
+function renderStep(){
+  const step = STEPS[SI];
+  let dots = '';
+  for(let i=0;i<STEPS.length;i++) dots+=`<div class="s-dot${i<=SI?' d':''}"></div>`;
+  document.getElementById('dots').innerHTML=dots;
+  if(step.type==='pace'){ document.getElementById('sbody').innerHTML=renderPaceHTML(); initPace(); return; }
+  const opts = typeof step.opts==='function'?step.opts():step.opts;
+  let html = `<div class="s-q">${step.q}</div>`;
+  if(step.type==='opts'){
+    html += `<div class="s-opts">${opts.map(o=>`<button class="so" onclick="pickO('${step.id}','${o.v}')">${o.l}</button>`).join('')}</div>`;
+  } else {
+    const it = step.type==='dec'?'number':'text';
+    html += `<input id="sinp" type="${it}" class="sinp" placeholder="${step.ph}"
+      step="${step.type==='dec'?'0.1':'1'}"
+      ${step.min!=null?`min="${step.min}"`:''}${step.max!=null?`max="${step.max}"`:''}
+      value="${SD[step.id]||''}"
+      onkeydown="if(event.key==='Enter')nextS()">
+      <div class="s-hint">${step.hint}</div>
+      <button class="btn" style="margin-top:14px;" onclick="nextS()">Далее</button>`;
+  }
+  document.getElementById('sbody').innerHTML=html;
+  if(step.type!=='opts') setTimeout(()=>document.getElementById('sinp')?.focus(),100);
+}
+ 
+function renderPaceHTML(){
+  const months = [1,2,3,4,6];
+  return `<div class="s-q">До какой даты — цель?</div>
+    <div class="s-opts" style="flex-direction:row;flex-wrap:wrap;gap:6px;">
+      ${months.map(m=>{
+        const l = m===1?'1 мес':m<5?`${m} мес.`:`${m} мес.`;
+        return `<button class="so" id="mo${m}" onclick="selMonth(${m})" style="flex:1;min-width:70px;text-align:center;">${l}</button>`;
+      }).join('')}
+    </div>
+    <div id="pw" style="display:none;margin-top:16px;">
+      <div class="s-q" id="p-q" style="margin-top:4px;">Целевой вес</div>
+      <div class="pace-card">
+        <div class="pace-animal" id="p-anim">🐇</div>
+        <div class="pace-lbl" id="p-lbl">—</div>
+        <div class="pace-desc" id="p-desc">—</div>
+        <div class="pace-stats">
+          <div class="pace-stat"><div class="pace-stat-n" id="p-kgw">—</div><div class="pace-stat-l">кг/нед</div></div>
+          <div class="pace-stat"><div class="pace-stat-n" id="p-kcal">—</div><div class="pace-stat-l">ккал/день дефицит</div></div>
+        </div>
+      </div>
+      <div class="sh">
+        <div><div class="sval" id="tw-v">—</div><div class="sunit">кг — цель</div></div>
+        <div style="text-align:right"><div class="sval" id="tw-diff">—</div><div class="sunit" id="tw-dir">кг разница</div></div>
+      </div>
+      <input type="range" id="tw-sl" min="1" max="40" step="0.5" value="5" oninput="onTW(this.value)">
+      <div class="rl"><span id="tw-min">−1 кг</span><span id="tw-max"></span></div>
+      <button class="btn" style="margin-top:14px;" id="p-next" onclick="confirmPace()" disabled>Далее</button>
+    </div>`;
+}
+ 
+let selMo=0;
+function initPace(){ if(SD._selMo) selMonth(SD._selMo); }
+function selMonth(m){
+  haptic('select'); selMo=m;
+  document.querySelectorAll('[id^="mo"]').forEach(b=>b.classList.remove('on'));
+  const b=document.getElementById('mo'+m); if(b) b.classList.add('on');
+  const pw=document.getElementById('pw'); if(pw) pw.style.display='block';
+  const goal=SD.goal||'lose'; const sw=SD.startWeight||80;
+  const sl=document.getElementById('tw-sl');
+  if(sl){
+    if(goal==='maintain'){ confirmPaceDirect(m); return; }
+    if(goal==='lose'){ sl.max=Math.min(40,sw-40); sl.min=0.5; document.getElementById('tw-min').textContent='−0.5 кг'; document.getElementById('tw-max').textContent=`−${sl.max} кг`; }
+    else{ sl.max=30; sl.min=0.5; document.getElementById('tw-min').textContent='+0.5 кг'; document.getElementById('tw-max').textContent='+30 кг'; }
+    sl.value=Math.min(5,sl.max); onTW(sl.value);
+  }
+  const q=document.getElementById('p-q');
+  if(q) q.textContent=goal==='lose'?'Сколько хочешь сбросить?':'Сколько хочешь набрать?';
+}
+function confirmPaceDirect(m){
+  const n=nowIST(); const gd=new Date(n); gd.setMonth(gd.getMonth()+m);
+  SD.targetWeight=SD.startWeight; SD.goalDate=dsStr(gd); SD._pace=true; SI++; renderStep();
+}
+function onTW(v){
+  v=parseFloat(v)||1;
+  const sw=SD.startWeight||80; const goal=SD.goal||'lose';
+  const tw=goal==='lose'?sw-v:sw+v;
+  const n=nowIST(); const gd=new Date(n); gd.setMonth(gd.getMonth()+selMo);
+  const pace=calcPace(v, dsStr(gd));
+  document.getElementById('tw-v').textContent=tw.toFixed(1);
+  document.getElementById('tw-diff').textContent=(goal==='lose'?'−':'+')+(v).toFixed(1);
+  document.getElementById('p-anim').textContent=pace.animal;
+  document.getElementById('p-lbl').textContent=pace.lbl;
+  document.getElementById('p-lbl').style.color=pace.color;
+  document.getElementById('p-desc').textContent=pace.desc;
+  document.getElementById('p-kgw').textContent=pace.kgW.toFixed(2);
+  document.getElementById('p-kgw').style.color=pace.color;
+  document.getElementById('p-kcal').textContent=Math.round(pace.kcal);
+  const btn=document.getElementById('p-next');
+  if(btn){ btn.disabled=!pace.ok||!selMo; btn.textContent=pace.ok?'Далее':'Увеличь срок'; }
+  SD._tw=tw; SD._diff=v; SD._selMo=selMo;
+}
+function confirmPace(){
+  haptic('medium');
+  if(!selMo||!SD._tw) return;
+  const n=nowIST(); const gd=new Date(n); gd.setMonth(gd.getMonth()+selMo);
+  SD.targetWeight=parseFloat(SD._tw.toFixed(1)); SD.goalDate=dsStr(gd); SD._pace=true;
+  SI++; renderStep();
+}
+function pickO(id,val){
+  haptic('select');
+  SD[id]=isNaN(+val)?val:+val; SI++;
+  if(SI>=STEPS.length) finishSetup(); else renderStep();
+}
+function nextS(){
+  const step=STEPS[SI]; const inp=document.getElementById('sinp');
+  const raw=inp.value.trim().replace(',','.');
+  const val=step.type==='dec'?parseFloat(raw):step.type==='int'?parseInt(raw):raw;
+  if(!val||(step.min!=null&&val<step.min)||(step.max!=null&&val>step.max)){
+    haptic('error'); inp.style.borderColor='var(--red)'; setTimeout(()=>inp.style.borderColor='',700); return;
+  }
+  haptic('light'); SD[step.id]=val; SI++;
+  if(SI>=STEPS.length) finishSetup(); else renderStep();
+}
+function finishSetup(){
+  haptic('success');
+  const cfg={...SD,setupDate:today(),currentWeight:SD.startWeight};
+  S.s('cfg',cfg); SI=0; SD={};
+  showApp(); toast('Профиль настроен','ok');
+}
+ 
+// ── NAV ──────────────────────────────────────────────────────────
+let calY, calMo;
+function gp(name, btn){
+  haptic('select');
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('on'));
+  document.querySelectorAll('.nb').forEach(b=>b.classList.remove('on'));
+  document.getElementById('pg-'+name).classList.add('on');
+  btn.classList.add('on');
+  if(name==='cal'){ calY=nowIST().getFullYear(); calMo=nowIST().getMonth(); renderCal(); renderH7(); }
+  if(name==='st') renderStats();
+  if(name==='sl') renderSlHist();
+}
+ 
+// ── HOME ─────────────────────────────────────────────────────────
 function renderHome(){
-  const cfg=S.get('cfg',{}); const days=S.get('days',{}); const td=todayStr();
-  const now=nowIST();
-  const SETUP=new Date((cfg.setupDate||'2026-04-21')+'T12:00:00');
-  const GOAL=new Date((cfg.goalDate||'2026-05-21')+'T12:00:00');
+  const cfg=S.g('cfg',{}); const days=S.g('days',{}); const sld=S.g('sleep',{});
+  const td=today(); const now=nowIST();
+  const ws=Object.entries(days).filter(([k,v])=>v?.w).sort((a,b)=>b[0].localeCompare(a[0]));
+  const curW=ws.length?ws[0][1].w:(cfg.startWeight||0);
+  const strk=streak(days);
+  const tot=Math.abs((cfg.startWeight||0)-(cfg.targetWeight||0));
+  const done=cfg.startWeight?Math.abs(cfg.startWeight-curW):0;
+  const gPct=tot>0?Math.min(100,Math.round(done/tot*100)):0;
+  let dl='—'; try{ dl=Math.max(0,Math.round((new Date(cfg.goalDate)-now)/86400000)); }catch{}
+  const prog=cfg.goal==='gain'?`+${Math.max(0,curW-cfg.startWeight).toFixed(1)}`:`-${Math.max(0,cfg.startWeight-curW).toFixed(1)}`;
  
-  const ws=Object.entries(days).filter(([k,v])=>v?.weight).sort((a,b)=>b[0].localeCompare(a[0]));
-  const curW=ws.length?ws[0][1].weight:(cfg.sw||'—');
-  const lost=cfg.sw?Math.max(0,+(cfg.sw-curW).toFixed(1)):0;
-  const dl=Math.max(0,Math.round((GOAL-now)/86400000));
+  document.getElementById('h-name').textContent=cfg.name||'FIT';
+  document.getElementById('h-w').textContent=curW?curW.toFixed(1)+' кг':'—';
+  document.getElementById('h-dl').textContent=dl+' дн.';
+  document.getElementById('h-prog').textContent=prog+' кг';
+  document.getElementById('h-strk').textContent=strk+'д';
  
-  // Streak
-  let strk=0,d=new Date(now);
-  const ds0=()=>`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
-  if(!days[td]?.weight) d=new Date(d-86400000);
-  for(let i=0;i<200;i++){if(days[ds0()]?.weight){strk++;d=new Date(d-86400000);}else break;}
- 
-  document.getElementById('h-w').textContent=typeof curW==='number'?curW+' кг':'—';
-  document.getElementById('h-dl').textContent=dl;
-  document.getElementById('h-lost').textContent=lost?'-'+lost+' кг':'—';
-  document.getElementById('h-strk').textContent=strk;
- 
-  // Ring
-  const total=Math.abs((cfg.sw||0)-(cfg.tw||0));
-  const done=cfg.sw?Math.abs(cfg.sw-curW):0;
-  const gPct=total>0?Math.min(100,Math.round(done/total*100)):0;
-  document.getElementById('ring-pct').textContent=gPct+'%';
   const C=2*Math.PI*52;
-  document.getElementById('ring-arc').style.strokeDashoffset=C*(1-gPct/100);
+  document.getElementById('ring').style.strokeDashoffset=C*(1-gPct/100);
+  document.getElementById('r-pct').textContent=gPct+'%';
  
-  // Time bar
-  const tTotal=Math.round((GOAL-SETUP)/86400000);
-  const tDone=Math.round((now-SETUP)/86400000);
-  const tPct=Math.min(100,Math.max(0,Math.round(tDone/tTotal*100)));
-  document.getElementById('time-pct').textContent=tPct+'%';
-  document.getElementById('time-bar').style.width=tPct+'%';
+  try{
+    const SU=new Date(cfg.setupDate||td); const GO=new Date(cfg.goalDate);
+    const tT=Math.max(1,(GO-SU)/86400000); const tD=(now-SU)/86400000;
+    const tP=Math.min(100,Math.max(0,Math.round(tD/tT*100)));
+    document.getElementById('t-pct').textContent=tP+'%';
+    document.getElementById('t-bar').style.width=tP+'%';
+  }catch{}
  
-  // Today pills
-  const day=days[td]||{}; const sl=S.get('sleep',{})[td]||{};
+  const day=days[td]||{}; const slDay=sld[td]||{};
   const pills=[
-    {icon:'⚖️',lbl:'Вес',ok:!!day.weight,val:day.weight?day.weight+' кг':'—'},
-    {icon:'👟',lbl:'Шаги',ok:day.steps!=null,val:day.steps!=null?Number(day.steps).toLocaleString('ru'):'—'},
-    {icon:'💪',lbl:'Трен.',ok:'workout'in day,val:'workout'in day?(day.workout?'Да':'Нет'):'—'},
-    {icon:'🌙',lbl:'Сон',ok:!!sl.saved,val:sl.saved?`${Math.floor(sl.hrs)}ч ${Math.round((sl.hrs%1)*60)}м`:'—'},
+    {ic:'⚖️',l:'Вес',ok:!!day.w,v:day.w?day.w.toFixed(1)+' кг':'—'},
+    {ic:'👟',l:'Шаги',ok:day.st!=null,v:day.st!=null?Number(day.st).toLocaleString('ru'):'—'},
+    {ic:'💪',l:'Трен.',ok:'wo'in day,v:'wo'in day?(day.wo?'Да':'Нет'):'—'},
+    {ic:'🌙',l:'Сон',ok:!!slDay.saved,v:slDay.saved?`${Math.floor(slDay.hrs)}ч`:'—'},
   ];
   document.getElementById('today-pills').innerHTML=pills.map(p=>`
-    <div style="background:${p.ok?'#f0fdf4':'var(--bg)'};border:2px solid ${p.ok?'#bbf7d0':'var(--border)'};border-radius:12px;padding:10px;text-align:center;">
-      <div style="font-size:18px;">${p.icon}</div>
-      <div style="font-size:13px;font-weight:800;color:${p.ok?'var(--green)':'var(--muted)'};">${p.val}</div>
-      <div style="font-size:9px;font-weight:700;color:var(--muted);text-transform:uppercase;">${p.lbl}</div>
+    <div class="pill${p.ok?' filled':''}">
+      <div class="pill-ic">${p.ic}</div>
+      <div class="pill-v" style="color:${p.ok?'var(--green)':'var(--text2)'};">${p.v}</div>
+      <div class="pill-l">${p.l}</div>
     </div>`).join('');
  
-  // Steps slider
   const goal=cfg.stepsGoal||10000;
-  const todaySteps=day.steps||0;
-  document.getElementById('steps-sl').value=todaySteps;
-  document.getElementById('steps-goal-lbl').textContent='цель: '+Number(goal).toLocaleString('ru');
-  onSteps(todaySteps);
+  const ts=day.st||0;
+  document.getElementById('steps-sl').value=ts;
+  document.getElementById('steps-glbl').textContent='цель '+Number(goal).toLocaleString('ru');
+  onSteps(ts);
 }
  
 function onSteps(v){
-  v=parseInt(v);
-  document.getElementById('steps-disp').textContent=Number(v).toLocaleString('ru');
-  const cfg=S.get('cfg',{}); const goal=cfg.stepsGoal||10000;
+  v=parseInt(v)||0;
+  document.getElementById('steps-val').textContent=Number(v).toLocaleString('ru');
+  const goal=S.g('cfg',{}).stepsGoal||10000;
   const pct=Math.min(100,(v/goal)*100);
-  const bar=document.getElementById('steps-pbar');
+  const bar=document.getElementById('steps-bar');
   bar.style.width=pct+'%';
-  bar.style.background=v>=goal?'var(--green)':v>=goal*.7?'var(--amber)':'var(--blue)';
+  bar.style.background=v>=goal?'var(--green)':v>=goal*.7?'var(--orange)':'var(--blue)';
+  bar.style.opacity=v>0?'1':'0.5';
 }
 function saveSteps(){
-  const v=parseInt(document.getElementById('steps-sl').value);
-  const days=S.get('days',{}); const td=todayStr();
-  if(!days[td])days[td]={};
-  days[td].steps=v; S.set('days',days);
-  toast('👟 Шаги сохранены!','ok'); renderHome();
+  haptic('success');
+  const v=parseInt(document.getElementById('steps-sl').value)||0;
+  const days=S.g('days',{}); const td=today();
+  if(!days[td]) days[td]={}; days[td].st=v; S.s('days',days);
+  toast('Шаги сохранены','ok'); renderHome();
 }
  
-// ── CHECKIN ───────────────────────────────────────────────────────
-function buildRating(){
-  const row=document.getElementById('rating-row');
-  for(let i=1;i<=10;i++){
-    const b=document.createElement('button');
-    b.className='rating-btn'+(i===5?' sel':'');
-    b.textContent=i; b.id='rb'+i;
-    b.onclick=()=>setRating(i); row.appendChild(b);
-  }
+// ── CHECKIN ──────────────────────────────────────────────────────
+let workout=null, rating=5;
+function buildRat(){
+  ['rat-row','e-rat'].forEach(id=>{
+    const row=document.getElementById(id); if(!row||row.children.length) return;
+    for(let i=1;i<=10;i++){
+      const b=document.createElement('button'); b.className='rb'+(i===5?' on':'');
+      b.textContent=i;
+      const isEdit=id==='e-rat';
+      b.onclick=()=>isEdit?setERat(i):setRat(i);
+      b.id=(isEdit?'erb':'rb')+i; row.appendChild(b);
+    }
+  });
 }
-function setRating(v){
-  rating=v;
-  for(let i=1;i<=10;i++){const b=document.getElementById('rb'+i);if(b)b.className='rating-btn'+(i===v?' sel':'');}
-}
+function setRat(v){ haptic('select'); rating=v; for(let i=1;i<=10;i++){ const b=document.getElementById('rb'+i); if(b) b.className='rb'+(i===v?' on':''); } }
+function setERat(v){ haptic('select'); eRating=v; for(let i=1;i<=10;i++){ const b=document.getElementById('erb'+i); if(b) b.className='rb'+(i===v?' on':''); } }
 function setWO(v){
-  workout=v;
-  document.getElementById('wo-y').className='toggle-btn'+(v===true?' yes':'');
-  document.getElementById('wo-n').className='toggle-btn'+(v===false?' no':'');
+  haptic('select'); workout=v;
+  document.getElementById('wo-y').className='seg-btn'+(v===true?' on':'');
+  document.getElementById('wo-n').className='seg-btn'+(v===false?' on':'');
 }
 function adjW(d){
+  haptic('select');
   const inp=document.getElementById('w-inp');
-  const cur=parseFloat(inp.value)||(S.get('cfg',{}).sw||75);
+  const cur=parseFloat(inp.value)||(S.g('cfg',{}).startWeight||75);
   inp.value=Math.round((cur+d)*10)/10; onWInp();
 }
 function onWInp(){
   const w=parseFloat(document.getElementById('w-inp').value);
-  const days=S.get('days',{}); const td=todayStr();
-  const prev=Object.entries(days).filter(([k,v])=>k<td&&v?.weight).sort((a,b)=>b[0].localeCompare(a[0]));
+  const days=S.g('days',{}); const td=today();
+  const prev=Object.entries(days).filter(([k,v])=>k<td&&v?.w).sort((a,b)=>b[0].localeCompare(a[0]));
   const el=document.getElementById('w-diff');
   if(prev.length&&w){
-    const d=Math.round((w-prev[0][1].weight)*10)/10;
+    const d=Math.round((w-prev[0][1].w)*10)/10;
     el.textContent=d>0?`+${d} кг ↑`:d<0?`${d} кг ↓`:'Без изменений';
-    el.style.color=d<0?'var(--green)':d>0?'var(--red)':'var(--muted)';
-  }else el.textContent='';
+    el.style.color=d<0?'var(--green)':d>0?'var(--red)':'var(--text2)';
+  } else el.textContent='';
 }
-function onCiSteps(v){
-  v=parseInt(v);
-  document.getElementById('ci-steps-disp').textContent=Number(v).toLocaleString('ru');
-  const cfg=S.get('cfg',{}); const goal=cfg.stepsGoal||10000;
-  const pct=Math.min(100,(v/goal)*100);
-  const bar=document.getElementById('ci-steps-pbar');
-  bar.style.width=pct+'%';
-  bar.style.background=v>=goal?'var(--green)':v>=goal*.7?'var(--amber)':'var(--blue)';
-  document.getElementById('ci-steps-goal').textContent='цель: '+Number(goal).toLocaleString('ru');
+function prefillCI(){
+  const inp=document.getElementById('w-inp'); if(!inp||inp.value) return;
+  const days=S.g('days',{}); const cfg=S.g('cfg',{});
+  const prev=Object.entries(days).filter(([k,v])=>v?.w).sort((a,b)=>b[0].localeCompare(a[0]));
+  inp.value=prev.length?prev[0][1].w:(cfg.startWeight||'');
 }
-function prefillCheckin(){
-  const inp=document.getElementById('w-inp');
-  if(!inp.value){
-    const days=S.get('days',{});
-    const prev=Object.entries(days).filter(([k,v])=>v?.weight).sort((a,b)=>b[0].localeCompare(a[0]));
-    if(prev.length) inp.value=prev[0][1].weight;
-    else{ const cfg=S.get('cfg',{}); if(cfg.sw) inp.value=cfg.sw; }
-  }
-  const cfg=S.get('cfg',{});
-  const goal=cfg.stepsGoal||10000;
-  document.getElementById('ci-steps-goal').textContent='цель: '+Number(goal).toLocaleString('ru');
-  const days=S.get('days',{});
-  const td=todayStr();
-  const sv=days[td]?.steps||0;
-  document.getElementById('ci-steps-sl').value=sv;
-  onCiSteps(sv);
-}
-function saveCheckin(){
+function saveCI(){
   const w=parseFloat(document.getElementById('w-inp').value);
-  if(!w||w<30||w>300){toast('Введи корректный вес!');return;}
-  const steps=parseInt(document.getElementById('ci-steps-sl').value)||0;
-  const days=S.get('days',{}); const td=todayStr();
-  if(!days[td])days[td]={};
-  days[td].weight=w; days[td].workout=workout; days[td].rating=rating; days[td].steps=steps;
-  S.set('days',days);
-  const cfg=S.get('cfg',{}); cfg.currentWeight=w; S.set('cfg',cfg);
-  toast('✅ Чек-ин сохранён!','ok'); renderHome();
+  if(!w||w<30||w>300){ haptic('error'); toast('Введи вес','er'); return; }
+  haptic('success');
+  const days=S.g('days',{}); const td=today();
+  if(!days[td]) days[td]={}; days[td].w=w;
+  if(workout!==null) days[td].wo=workout; days[td].rt=rating;
+  S.s('days',days);
+  const cfg=S.g('cfg',{}); cfg.currentWeight=w; S.s('cfg',cfg);
+  toast('Чек-ин сохранён','ok'); renderHome();
 }
  
-// ── SLEEP ─────────────────────────────────────────────────────────
-function sleepMins(s,e){
-  const[sh,sm]=s.split(':').map(Number),[eh,em]=e.split(':').map(Number);
-  let a=sh*60+sm,b=eh*60+em; if(b<=a)b+=1440; return b-a;
-}
-function sleepScore(hrs,w){
-  const d=hrs>=7&&hrs<=9?50:hrs>=6.5?40:hrs>=6?28:hrs>=5?15:5;
-  const ws=[50,38,26,16,10,5,0][Math.min(w,6)]; const t=d+ws;
-  if(t>=85)return{t,lbl:'🌟 Отличный',c:'#16a34a',bg:'#f0fdf4',desc:'Идеальный сон!'};
-  if(t>=70)return{t,lbl:'😴 Хороший',c:'#2563eb',bg:'#eff6ff',desc:'Хороший отдых.'};
-  if(t>=50)return{t,lbl:'😐 Средний',c:'#d97706',bg:'#fffbeb',desc:'Влияет на прогресс.'};
-  return{t,lbl:'😮 Плохой',c:'#dc2626',bg:'#fef2f2',desc:'Недосып мешает похудению!'};
-}
-function onSleep(){
-  const s=document.getElementById('sl-start').value, e=document.getElementById('sl-end').value;
-  if(!s||!e)return;
-  const mins=sleepMins(s,e); const hrs=mins/60;
-  const hh=Math.floor(hrs), mm=Math.round((hrs%1)*60);
-  document.getElementById('sl-hrs').textContent=`${hh} ч ${mm} мин`;
+// ── SLEEP ────────────────────────────────────────────────────────
+let wakeups=0;
+function onSl(){
+  const s=document.getElementById('sl-s')?.value, e=document.getElementById('sl-e')?.value;
+  if(!s||!e) return;
+  const mins=slMins(s,e); if(mins<=0||mins>1440) return;
+  const hrs=mins/60;
+  document.getElementById('sl-h').textContent=`${Math.floor(hrs)} ч ${Math.round((hrs%1)*60)} мин`;
   const pct=Math.min(100,(hrs/10)*100);
-  const bar=document.getElementById('sl-pbar');
+  const bar=document.getElementById('sl-bar');
   bar.style.width=pct+'%';
-  bar.style.background=hrs>=7&&hrs<=9?'var(--green)':hrs>=6?'var(--amber)':'var(--red)';
-  const sc=sleepScore(hrs,wakeups);
-  document.getElementById('sl-score').innerHTML=`
-    <div class="sleep-score" style="background:${sc.bg};">
-      <div class="score-emoji">${sc.lbl.split(' ')[0]}</div>
+  bar.style.background=hrs>=7&&hrs<=9?'var(--green)':hrs>=6?'var(--orange)':'var(--red)';
+  const sc=slScore(hrs,wakeups);
+  document.getElementById('sl-sc').innerHTML=`
+    <div class="ssl">
+      <div style="font-size:28px;">${sc.ic}</div>
       <div style="flex:1;">
-        <div class="score-val" style="color:${sc.c};">${sc.t}<span style="font-size:14px;">/100</span></div>
-        <div class="score-lbl" style="color:${sc.c};">${sc.lbl}</div>
-        <div class="score-desc">${sc.desc}</div>
+        <div class="ssl-n" style="color:${sc.c};">${sc.t}<span style="font-size:14px;font-weight:500;">/100</span></div>
+        <div class="ssl-l" style="color:${sc.c};">${sc.l}</div>
       </div>
     </div>`;
 }
-function adjWU(d){ wakeups=Math.max(0,Math.min(10,wakeups+d)); document.getElementById('wu-num').textContent=wakeups; onSleep(); }
-function saveSleep(){
-  const s=document.getElementById('sl-start').value, e=document.getElementById('sl-end').value;
-  if(!s||!e){toast('Введи время!');return;}
-  const mins=sleepMins(s,e);
-  if(mins<60){toast('Слишком мало — проверь время');return;}
-  if(mins>1080){toast('Больше 18ч — проверь время');return;}
-  const hrs=mins/60; const sc=sleepScore(hrs,wakeups);
-  const slData=S.get('sleep',{}); const td=todayStr();
-  slData[td]={start:s,end:e,wakeups,score:sc.t,hrs,saved:true,ts:Date.now()};
-  S.set('sleep',slData);
-  toast(`🌙 Сон сохранён! ${sc.t}/100 ${sc.lbl}`,'ok'); renderSlHist();
+function adjWU(d){ haptic('select'); wakeups=Math.max(0,Math.min(10,wakeups+d)); document.getElementById('wu-n').textContent=wakeups; onSl(); }
+function saveSl(){
+  const s=document.getElementById('sl-s').value, e=document.getElementById('sl-e').value;
+  if(!s||!e){ haptic('error'); toast('Укажи время','er'); return; }
+  const mins=slMins(s,e);
+  if(mins<60||mins>1080){ haptic('error'); toast('Проверь время','er'); return; }
+  haptic('success');
+  const hrs=parseFloat((mins/60).toFixed(2)); const sc=slScore(hrs,wakeups);
+  const sld=S.g('sleep',{}); const td=today();
+  sld[td]={start:s,end:e,wakeups,score:sc.t,hrs,saved:true,ts:Date.now()};
+  S.s('sleep',sld); toast(`Сон: ${sc.t}/100 — ${sc.l}`,'ok');
+  renderSlHist(); renderHome();
 }
 function renderSlHist(){
-  const slData=S.get('sleep',{}); const now=nowIST();
-  let html='';
+  const sld=S.g('sleep',{}); const now=nowIST(); let html='';
   for(let i=0;i<7;i++){
-    const d=new Date(now-i*86400000);
-    const ds=`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
-    const e=slData[ds];
-    if(e?.saved){
-      const sc=sleepScore(e.hrs,e.wakeups||0);
+    const d2=new Date(now-i*86400000); const s2=dsStr(d2); const e=sld[s2];
+    if(e?.saved&&e.hrs>0){
+      const sc=slScore(e.hrs,e.wakeups||0);
       const hh=Math.floor(e.hrs), mm=Math.round((e.hrs%1)*60);
-      html+=`<div class="hist-item">
-        <div class="hist-date">${dLabel(ds)}</div>
+      html+=`<div class="hi">
+        <div class="hdate">${dLbl(s2)}</div>
         <div style="flex:1;">
-          <div style="display:flex;justify-content:space-between;font-size:12px;font-weight:700;margin-bottom:3px;">
-            <span>${hh}ч ${mm}м · ${e.wakeups||0} пробуж.</span>
-            <span style="color:${sc.c};">${sc.t}/100</span>
+          <div style="display:flex;justify-content:space-between;font-size:12px;font-weight:500;margin-bottom:3px;">
+            <span>${e.start}–${e.end} · ${hh}ч ${mm}м</span>
+            <span style="color:${sc.c};font-weight:600;">${sc.t}/100</span>
           </div>
-          <div class="pbar-wrap" style="height:5px;margin:0;">
-            <div class="pbar-fill" style="width:${Math.min(100,e.hrs/10*100)}%;background:${sc.c};"></div>
+          <div class="bar" style="height:4px;margin:0;">
+            <div class="bar-f" style="width:${Math.min(100,e.hrs/10*100)}%;background:${sc.c};"></div>
           </div>
         </div>
-        <div style="font-size:10px;font-weight:700;padding:3px 7px;border-radius:7px;background:${sc.bg};color:${sc.c};white-space:nowrap;">${sc.lbl}</div>
       </div>`;
     } else if(i<3){
-      html+=`<div class="hist-item"><div class="hist-date">${dLabel(ds)}</div><div style="font-size:12px;color:var(--muted);">Нет данных</div></div>`;
+      html+=`<div class="hi"><div class="hdate">${dLbl(s2)}</div><div style="font-size:12px;color:var(--text3);">Нет данных</div></div>`;
     }
   }
-  document.getElementById('sl-hist').innerHTML=html||'<div style="color:var(--muted);font-size:13px;">Ещё нет записей</div>';
+  document.getElementById('sl-hist').innerHTML=html||'<div style="color:var(--text3);font-size:13px;padding:8px 0;">Нет записей</div>';
 }
  
-// ── CALENDAR ──────────────────────────────────────────────────────
-function calPrevMonth(){ calMonth--; if(calMonth<0){calMonth=11;calYear--;} renderCal(); }
-function calNextMonth(){ calMonth++; if(calMonth>11){calMonth=0;calYear++;} renderCal(); }
- 
+// ── CALENDAR ─────────────────────────────────────────────────────
+const MN=['Январь','Февраль','Март','Апрель','Май','Июнь','Июль','Август','Сентябрь','Октябрь','Ноябрь','Декабрь'];
+let calSel=null;
+function cp(){ haptic('select'); calMo--; if(calMo<0){calMo=11;calY--;} renderCal(); }
+function cn2(){ haptic('select'); calMo++; if(calMo>11){calMo=0;calY++;} renderCal(); }
 function renderCal(){
-  const dows=['Пн','Вт','Ср','Чт','Пт','Сб','Вс'];
-  const ms=['Январь','Февраль','Март','Апрель','Май','Июнь','Июль','Август','Сентябрь','Октябрь','Ноябрь','Декабрь'];
-  document.getElementById('cal-month-title').textContent=ms[calMonth]+' '+calYear;
-  document.getElementById('cal-dows').innerHTML=dows.map(d=>`<div class="cal-dow">${d}</div>`).join('');
-  const days=S.get('days',{}); const now=nowIST(); const td=todayStr();
-  const cfg=S.get('cfg',{});
-  const goalDate=cfg.goalDate||'2026-05-21';
+  const days=S.g('days',{}); const sld=S.g('sleep',{}); const cfg=S.g('cfg',{});
+  const now=nowIST(); const td=today(); const gd=cfg.goalDate||'';
+  document.getElementById('cal-m').textContent=`${MN[calMo]} ${calY}`;
+  document.getElementById('cal-dows').innerHTML=['Пн','Вт','Ср','Чт','Пт','Сб','Вс'].map(d=>`<div class="cd">${d}</div>`).join('');
   const grid=document.getElementById('cal-cells'); grid.innerHTML='';
- 
-  const first=new Date(calYear,calMonth,1); let dow=first.getDay(); dow=dow===0?6:dow-1;
-  for(let i=0;i<dow;i++){const d=document.createElement('div');grid.appendChild(d);}
-  const dim=new Date(calYear,calMonth+1,0).getDate();
+  const first=new Date(calY,calMo,1); let dow=first.getDay(); dow=dow===0?6:dow-1;
+  for(let i=0;i<dow;i++) grid.appendChild(document.createElement('div'));
+  const dim=new Date(calY,calMo+1,0).getDate();
   for(let d=1;d<=dim;d++){
-    const dt=new Date(calYear,calMonth,d);
-    const ds=`${calYear}-${String(calMonth+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
-    const isGoal=ds===goalDate;
-    const isFuture=dt>now; const isToday=ds===td;
-    const entry=days[ds];
-    const cell=document.createElement('div');
-    cell.className='cal-cell';
-    if(isGoal){cell.classList.add('goal');cell.innerHTML=d+'<div class="cal-dot">🎯</div>';}
-    else if(isFuture){cell.classList.add('future');cell.textContent=d;}
-    else if(entry?.weight){cell.classList.add('has');cell.innerHTML=d+'<div class="cal-dot">✓</div>';}
-    else{cell.classList.add('miss');cell.textContent=d;}
-    if(isToday)cell.classList.add('today');
-    if(!isFuture){
-      cell.addEventListener('click',()=>openEdit(ds));
-    }
+    const dt=new Date(calY,calMo,d); const s2=dsStr(dt);
+    const isG=s2===gd, isT=s2===td, isF=dt>now;
+    const entry=days[s2]; const slE=sld[s2];
+    const cell=document.createElement('div'); cell.className='cc';
+    let dot='';
+    if(isG){ cell.classList.add('goal-d'); dot='<div class="cdot">◎</div>'; }
+    else if(isF){ cell.classList.add('future'); }
+    else if(entry?.w){ cell.classList.add('has'); dot=`<div class="cdot">${slE?.saved?'●':'·'}</div>`; }
+    else{ cell.classList.add('miss'); }
+    if(isT&&!isG) cell.classList.add('today');
+    if(s2===calSel) cell.classList.add('sel');
+    cell.innerHTML=d+dot;
+    if(!isF) cell.addEventListener('click',()=>{ haptic('select'); selDay(s2); });
     grid.appendChild(cell);
   }
+  if(calSel) showDet(calSel);
 }
- 
-function renderHist(){
-  const days=S.get('days',{}); const sleep=S.get('sleep',{});
-  const cfg=S.get('cfg',{}); const goal=cfg.stepsGoal||10000;
-  const now=nowIST(); let html='';
+function selDay(s2){ calSel=s2===calSel?null:s2; renderCal(); if(!calSel) document.getElementById('cal-det').innerHTML=''; }
+function showDet(s2){
+  const days=S.g('days',{}); const sld=S.g('sleep',{}); const cfg=S.g('cfg',{});
+  const day=days[s2]||{}; const slDay=sld[s2]||{}; const goal=cfg.stepsGoal||10000;
+  let tags='';
+  if(day.w) tags+=`<span class="ctag">⚖️ ${day.w.toFixed(1)} кг</span>`;
+  if(day.st!=null) tags+=`<span class="ctag">👟 ${Number(day.st).toLocaleString('ru')}${day.st>=goal?' ✓':''}</span>`;
+  if('wo'in day) tags+=`<span class="ctag" style="color:${day.wo?'var(--green)':'var(--text2)'};">💪 ${day.wo?'Да':'Нет'}</span>`;
+  if(day.rt) tags+=`<span class="ctag">⭐ ${day.rt}/10</span>`;
+  if(slDay.saved&&slDay.hrs){ const sc=slScore(slDay.hrs,slDay.wakeups||0); tags+=`<span class="ctag" style="color:${sc.c};">🌙 ${Math.floor(slDay.hrs)}ч ${Math.round((slDay.hrs%1)*60)}м — ${sc.l}</span>`; }
+  if(!tags) tags='<span style="font-size:13px;color:var(--text3);">Нет данных</span>';
+  document.getElementById('cal-det').innerHTML=`
+    <div class="c-det">
+      <div class="c-det-date">${fmtDate(s2)}</div>
+      <div style="margin-bottom:10px;">${tags}</div>
+      <button class="btn fill" style="font-size:14px;padding:10px;" onclick="haptic('light');openEd('${s2}')">Изменить</button>
+    </div>`;
+}
+function renderH7(){
+  const days=S.g('days',{}); const sld=S.g('sleep',{}); const cfg=S.g('cfg',{}); const now=nowIST();
+  const goal=cfg.stepsGoal||10000; let html='';
   for(let i=0;i<7;i++){
-    const d=new Date(now-i*86400000);
-    const ds=`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
-    const day=days[ds]||{}; const sl=sleep[ds]||{};
-    html+=`<div class="hist-item" onclick="openEdit('${ds}')" style="cursor:pointer;">
-      <div class="hist-date">${dLabel(ds)}</div>
-      <div class="hist-tags">
-        ${day.weight?`<span class="tag" style="background:#f0fdf4;color:var(--green);">⚖️${day.weight}кг</span>`:''}
-        ${day.steps!=null?`<span class="tag" style="background:#eff6ff;color:var(--blue);">👟${Number(day.steps).toLocaleString('ru')}${day.steps>=goal?' ✅':''}</span>`:''}
-        ${'workout'in day?`<span class="tag" style="background:${day.workout?'#f0fdf4':'#fef2f2'};color:${day.workout?'var(--green)':'var(--red)'};">💪${day.workout?'Да':'Нет'}</span>`:''}
-        ${sl.saved?`<span class="tag" style="background:#f5f3ff;color:#7c3aed;">🌙${Math.floor(sl.hrs)}ч</span>`:''}
-        ${!day.weight&&!('workout'in day)&&day.steps==null&&!sl.saved?'<span style="font-size:12px;color:var(--muted);">нет данных — нажми ✏️</span>':''}
-      </div>
-      <div style="font-size:16px;color:var(--muted);">✏️</div>
+    const d2=new Date(now-i*86400000); const s2=dsStr(d2); const day=days[s2]||{}; const slDay=sld[s2]||{};
+    let tags='';
+    if(day.w) tags+=`<span class="htag">${day.w.toFixed(1)} кг</span>`;
+    if(day.st!=null) tags+=`<span class="htag">${Number(day.st).toLocaleString('ru')}${day.st>=goal?' ✓':''}</span>`;
+    if('wo'in day) tags+=`<span class="htag" style="color:${day.wo?'var(--green)':'var(--text3)'};">${day.wo?'Трен.':'—'}</span>`;
+    if(slDay.saved&&slDay.hrs) tags+=`<span class="htag">${Math.floor(slDay.hrs)}ч сон</span>`;
+    if(!tags) tags='<span style="font-size:12px;color:var(--text3);">нет данных</span>';
+    html+=`<div class="hi" onclick="haptic('select');openEd('${s2}')" style="cursor:pointer;">
+      <div class="hdate">${dLbl(s2)}</div>
+      <div style="display:flex;gap:5px;flex-wrap:wrap;align-items:center;flex:1;">${tags}</div>
+      <div style="font-size:14px;color:var(--text3);margin-left:4px;">›</div>
     </div>`;
   }
-  document.getElementById('hist-list').innerHTML=html;
+  document.getElementById('cal-h7').innerHTML=html;
 }
  
-// ── DAY EDITOR ────────────────────────────────────────────────────
-function buildERating(){
-  const row=document.getElementById('e-rating-row');
-  for(let i=1;i<=10;i++){
-    const b=document.createElement('button');
-    b.className='rating-btn'+(i===5?' sel':'');
-    b.textContent=i; b.id='erb'+i;
-    b.onclick=()=>setERating(i); row.appendChild(b);
-  }
+// ── EDIT SHEET ───────────────────────────────────────────────────
+let edDate=null,eWO=null,eRating=5,eWU=0;
+function openEd(s2){
+  haptic('medium');
+  edDate=s2;
+  const days=S.g('days',{}); const sld=S.g('sleep',{});
+  const day=days[s2]||{}; const slDay=sld[s2]||{};
+  document.getElementById('ed-t').textContent=fmtDate(s2);
+  document.getElementById('ew').value=day.w||'';
+  const sv=day.st||0; document.getElementById('es-sl').value=sv; onES(sv);
+  eWO='wo'in day?day.wo:null; setEWO(eWO);
+  eRating=day.rt||5; setERat(eRating);
+  document.getElementById('e-sls').value=slDay.start||'23:00';
+  document.getElementById('e-sle').value=slDay.end||'07:00';
+  eWU=slDay.wakeups||0; document.getElementById('e-wun').textContent=eWU;
+  document.getElementById('e-slsv').checked=!!slDay.saved;
+  onESl();
+  document.getElementById('ov').classList.remove('hid');
 }
-function setERating(v){
-  eRating=v;
-  for(let i=1;i<=10;i++){const b=document.getElementById('erb'+i);if(b)b.className='rating-btn'+(i===v?' sel':'');}
-}
+function closeEd(){ haptic('light'); document.getElementById('ov').classList.add('hid'); edDate=null; }
 function setEWO(v){
-  eWorkout=v;
-  document.getElementById('e-wo-y').className='toggle-btn'+(v===true?' yes':'');
-  document.getElementById('e-wo-n').className='toggle-btn'+(v===false?' no':'');
-  document.getElementById('e-wo-none').className='toggle-btn'+(v===null?' sel':'');
+  eWO=v;
+  document.getElementById('ewo-y').className='seg-btn'+(v===true?' on':'');
+  document.getElementById('ewo-n').className='seg-btn'+(v===false?' on':'');
+  document.getElementById('ewo-x').className='seg-btn'+(v===null?' on':'');
 }
-function adjEW(d){
-  const inp=document.getElementById('e-w');
-  const cur=parseFloat(inp.value)||(S.get('cfg',{}).sw||75);
-  inp.value=Math.round((cur+d)*10)/10;
+function adjEW(d){ haptic('select'); const inp=document.getElementById('ew'); const cur=parseFloat(inp.value)||(S.g('cfg',{}).startWeight||75); inp.value=Math.round((cur+d)*10)/10; }
+function onES(v){
+  v=parseInt(v)||0;
+  document.getElementById('es-d').textContent=Number(v).toLocaleString('ru');
+  const goal=S.g('cfg',{}).stepsGoal||10000; const pct=Math.min(100,(v/goal)*100);
+  const bar=document.getElementById('es-b'); bar.style.width=pct+'%'; bar.style.opacity=v>0?'1':'0.3';
 }
-function onESteps(v){
-  v=parseInt(v);
-  document.getElementById('e-steps-disp').textContent=Number(v).toLocaleString('ru');
-  const cfg=S.get('cfg',{}); const goal=cfg.stepsGoal||10000;
-  const pct=Math.min(100,(v/goal)*100);
-  const bar=document.getElementById('e-steps-pbar');
-  bar.style.width=pct+'%';
-  bar.style.background=v>=goal?'var(--green)':v>=goal*.7?'var(--amber)':'var(--blue)';
+function adjEWU(d){ haptic('select'); eWU=Math.max(0,Math.min(10,eWU+d)); document.getElementById('e-wun').textContent=eWU; onESl(); }
+function onESl(){
+  const s=document.getElementById('e-sls').value, e=document.getElementById('e-sle').value;
+  if(!s||!e) return;
+  const mins=slMins(s,e); if(mins<=0||mins>1440) return;
+  const hrs=mins/60;
+  document.getElementById('e-slh').textContent=`${Math.floor(hrs)} ч ${Math.round((hrs%1)*60)} мин`;
+  document.getElementById('e-slb').style.width=Math.min(100,(hrs/10)*100)+'%';
 }
-function adjEWU(d){ eWakeups=Math.max(0,Math.min(10,eWakeups+d)); document.getElementById('e-wu-num').textContent=eWakeups; onESleep(); }
-function onESleep(){
-  const s=document.getElementById('e-sl-start').value, e=document.getElementById('e-sl-end').value;
-  if(!s||!e)return;
-  const mins=sleepMins(s,e); const hrs=mins/60;
-  const hh=Math.floor(hrs), mm=Math.round((hrs%1)*60);
-  document.getElementById('e-sl-hrs').textContent=`${hh} ч ${mm} мин`;
-  const pct=Math.min(100,(hrs/10)*100);
-  document.getElementById('e-sl-pbar').style.width=pct+'%';
-}
- 
-function openEdit(ds){
-  editDate=ds;
-  const days=S.get('days',{}); const sleep=S.get('sleep',{});
-  const day=days[ds]||{}; const sl=sleep[ds]||{};
-  document.getElementById('edit-title').textContent='✏️ '+dLabel(ds)+' ('+fmtDate(ds)+')';
-  // Weight
-  document.getElementById('e-w').value=day.weight||'';
-  // Steps
-  const sv=day.steps||0;
-  document.getElementById('e-steps-sl').value=sv; onESteps(sv);
-  // Workout
-  eWorkout=('workout'in day)?day.workout:null; setEWO(eWorkout);
-  // Rating
-  eRating=day.rating||5; setERating(eRating);
-  // Sleep
-  document.getElementById('e-sl-start').value=sl.start||'23:00';
-  document.getElementById('e-sl-end').value=sl.end||'07:00';
-  eWakeups=sl.wakeups||0; document.getElementById('e-wu-num').textContent=eWakeups;
-  document.getElementById('e-sl-save').checked=!!sl.saved;
-  onESleep();
-  // Highlight cal cell
-  document.querySelectorAll('.cal-cell').forEach(c=>c.classList.remove('sel-edit'));
-  document.getElementById('edit-overlay').classList.remove('hidden');
-}
-function closeEdit(e){
-  if(e&&e.target!==document.getElementById('edit-overlay'))return;
-  document.getElementById('edit-overlay').classList.add('hidden');
-  editDate=null;
-}
-function saveEdit(){
-  if(!editDate)return;
-  const w=parseFloat(document.getElementById('e-w').value);
-  const steps=parseInt(document.getElementById('e-steps-sl').value)||0;
-  const days=S.get('days',{}); const sleep=S.get('sleep',{});
-  if(!days[editDate])days[editDate]={};
-  if(w&&w>=30&&w<=300) days[editDate].weight=w;
-  else delete days[editDate].weight;
-  days[editDate].steps=steps;
-  if(eWorkout!==null) days[editDate].workout=eWorkout;
-  else delete days[editDate].workout;
-  days[editDate].rating=eRating;
-  S.set('days',days);
-  // Sleep
-  if(document.getElementById('e-sl-save').checked){
-    const s=document.getElementById('e-sl-start').value;
-    const e=document.getElementById('e-sl-end').value;
-    const mins=sleepMins(s,e); const hrs=mins/60;
-    const sc=sleepScore(hrs,eWakeups);
-    if(!sleep[editDate])sleep[editDate]={};
-    sleep[editDate]={start:s,end:e,wakeups:eWakeups,score:sc.t,hrs,saved:true,ts:Date.now()};
-    S.set('sleep',sleep);
+function saveEd(){
+  haptic('success');
+  if(!edDate) return;
+  const w=parseFloat(document.getElementById('ew').value);
+  const steps=parseInt(document.getElementById('es-sl').value)||0;
+  const days=S.g('days',{}); const sld=S.g('sleep',{});
+  if(!days[edDate]) days[edDate]={};
+  if(w&&w>=30&&w<=300) days[edDate].w=w; else delete days[edDate].w;
+  days[edDate].st=steps;
+  if(eWO!==null) days[edDate].wo=eWO; else delete days[edDate].wo;
+  days[edDate].rt=eRating;
+  S.s('days',days);
+  if(document.getElementById('e-slsv').checked){
+    const s=document.getElementById('e-sls').value, e=document.getElementById('e-sle').value;
+    const mins=slMins(s,e); const hrs=parseFloat((mins/60).toFixed(2));
+    const sc=slScore(hrs,eWU);
+    if(!sld[edDate]) sld[edDate]={};
+    sld[edDate]={start:s,end:e,wakeups:eWU,score:sc.t,hrs,saved:true,ts:Date.now()};
+    S.s('sleep',sld);
   }
-  document.getElementById('edit-overlay').classList.add('hidden');
-  editDate=null;
-  toast('✅ День сохранён!','ok');
-  renderHome(); renderCal(); renderHist(); renderSlHist();
+  closeEd(); toast('День сохранён','ok');
+  renderHome(); renderCal(); renderH7(); renderSlHist();
 }
-function deleteDay(){
-  if(!editDate)return;
-  if(!confirm('Удалить все данные за '+fmtDate(editDate)+'?'))return;
-  const days=S.get('days',{}); const sleep=S.get('sleep',{});
-  delete days[editDate]; delete sleep[editDate];
-  S.set('days',days); S.set('sleep',sleep);
-  document.getElementById('edit-overlay').classList.add('hidden');
-  editDate=null;
-  toast('🗑️ Данные удалены','');
-  renderHome(); renderCal(); renderHist(); renderSlHist();
+function delDay(){
+  if(!edDate) return;
+  haptic('heavy');
+  if(!confirm('Удалить данные за '+fmtDate(edDate)+'?')) return;
+  const days=S.g('days',{}); const sld=S.g('sleep',{});
+  delete days[edDate]; delete sld[edDate];
+  S.s('days',days); S.s('sleep',sld);
+  closeEd(); toast('Удалено','');
+  renderHome(); renderCal(); renderH7(); renderSlHist();
 }
  
-// ── SETTINGS ─────────────────────────────────────────────────────
-function loadSettings(){
-  const cfg=S.get('cfg',{});
-  document.getElementById('cfg-sw').value=cfg.sw||85;
-  document.getElementById('cfg-tw').value=cfg.tw||73;
-  document.getElementById('cfg-setup-date').value=cfg.setupDate||'2026-04-21';
-  // Steps
-  const sg=cfg.stepsGoal||10000;
-  document.getElementById('cfg-steps-sl').value=sg;
-  onCfgSteps(sg);
-  // Month buttons
-  buildMonthBtns(cfg.goalMonths||1, cfg.setupDate||'2026-04-21');
-}
-function buildMonthBtns(sel, setupDate){
-  const grid=document.getElementById('month-btns');
-  grid.innerHTML='';
-  for(let m=1;m<=12;m++){
-    const b=document.createElement('button');
-    b.className='month-btn'+(m===sel?' sel':'');
-    b.textContent=m+' мес';
-    b.onclick=()=>selectGoalMonths(m, setupDate);
-    grid.appendChild(b);
+// ── ANALYTICS ────────────────────────────────────────────────────
+function renderStats(){
+  const cfg=S.g('cfg',{}); const days=S.g('days',{}); const sld=S.g('sleep',{});
+  const now=nowIST(); const goal=cfg.stepsGoal||10000;
+  const strk=streak(days);
+  const SU=new Date(cfg.setupDate||today());
+  const elapsed=Math.max(1,Math.round((now-SU)/86400000)+1);
+  const done=Object.values(days).filter(v=>v?.w).length;
+  document.getElementById('an-d').textContent=Math.round(done/elapsed*100)+'%';
+  document.getElementById('an-s').textContent=strk+'д';
+  const allSt=Object.values(days).filter(v=>v?.st!=null).map(v=>v.st);
+  const avgSt=allSt.length?Math.round(allSt.reduce((a,b)=>a+b,0)/allSt.length):0;
+  document.getElementById('an-a').textContent=avgSt>=1000?(avgSt/1000).toFixed(1)+'к':avgSt||'—';
+  const allSl=Object.values(sld).filter(v=>v?.saved&&v.hrs>0).map(v=>v.hrs);
+  const avgSl=allSl.length?(allSl.reduce((a,b)=>a+b,0)/allSl.length).toFixed(1):0;
+  document.getElementById('an-sl').textContent=avgSl?avgSl+'ч':'—';
+ 
+  // Steps chart
+  const sR=[],lR=[];
+  for(let i=6;i>=0;i--){ const d2=new Date(now-i*86400000); const s2=dsStr(d2); sR.push(days[s2]?.st||0); lR.push(d2.getDate()); }
+  const maxS=Math.max(...sR,1);
+  const sc=document.getElementById('st-sc'); sc.innerHTML='';
+  const sl=document.getElementById('st-sl'); sl.innerHTML='';
+  sR.forEach((s,i)=>{
+    const wrap=document.createElement('div'); wrap.style.cssText='flex:1;';
+    const bar=document.createElement('div'); bar.className='cbar';
+    bar.style.height=Math.max(3,Math.round(s/maxS*60))+'px';
+    bar.style.background=s>=goal?'var(--green)':s>=goal*.7?'var(--orange)':'var(--fill1)';
+    bar.style.opacity=s>0?'1':'0.5'; bar.style.width='100%';
+    wrap.appendChild(bar); sc.appendChild(wrap);
+    const lb=document.createElement('div'); lb.className='clbl'; lb.textContent=lR[i]; sl.appendChild(lb);
+  });
+ 
+  // Weight SVG
+  const ws=Object.entries(days).filter(([k,v])=>v?.w).sort((a,b)=>a[0].localeCompare(b[0])).slice(-14);
+  const svg=document.getElementById('w-svg');
+  if(ws.length>=2){
+    const vals=ws.map(([k,v])=>v.w);
+    const minW=Math.min(...vals)-.5, maxW=Math.max(...vals)+.5;
+    const W=svg.parentElement?.offsetWidth||300, H=72;
+    const pts=ws.map(([k,v],i)=>[i/(ws.length-1)*W, H-((v.w-minW)/(maxW-minW))*H]);
+    const poly=pts.map(p=>p.join(',')).join(' ');
+    const area=`${pts[0][0]},${H} ${poly} ${pts[pts.length-1][0]},${H}`;
+    const trend=vals[vals.length-1]-vals[0];
+    const col=trend<0?'var(--green)':'var(--red)';
+    svg.innerHTML=`<defs><linearGradient id="wg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="${col}" stop-opacity=".2"/>
+      <stop offset="100%" stop-color="${col}" stop-opacity="0"/>
+    </linearGradient></defs>
+    <polygon points="${area}" fill="url(#wg)"/>
+    <polyline points="${poly}" fill="none" stroke="${col}" stroke-width="2" stroke-linejoin="round"/>
+    ${pts.map(([x,y])=>`<circle cx="${x}" cy="${y}" r="2.5" fill="${col}"/>`).join('')}`;
+    document.getElementById('an-tr').textContent=`${trend>0?'+':''}${trend.toFixed(1)} кг`;
+    document.getElementById('an-lo').textContent=cfg.startWeight?`Прогресс: ${Math.abs(cfg.startWeight-vals[vals.length-1]).toFixed(1)} кг`:'';
+  } else svg.innerHTML=`<text x="50%" y="50%" text-anchor="middle" fill="var(--text3)" font-size="13" font-family="-apple-system,system-ui,sans-serif">Нужно минимум 2 записи</text>`;
+ 
+  // Sleep chart
+  const sl2=document.getElementById('st-sl2'); sl2.innerHTML='';
+  const sl2l=document.getElementById('st-sl2l'); sl2l.innerHTML='';
+  for(let i=6;i>=0;i--){
+    const d2=new Date(now-i*86400000); const s2=dsStr(d2); const e=sld[s2];
+    const wrap=document.createElement('div'); wrap.style.cssText='flex:1;';
+    const bar=document.createElement('div'); bar.className='cbar';
+    const hrs=e?.saved&&e.hrs>0?e.hrs:0;
+    bar.style.height=Math.max(3,Math.round(hrs/10*60))+'px';
+    const sc2=hrs>0?slScore(hrs,e?.wakeups||0):null;
+    bar.style.background=sc2?sc2.c:'var(--fill1)'; bar.style.opacity=hrs>0?'1':'0.3';
+    bar.style.width='100%'; wrap.appendChild(bar); sl2.appendChild(wrap);
+    const lb=document.createElement('div'); lb.className='clbl'; lb.textContent=d2.getDate(); sl2l.appendChild(lb);
   }
-  updateGoalDisplay(sel, setupDate);
-}
-function selectGoalMonths(m, setupDate){
-  const cfg=S.get('cfg',{});
-  cfg.goalMonths=m;
-  const sd=document.getElementById('cfg-setup-date').value||setupDate||cfg.setupDate||'2026-04-21';
-  cfg.goalDate=addMonths(sd, m);
-  S.set('cfg',cfg);
-  buildMonthBtns(m, sd);
-  toast('🎯 Цель обновлена!','ok');
-  renderHome();
-}
-function updateGoalDisplay(months, setupDate){
-  const cfg=S.get('cfg',{});
-  const sd=document.getElementById('cfg-setup-date')?.value||setupDate||cfg.setupDate||'2026-04-21';
-  const gd=addMonths(sd, months);
-  document.getElementById('goal-date-display').textContent=fmtDate(gd)+' '+gd.split('-')[0];
-}
-function saveCfgField(field, val){
-  const cfg=S.get('cfg',{}); const n=parseFloat(val);
-  if(!isNaN(n)&&n>0){ cfg[field]=n; S.set('cfg',cfg); renderHome(); }
-}
-function adjSetting(field, d){
-  const inp=document.getElementById('cfg-'+field);
-  const cfg=S.get('cfg',{});
-  const cur=parseFloat(inp.value)||cfg[field]||75;
-  const nv=Math.round((cur+d)*10)/10;
-  inp.value=nv; cfg[field]=nv; S.set('cfg',cfg); renderHome();
-}
-function saveCfgDate(field, val){
-  if(!val)return;
-  const cfg=S.get('cfg',{});
-  cfg[field]=val;
-  // Recalculate goal date
-  cfg.goalDate=addMonths(val, cfg.goalMonths||1);
-  S.set('cfg',cfg);
-  buildMonthBtns(cfg.goalMonths||1, val);
-  renderHome();
-  toast('📅 Дата начала обновлена!','ok');
-}
-function onCfgSteps(v){
-  v=parseInt(v);
-  document.getElementById('cfg-steps-disp').textContent=Number(v).toLocaleString('ru');
-  const pct=Math.min(100,(v/30000)*100);
-  document.getElementById('cfg-steps-pbar').style.width=pct+'%';
-}
-function saveCfgSteps(){
-  const v=parseInt(document.getElementById('cfg-steps-sl').value);
-  const cfg=S.get('cfg',{}); cfg.stepsGoal=v; S.set('cfg',cfg);
-  toast('👟 Цель шагов сохранена!','ok'); renderHome();
-}
-function confirmReset(){
-  if(!confirm('Удалить ВСЕ данные? Это нельзя отменить!'))return;
-  localStorage.clear();
-  S.set('cfg',{sw:85,tw:73,stepsGoal:10000,goal:'lose',
-    setupDate:'2026-04-21',goalMonths:1,goalDate:'2026-05-21'});
-  toast('🗑️ Все данные удалены','');
-  loadSettings(); renderHome();
 }
  
-// ── TOAST ─────────────────────────────────────────────────────────
+// ── TOAST ────────────────────────────────────────────────────────
 let _tt;
 function toast(msg,type=''){
   const el=document.getElementById('toast');
-  el.textContent=msg; el.className='toast show'+(type==='ok'?' ok':'');
-  clearTimeout(_tt); _tt=setTimeout(()=>el.classList.remove('show'),2500);
+  el.textContent=msg; el.className=`toast on${type==='ok'?' ok':type==='er'?' er':''}`;
+  clearTimeout(_tt); _tt=setTimeout(()=>el.classList.remove('on'),2600);
 }
+ 
+// ── INIT ─────────────────────────────────────────────────────────
+window.addEventListener('load',()=>{
+  initTheme();
+  const cfg=S.g('cfg');
+  if(cfg?.startWeight) showApp(); else showSetup();
+});
 </script>
 </body>
 </html>
